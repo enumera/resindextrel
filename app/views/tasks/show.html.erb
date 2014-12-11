@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Trello type:</b>
+  <%= @task.trello_type %>
+</p>
+
+<p>
+  <b>Resindex:</b>
+  <%= @task.resindex %>
+</p>
+
+<p>
+  <b>Completed:</b>
+  <%= @task.completed %>
+</p>
+
+<p>
+  <b>Start date:</b>
+  <%= @task.start_date %>
+</p>
+
+<p>
+  <b>End date:</b>
+  <%= @task.end_date %>
+</p>
+
+<p>
+  <b>Estimate:</b>
+  <%= @task.estimate %>
+</p>
+
+<p>
+  <b>Difficulty:</b>
+  <%= @task.difficulty %>
+</p>
+
+<p>
+  <b>Importance:</b>
+  <%= @task.importance %>
+</p>
+
+
+<%= link_to 'Edit', edit_task_path(@task) %> |
+<%= link_to 'Back', tasks_path %>

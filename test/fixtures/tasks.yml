@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  trello_type: MyString
+  resindex: 1.5
+  completed: false
+  start_date: 2014-11-07
+  end_date: 2014-11-07
+  estimate: 1
+  difficulty: 1
+  importance: 1
+
+two:
+  trello_type: MyString
+  resindex: 1.5
+  completed: false
+  start_date: 2014-11-07
+  end_date: 2014-11-07
+  estimate: 1
+  difficulty: 1
+  importance: 1

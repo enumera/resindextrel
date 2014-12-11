@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>User:</b>
+  <%= @time_record.user_id %>
+</p>
+
+<p>
+  <b>Task:</b>
+  <%= @time_record.task_id %>
+</p>
+
+<p>
+  <b>Timerecord:</b>
+  <%= @time_record.timerecord %>
+</p>
+
+
+<%= link_to 'Edit', edit_time_record_path(@time_record) %> |
+<%= link_to 'Back', time_records_path %>

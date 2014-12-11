@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>First name:</b>
+  <%= @user.first_name %>
+</p>
+
+<p>
+  <b>Family name:</b>
+  <%= @user.family_name %>
+</p>
+
+<p>
+  <b>Trello:</b>
+  <%= @user.trello %>
+</p>
+
+<p>
+  <b>Rescue:</b>
+  <%= @user.rescue %>
+</p>
+
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

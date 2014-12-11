@@ -1,0 +1,29 @@
+<%= form_for(@time_record) do |f| %>
+  <% if @time_record.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@time_record.errors.count, "error") %> prohibited this time_record from being saved:</h2>
+
+      <ul>
+      <% @time_record.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :user_id %><br />
+    <%= f.number_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :task_id %><br />
+    <%= f.number_field :task_id %>
+  </div>
+  <div class="field">
+    <%= f.label :timerecord %><br />
+    <%= f.text_field :timerecord %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

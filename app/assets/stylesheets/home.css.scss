@@ -1,0 +1,83 @@
+#resindex-wrapper2{
+     border-color: 2px solid blue;
+     display: inline-block;
+}
+
+#hours-wrapper{
+  vertical-align: top;
+  height: 150px;
+  display: inline-block;
+  border-color: 2px solid blue;
+  width: 80px;
+}
+
+#difficulty-wrapper{
+display: inline-block;
+width: 80px;
+padding: 10px;
+ margin-top: 10px;
+
+}
+
+#importance-wrapper{
+  display: inline-block;
+  width: 80px;
+  margin-top: 10px;
+}
+
+.classNotSet{
+
+  width: 100px;
+
+}
+
+
+
+li{
+  list-style-type: none;
+}
+
+
+#diff-import-wrapper{
+    height: 150px;
+    display: inline-block;
+    border-color: 2px solid blue;
+}
+
+#difficulty-wrapper, #importance-wrapper {
+
+/*  display: inline-block;*/
+  border-color: 2px solid blue;
+  text-align: center;
+}
+#dates-wrapper{
+  vertical-align: top;
+  display: inline-block;
+  padding-top: 20px;
+}
+.dates{
+  padding:10px;
+
+}
+
+#input-panel{
+  margin-left: 20px;
+
+
+}
+
+.list-group-item{
+margin-bottom: 10px;
+
+
+}
+
+#comments-panel{
+  /*display: none;*/
+  top: +100px;
+  margin-left: 20px;
+
+}
+
+
+
