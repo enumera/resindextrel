@@ -2,6 +2,7 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
+    # @user = current_user.id
     @projects = Project.all
 
     respond_to do |format|
@@ -40,6 +41,7 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
+    @user = current_user.id
     @project = Project.new(params[:project])
 
     # binding.pry

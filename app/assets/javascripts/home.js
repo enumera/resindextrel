@@ -668,6 +668,7 @@ var addProject = function(){
   data = {};
 
   data["name"] = $('#project-name').val();
+  data["user_id"] = 1
 
   console.log(data);
   $.ajax({ 

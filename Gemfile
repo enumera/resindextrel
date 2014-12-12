@@ -8,6 +8,10 @@ gem 'rails', '3.2.17'
 gem 'pg'
 gem 'pry-rails'
 gem 'ruby-trello'
+gem 'bcrypt-ruby', '~> 3.0.0'
+
+gem 'gon'
+gem 'rabl-rails'
 
 
 
