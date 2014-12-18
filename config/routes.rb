@@ -1,13 +1,20 @@
 Trelloindex::Application.routes.draw do
   
+  get "trello/oauth"
+
+  get "trello/callback"
+
+  resources :comment_types
+
+
 resources :projects do
   resources :goals
 end
 
 
-# resources :users do
+resources :users do
   resources :projects
-# end
+end
 
 
   resources :time_records
@@ -29,7 +36,7 @@ end
     get "log_out" => "sessions#destroy", :as => "log_out"
     get "log_in" => "sessions#new", :as => "log_in"
     get "sign_up" => "users#new", :as => "sign_up"
-    root :to => "users#new"
+    # root :to => "users#new"
     resources :users
     resources :sessions
 
@@ -85,7 +92,7 @@ end
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'home#index'
+  root :to => 'home#index'
 
   # See how all your routes lay out with "rake routes"
 

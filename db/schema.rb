@@ -11,14 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141212075352) do
+ActiveRecord::Schema.define(:version => 20141216213928) do
+
+  create_table "comment_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.string   "comment_switch"
+  end
 
   create_table "comments", :force => true do |t|
     t.text     "ctext"
     t.integer  "task_id"
     t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.integer  "comment_type_id"
   end
 
   create_table "goals", :force => true do |t|

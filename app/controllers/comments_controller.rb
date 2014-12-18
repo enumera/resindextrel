@@ -5,11 +5,9 @@ class CommentsController < ApplicationController
     @task = Task.find(params[:task_id])
     @comments = @task.comments.order("created_at")
 
-  
-
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @comments }
+      format.json { render json: @comments, :include => [:comment_type]}
     end
   end
 

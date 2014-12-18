@@ -6,12 +6,18 @@
    <!--  <title>Bootstrap 3 Admin</title> -->
     <meta name="generator" content="Bootply" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- The client library requires jQuery  -->
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+  <script src="https://api.trello.com/1/client.js?key=8e474beb4e008617593dab5c21cd61ea"></script>
+
+  <!-- ...  -->
     <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
     <!--[if lt IE 9]>
       <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <!-- <link href="css/styles.css" rel="stylesheet"> -->
   <title>Trelloindex</title>
+    <%= include_gon %>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
@@ -40,6 +46,8 @@
          <li><a href="#" id="blank_task"><i class="glyphicon glyphicon-lock" ></i> New Task</a></li>
         <li><a href="#"><i class="glyphicon glyphicon-lock"></i> New Project</a></li>
         <li><a href="/log_out"><i class="glyphicon glyphicon-lock"></i> Logout</a></li>
+         <li><a href="/trello/oauth"><i class="glyphicon glyphicon-lock"></i> Trello</a></li>
+         
       </ul>
       <% else %>
        <ul class="nav navbar-nav navbar-right">
@@ -55,11 +63,14 @@
   </div><!-- /container -->
 </div>
 
+
 <% flash.each do |name, msg| %>
   <%= content_tag :div, msg, :id => "flash_#{name}" %>
 <% end %>
 
-<%= yield %>
+
+  <%= yield %>
+
 
 </body>
 </html>

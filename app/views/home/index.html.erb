@@ -1,15 +1,25 @@
-
+<% if current_user %>
 
 <div class="container-fluid">
+  <input type="hidden" class="projectSel"></input>
+  <input type="hidden" class="goalSel"></input>
+
  <div class="row">
 
     <div class="col-sm-3">
 
       <div class="panel panel-default">
-        <div class="panel-heading"><h4>Projects<span class="pull-right">
+        <div class="panel-heading">
+        <button class="btn btn-primary btn-sm pull-right" id="new-project">
+                    Create new Project
+              </button><h4>Projects</h4>
+
+       <!--        <span class="pull-right">
         <button class="btn btn-primary" id="new-project">
                     Create new Project
-              </button></span></h4></div>
+              </button></span></h4> -->
+
+        </div>
         <div class="panel-body" id="menu-container">
           <div class="well well-lg" id="project-button">
             Projects
@@ -136,11 +146,6 @@
           </div>
         </div>
       </div>
-
-      
-
-
-
   </div>
                   
 
@@ -165,10 +170,23 @@
   <input type="hidden" class="taskComment_id">
   <label for="name">Comment</label>
   <input type="text" name="name" id="comment-text" class="text ui-widget-content ui-corner-all">
+   <div class="control-group comment_type-options">
+            <label>Type</label>
+            <div class="controls">
+              <select class="form-control" id="type-select"><option>options</option>
+                <option>options2</option>
+              </select>
+            </div>
+          </div>  
  <!--    <button class="btn btn-primary pull-right" id="create-new-project">
                     Create New Project
               </button> -->
 </div>
+<% else %>
+
+  <%= render "landing" %>
+
+<% end %>
 
             
 <!-- Modal form for reindex -->

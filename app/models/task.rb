@@ -48,7 +48,7 @@ class Task < ActiveRecord::Base
     if resindex < 0
       resindex = 888
     end
-    if task.completed == 1
+    if task.completed == true
       resindex = -999
     end
     

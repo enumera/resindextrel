@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    # @user = current_user.id
+    @user = current_user.id
     @projects = Project.all
 
     respond_to do |format|
@@ -48,8 +48,8 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
-        format.json { render json: @project, status: :created, location: @project }
+        format.html { redirect_to user_project_path(@user, @project), notice: 'Project was successfully created.' }
+        format.json { render json: user_project_path(@user, @project), status: :created, location: user_project_path(@user, @project) }
       else
         format.html { render action: "new" }
         format.json { render json: @project.errors, status: :unprocessable_entity }
