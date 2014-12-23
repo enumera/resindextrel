@@ -9,10 +9,11 @@
     <div class="col-sm-3">
 
       <div class="panel panel-default">
+         <button class="btn btn-primary btn-xs pull-right" id="new-project">
+                    New prize
+              </button>
         <div class="panel-heading">
-        <button class="btn btn-primary btn-sm pull-right" id="new-project">
-                    Create new Project
-              </button><h4>Projects</h4>
+       <h4>Control</h4>
 
        <!--        <span class="pull-right">
         <button class="btn btn-primary" id="new-project">
@@ -22,7 +23,7 @@
         </div>
         <div class="panel-body" id="menu-container">
           <div class="well well-lg" id="project-button">
-            Projects
+            Prizes
            
           </div>
         </div>
@@ -31,12 +32,12 @@
 
     <div class="col-sm-9">
       <div class="panel panel-default col-md-6" id ="task-panel">
-        <div class="panel-heading"><h4>Tasks</h4></div>
+        <div class="panel-heading"><h4>Things to do...</h4></div>
         <div class="panel-body">
           <div class="list-group" id="task-list-group">
-            <a href="#" class="list-group-item active"><span class="glyphicon glyphicon-collapse-down pull-right"></span></a>
+           <!--  <a href="#" class="list-group-item active"><span class="glyphicon glyphicon-collapse-down pull-right"></span></a>
             <a href="#" class="list-group-item">Dedicated server doesn't..</a>
-            <a href="#" class="list-group-item">RHEL 6 install on new..</a>
+            <a href="#" class="list-group-item">RHEL 6 install on new..</a> -->
           </div>
         </div>
       </div>
@@ -45,27 +46,27 @@
         <div class="panel-heading">
           <div class="panel-title">
             <i class="glyphicon glyphicon-wrench pull-right"></i>
-              <h4 id="" class="task-form-header" >Create Task</h4>
+              <h4 id="" class="task-form-header" >Create Thing</h4>
           </div>
         </div>
 
         <div class="panel-body">
           <div class="control-group">
-            <label>Task Title</label>
+         <!--    <label>Thing Title</label> -->
               <div class="controls">
-                <input type="text" class="form-control" placeholder="Enter title" id="task_title">
+                <input type="text" class="form-control" placeholder="Thing name" id="task_title">
               </div>
           </div>      
                         
           <div class="control-group">
-            <label>Task Description</label>
+            <!-- <label>How to get that thing done</label> -->
             <div class="controls">
-              <textarea class="form-control" placeholder="Enter description" id="task_description"></textarea>
+              <textarea class="form-control" placeholder="How you'll get it done" id="task_description"></textarea>
             </div>
           </div> 
                              
           <div class="control-group project-options">
-            <label>Project</label>
+            <!-- <label>Prize</label> -->
             <div class="controls">
               <select class="form-control" id="project-select"><option>options</option>
                 <option>options2</option>
@@ -74,7 +75,7 @@
           </div>   
 
            <div class="control-group" id="goal-options" style="display:none">
-            <label>Goal</label>
+            <label>How to get there..</label>
             <div class="controls">
               <select class="form-control" id="goal-select"><option>Goal1</option>
                 <option>Goal2</option>
@@ -130,6 +131,9 @@
               <button class="btn btn-primary" id="new-task">
                     Post
               </button>
+               <button class="btn btn-warning" id="refresh">
+                    Clear
+              </button>
             </div>
           </div>   
         </div>
@@ -137,7 +141,7 @@
 
      
       <div class="panel panel-default col-md-5" id ="comments-panel">
-        <div class="panel-heading"><h4>Comments</h4></div>
+        <div class="panel-heading"><h4>Notes</h4></div>
         <div class="panel-body">
           <div class="list-group" id="comment-list-group">
             <a href="#" class="list-group-item active"><span class="glyphicon glyphicon-collapse-down pull-right"></span></a>
@@ -159,7 +163,7 @@
 
 <div id="new-goal-modal" title="New Goal" class="modal-dialog">
   <input type="hidden" class="goalproject_id">
-  <label for="name">Goal Name</label>
+  <label for="name">Thing Name</label>
   <input type="text" name="name" id="goal-name" class="text ui-widget-content ui-corner-all">
  <!--    <button class="btn btn-primary pull-right" id="create-new-project">
                     Create New Project
@@ -168,10 +172,10 @@
 
 <div id="new-comment-modal" title="New Comment" class="modal-dialog">
   <input type="hidden" class="taskComment_id">
-  <label for="name">Comment</label>
+  <label for="name">Note</label>
   <input type="text" name="name" id="comment-text" class="text ui-widget-content ui-corner-all">
    <div class="control-group comment_type-options">
-            <label>Type</label>
+            <label>Note Type</label>
             <div class="controls">
               <select class="form-control" id="type-select"><option>options</option>
                 <option>options2</option>

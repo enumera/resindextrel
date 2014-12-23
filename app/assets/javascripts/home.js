@@ -10,10 +10,6 @@ function containsObject(obj, list) {
     return false;
 };
 
-
-
-
-
 var main = function(){
   // console.log("logged in user is:");
   // console.log(gon.user_id);
@@ -34,6 +30,8 @@ var main = function(){
 
  });
 
+// createProjectList(1);
+
   $('#blank_task').click(function(e){
 
     console.log("blank task works");
@@ -50,8 +48,9 @@ var main = function(){
     var refreshTasks = function(){
       console.log("in referesh tasks");
       $('#task-list-group').html('');
+      goalId = $('.goalSel').val();
 
-      createTaskRecord();
+      createTaskRecord(goalId);
    };
 
 
@@ -126,13 +125,13 @@ var main = function(){
 
         console.log(data);
 
-  if($('.task-form-header').attr("id") ==""){
+    if($('.task-form-header').attr("id") ==""){
 
       path = "/users/" + gon.user_id + "/tasks";
       method = "POST";
-        goal_id = $('#goal-options option:selected').val();
-        data['goal_id'] = $('#goal-options option:selected').val();
-        data['project_id'] = $('#project-options option:selected').val();
+      goal_id = $('#goal-options option:selected').val();
+      data['goal_id'] = $('#goal-options option:selected').val();
+      data['project_id'] = $('#project-options option:selected').val();
 
       console.log("id works okay");
     }else{
@@ -152,6 +151,7 @@ var main = function(){
           if(method == "PUT"){
             addNewComment(taskID, "resindex");
           }
+          taskInputReset();
         });
       };
 
@@ -159,11 +159,12 @@ var main = function(){
         console.log("clicked the project button");
         $('.projectSel').val('');
         $('.goalSel').val('');
-        createProjectList();
+        createProjectList(0);
+        taskInputReset();
       });
 
 
-      var createProjectList = function(){
+      var createProjectList = function(menuOrOptions){
         console.log("in create project list")
 
         $.getJSON("users/"+ gon.user_id +"/projects", function(data){
@@ -178,17 +179,23 @@ var main = function(){
             menuItems.html('');
             projectOptions.html('');
 
-            projectInitialOption = '<option id="no-project">Select project</option>';
-            menuItems.append('<div class="well well-lg" id="project-button">Projects</div>');
+            projectInitialOption = '<option id="no-project">Select prize</option>';
+            menuItems.append('<div class="well well-lg" id="project-button">Prizes</div>');
 
             projectOptions.append(projectInitialOption);
 
             $.each(data, function(i, project){
-              projectItem = '<button class="btn-primary btn-xs pull-right projects new-goal" value='+ project.id +'>New Goal</button><div class="well well-sm projects" id=' + project.id + '>' + project.name + '</div></div>';
+              if(menuOrOptions == 0){
+                console.log(data)
+              projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Stuff</button><div class="well well-sm projects" id=' + project.id + '>' + project.name + '<span class ="pull-right badge">' + project.no_of_goals + '</span></div></div>';
               
               projectOption = '<option value='+project.id+ '>'+ project.name +'</option>'
               menuItems.append(projectItem);
               projectOptions.append(projectOption);
+            }else{
+              projectOption = '<option value='+project.id+ '>'+ project.name +'</option>';
+              projectOptions.append(projectOption);
+            };
             });
            ;
         });
@@ -200,6 +207,7 @@ var main = function(){
       console.log($(this));
       var taskId = $(this).val();
       console.log(taskId);
+      console.log(gon.user_id);
       var path = "users/"+ gon.user_id +"/tasks/" + taskId;
       var method = "PUT";
       var data = {};
@@ -212,6 +220,10 @@ var main = function(){
         method: method,
         data: {task: data},
         dataType: "json"
+      }).success(function(data){
+        console.log("here");
+        console.log(data);
+
       });
     });
 
@@ -230,7 +242,7 @@ var main = function(){
           console.log(data);
 
            $.each(data, function(i, goal){
-              var goalItem = '<div class="well well-sm goals project' + projectID + ' " id=' + goal.id + '> ' + goal.name + '</div>';
+              var goalItem = '<div class="well well-sm goals project' + projectID + ' " id=' + goal.id + '> ' + goal.name + '<span class ="pull-right badge">  ' + goal.no_of_tasks + '</span></div>';
               menuItems.append(goalItem);
 
         });
@@ -282,7 +294,7 @@ var main = function(){
             console.log(data);
 
             listItems.html("");
-            listItems.hide();
+            // listItems.hide();
 
          // recordTime = '<button id='+ card.shortlink + ' class="recordButton" >Record time against task</button>'
 
@@ -311,7 +323,7 @@ var main = function(){
             }
             console.log(task.completed);
 
-              var listItem = '<div class="panel panel-default"><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'<span class="pull-right" value='+ task.id+'><button class="commentButton btn btn-primary" value='+ task.id +' >Add a comment</button></span><span><div class="pull-right" value='+ task.id +'><label for="completed">Completed ?</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right">' + task.resindex + '</span><p>effort to date : ' + effortHours + ' hours ' + newEffortMins + '<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-primary" >Start work session</button></span></p><p> Start date :' + task.start_date +'</p> End Date : '+ task.end_date + '<span class="pull-right"><button class="editButton btn btn-primary" >Edit task</button></span></p></div>';
+              var listItem = '<div class="panel panel-default"><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a comment</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed ?</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right badge"> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + '<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work session</button></span></p><p> Start date :' + task.start_date +'</p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" >Edit task</button></p></div>';
 
               listItems.append(listItem);
 
@@ -391,7 +403,7 @@ var main = function(){
 
 
   $('#new-task').click(function(e){
-    e.preventDefault();
+    
   
       createTask();
 
@@ -448,7 +460,9 @@ function onAuthorizeSuccessful() {
 
     projectID = $this.attr("id");
     console.log("this is the project ID");
-    console.log(projectID);
+    console.log($this)
+
+    // if ($this != $('button.new[value'+ projectID + ']')){
 
     $('button.new-goal[value='+ projectID + ']').addClass("selectedProject");
 
@@ -458,9 +472,23 @@ function onAuthorizeSuccessful() {
     $this.addClass("well-lg");
     $('.projectSel').val(projectID);
 
+
     $('.projects:not(.selectedProject)').fadeOut(1000);
+    $('.new-goal:not(.selectedProject').fadeOut(1000);
+    console.log();
+    console.log($('.goals').length);
+
+    if($('.goals').length){
+      $('.goals:not(selectedGoal)').fadeIn(1000);
+       $('.selectedGoal').removeClass("well-lg");
+      $('.selectedGoal').addClass("well-sm");
+      $('.goals.selectedGoal').removeClass('selectedGoal');
+    }else{
+
+  // }
     createGoalsList(projectID);
-  })
+  };
+  });
 
   $(document.body).on('click', '.goals',function(){
     $this = $(this);
@@ -475,6 +503,7 @@ function onAuthorizeSuccessful() {
     $this.addClass("well-lg");
 
     $('.goals:not(.selectedGoal)').fadeOut(1000);
+    // $('.new-goal:not(.selectedGoal').fadeOut(1000);
     $('.goalSel').val(goalID);
     createTaskRecord(goalID);
 
@@ -517,6 +546,7 @@ function onAuthorizeSuccessful() {
     });
 
     var taskInputReset = function(){
+      console.log("in input clear");
       $('.task-form-header').attr('id', '');
          $('#slider-estimate').slider({value: 5});
           $('#hours_estimate').val(5);
@@ -532,7 +562,7 @@ function onAuthorizeSuccessful() {
           $('#new-task').text('Post');
           $('#new-task').removeClass('update');
           $('#new-task').addClass('new-task');
-          $('.task-form-header').text('New Task')
+          $('.task-form-header').text('New Thing')
     };
 
 
@@ -590,8 +620,6 @@ function onAuthorizeSuccessful() {
       item.removeClass("recording")
 
       item.parent().parent().parent().removeClass("active");
-
-
 
       item.text("Start work session");
       record(userId, taskId, recordId, -2 );
@@ -714,7 +742,7 @@ var clock = function(){
      console.log($this.val());
      var taskID = $this.val();
      var typeItem;
-     var initialCommentType = '<option id="no-project">Select type</option>';
+     var initialCommentType = '<option id="no-project">Select Note type</option>';
      console.log(taskID);
         $('.taskComment_id').attr("value", taskID);
         $('#type-select').html('');
@@ -840,6 +868,8 @@ var addGoal = function(){
 
   var project_id = $('.goalproject_id').attr("id");
 
+  console.log("project id is" + project_id);
+
   data["project_id"] = $('.goalproject_id').attr("id");
 
   data["name"] = $('#goal-name').val();
@@ -915,7 +945,7 @@ dialog = $( "#new-project-modal" ).dialog({
       width: 350,
       modal: true,
       buttons: {
-        "Add new project": addProject,
+        "Add new prize": addProject,
         Cancel: function() {
           dialog.dialog( "close" );
         }
@@ -936,7 +966,8 @@ $this = $(this);
 console.log($this);
 $('#input-panel').animate({bottom: "-200px"}, 500).fadeOut();
 $('#comments-panel').animate({top: "0px"}, 500).fadeIn();
-var taskId = $this.children().first().attr("value");
+var taskId = $this.children().children().first().attr("value");
+
 
 console.log(taskId);
 
@@ -951,22 +982,27 @@ showComments(taskId);
 
  $(document.body).on('click', 'button.new-goal', function(e) {
   console.log("new goal button pressed")
-  // $this = $(this);
-  project_id = $('.new-goal').val();
-  console.log(project_id);
+  $this = $(this);
+  console.log($this);
+ var projectGoalId = $this.val();
+  console.log("project id is" + projectGoalId);
   // console.log($this.parent().parent());
   // project_id = $this.attr("id");
-  $('.goalproject_id').attr("id", project_id );
+  $('.goalproject_id').attr("id", projectGoalId );
       dialogGoal.dialog( "open" );
-    });
+  });
 
-
+$(document.body).on('click', '#refresh', function(){
+taskInputReset();   
+});
 
 // $('#input-panel').animate({bottom: "-200px"}, 1000).fadeOut();
 // $('#comments-panel').animate({top: "0px"},3000);
 
 // createTaskRecord();
 // clock();
+createProjectList(1);
+$('#comments-panel').hide();
 
 };
 

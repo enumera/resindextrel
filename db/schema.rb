@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141216213928) do
+ActiveRecord::Schema.define(:version => 20141223185912) do
 
   create_table "comment_types", :force => true do |t|
     t.string   "name"
@@ -32,14 +32,27 @@ ActiveRecord::Schema.define(:version => 20141216213928) do
   create_table "goals", :force => true do |t|
     t.string   "name"
     t.integer  "project_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.string   "project_list_id"
+    t.integer  "no_of_tasks"
+  end
+
+  create_table "oauth_tables", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "token"
+    t.string   "secret"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.string   "website_service"
   end
 
   create_table "projects", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.string   "trello_project_id"
+    t.integer  "no_of_goals"
   end
 
   create_table "projects_users", :id => false, :force => true do |t|
@@ -65,6 +78,7 @@ ActiveRecord::Schema.define(:version => 20141216213928) do
     t.text     "url"
     t.string   "shortlink"
     t.integer  "goal_id"
+    t.string   "project_list_id"
   end
 
   create_table "tasks_users", :id => false, :force => true do |t|
@@ -80,6 +94,11 @@ ActiveRecord::Schema.define(:version => 20141216213928) do
     t.string   "state"
     t.integer  "hours"
     t.integer  "minutes"
+  end
+
+  create_table "trellos", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

@@ -1,0 +1,29 @@
+<%= form_for(@oauth_table) do |f| %>
+  <% if @oauth_table.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@oauth_table.errors.count, "error") %> prohibited this oauth_table from being saved:</h2>
+
+      <ul>
+      <% @oauth_table.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :user_id %><br />
+    <%= f.number_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :token %><br />
+    <%= f.text_field :token %>
+  </div>
+  <div class="field">
+    <%= f.label :secret %><br />
+    <%= f.text_field :secret %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

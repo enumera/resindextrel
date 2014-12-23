@@ -3,7 +3,14 @@ class GoalsController < ApplicationController
   # GET /goals.json
   def index
     @project = Project.find(params[:project_id])
-    @goals = @project.goals
+    project_goals = @project.goals
+    @goals = project_goals.order("no_of_tasks DESC")
+
+    # @goals.each do |goal|
+    #   tasks = goal.tasks.length
+    #   goal.no_of_tasks = tasks
+    #   goal.save
+    # end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -45,6 +52,10 @@ class GoalsController < ApplicationController
 
     respond_to do |format|
       if @goal.save
+        project = @project.find(project_id: @goal.project_id)
+        x = project.no_of_goals
+        goals = x+1
+        project.update_attributes(no_of_goals: goals)
         format.html { redirect_to @goal, notice: 'Goal was successfully created.' }
         format.json { render json: @goal, status: :created, location: @goal }
       else

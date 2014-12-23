@@ -1,0 +1,27 @@
+<h1>Listing oauth_tables</h1>
+
+<table>
+  <tr>
+    <th>User</th>
+    <th>Token</th>
+    <th>Secret</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @oauth_tables.each do |oauth_table| %>
+  <tr>
+    <td><%= oauth_table.user_id %></td>
+    <td><%= oauth_table.token %></td>
+    <td><%= oauth_table.secret %></td>
+    <td><%= link_to 'Show', oauth_table %></td>
+    <td><%= link_to 'Edit', edit_oauth_table_path(oauth_table) %></td>
+    <td><%= link_to 'Destroy', oauth_table, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Oauth table', new_oauth_table_path %>

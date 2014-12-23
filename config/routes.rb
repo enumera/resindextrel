@@ -1,8 +1,13 @@
 Trelloindex::Application.routes.draw do
   
+  resources :oauth_tables
+
+
   get "trello/oauth"
 
   get "trello/callback"
+
+  get "trello/access"
 
   resources :comment_types
 

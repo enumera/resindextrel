@@ -1,18 +1,23 @@
 class Task < ActiveRecord::Base
-  attr_accessible :completed, :difficulty, :end_date, :estimate, :importance, :resindex, :start_date, :trello_type, :effort, :card_id, :card_name, :card_description, :url, :shortlink, :user_ids, :goal_id
+  attr_accessible :completed, :difficulty, :end_date, :estimate, :importance, :resindex, :start_date, :trello_type, :effort, :card_id, :card_name, :card_description, :url, :shortlink, :user_ids, :goal_id, :project_list_id
 
     has_and_belongs_to_many :users
     has_one :goal
     has_many :comments
+  
 
 
 
 
   def calculate_resindex(task)
    
+    if start_date.nil? || end_date.nil? 
+      resindex = 0
+    else
+
+
     if task.effort.nil?
       task.effort = 0
-    
     end
    
     a = Time.now.to_i
@@ -51,7 +56,7 @@ class Task < ActiveRecord::Base
     if task.completed == true
       resindex = -999
     end
-    
+  end
     return resindex
 
   end

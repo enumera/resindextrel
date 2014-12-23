@@ -2,8 +2,17 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    @user = current_user.id
-    @projects = Project.all
+    @user = current_user
+    user_projects = @user.projects
+    @projects = user_projects.order("no_of_goals DESC")
+    # binding.pry
+
+    # @projects.each do |project|
+    #   goals = project.goals.length
+    #   project.no_of_goals = goals
+    #   project.save
+    # end
+
 
     respond_to do |format|
       format.html # index.html.erb

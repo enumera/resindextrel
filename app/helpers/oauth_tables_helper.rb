@@ -1,0 +1,2 @@
+module OauthTablesHelper
+end

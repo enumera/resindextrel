@@ -2,7 +2,7 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @user = User.find(params[:user_id])
+    @user = current_user
 
     task = @user.tasks
 
@@ -55,7 +55,7 @@ class TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
-    @user = User.find(params[:user_id])
+    @user = current_user
     @task = Task.new(params[:task])
         # binding.pry
     @goal = Goal.find(params[:task][:goal_id])
@@ -80,7 +80,8 @@ class TasksController < ApplicationController
   # PUT /tasks/1
   # PUT /tasks/1.json
   def update
-    @user = User.find(params[:user_id])
+    # @user = User.find(params[:user_id])
+    @user = current_user
     @task = Task.find(params[:id])
     @timerecords = TimeRecord.where(task_id: params[:id], state: "toallocate")
 

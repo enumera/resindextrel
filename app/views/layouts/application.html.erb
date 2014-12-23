@@ -46,7 +46,13 @@
          <li><a href="#" id="blank_task"><i class="glyphicon glyphicon-lock" ></i> New Task</a></li>
         <li><a href="#"><i class="glyphicon glyphicon-lock"></i> New Project</a></li>
         <li><a href="/log_out"><i class="glyphicon glyphicon-lock"></i> Logout</a></li>
+
+        <% if current_user.oauth_tables.length == 0 %>
          <li><a href="/trello/oauth"><i class="glyphicon glyphicon-lock"></i> Trello</a></li>
+        <% else %>
+        <li><a href="/trello/access"><i class="glyphicon glyphicon-lock"></i> Refresh trello</a></li>
+        <% end %>
+
          
       </ul>
       <% else %>

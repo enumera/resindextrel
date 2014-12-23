@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-  attr_accessible :name, :goal_ids, :user_ids
+  attr_accessible :name, :goal_ids, :user_ids, :trello_project_id, :no_of_goals
 
   has_many :goals
 
