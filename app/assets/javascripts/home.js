@@ -24,6 +24,7 @@ var main = function(){
 
  // }
 
+
  $.getJSON("/users/" + gon.user_id, function(data){
   console.log(data);
   username = data.first_name;
@@ -186,8 +187,14 @@ var main = function(){
 
             $.each(data, function(i, project){
               if(menuOrOptions == 0){
-                console.log(data)
-              projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Stuff</button><div class="well well-sm projects" id=' + project.id + '>' + project.name + '<span class ="pull-right badge">' + project.no_of_goals + '</span></div></div>';
+                console.log(project.no_of_goals)
+
+                if(project.no_of_goals === null){
+                  x = 0;
+                }else{
+                  x = project.no_of_goals;
+                };
+              projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Stuff</button><div class="well well-sm projects" id=' + project.id + '>' + project.name + '<span class ="pull-right badge">' + x + '</span></div></div>';
               
               projectOption = '<option value='+project.id+ '>'+ project.name +'</option>'
               menuItems.append(projectItem);
@@ -229,6 +236,7 @@ var main = function(){
 
 
       var createGoalsList = function(projectID){
+        var x;
         console.log("in createGoalsList")
 
         var menuItems = $('#menu-container');
@@ -242,7 +250,14 @@ var main = function(){
           console.log(data);
 
            $.each(data, function(i, goal){
-              var goalItem = '<div class="well well-sm goals project' + projectID + ' " id=' + goal.id + '> ' + goal.name + '<span class ="pull-right badge">  ' + goal.no_of_tasks + '</span></div>';
+            console.log(goal.no_of_tasks);
+
+                if(goal.no_of_tasks === null){
+                  x = 0;
+                }else{
+                  x = goal.no_of_tasks;
+                };
+              var goalItem = '<div class="well well-sm goals project' + projectID + ' " id=' + goal.id + '> ' + goal.name + '<span class ="pull-right badge">  ' + x + '</span></div>';
               menuItems.append(goalItem);
 
         });
@@ -564,6 +579,9 @@ function onAuthorizeSuccessful() {
           $('#new-task').addClass('new-task');
           $('.task-form-header').text('New Thing')
     };
+
+
+
 
 
     $(document.body).on('click', '.recordButton', function(){
@@ -1003,6 +1021,12 @@ taskInputReset();
 // clock();
 createProjectList(1);
 $('#comments-panel').hide();
+
+$('.recordButton').toolbar({
+  content: '#user-toolbar-options',
+  position: 'right'
+});
+
 
 };
 

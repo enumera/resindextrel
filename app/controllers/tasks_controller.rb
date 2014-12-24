@@ -68,6 +68,8 @@ class TasksController < ApplicationController
 
         @user.tasks << @task
         @goal.tasks << @task
+        goal_tasks = @goal.tasks.length
+        @goal.update_attributes(no_of_tasks: goal_tasks)
         # format.html { redirect_to user_task_path(@user, @task), notice: 'Task was successfully created.' }
         format.json { render json: user_task_path(@user, @task), status: :created, location: user_task_path(@user, @task) }
       else

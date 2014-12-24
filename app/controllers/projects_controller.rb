@@ -50,13 +50,15 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    @user = current_user.id
+    @user = current_user
     @project = Project.new(params[:project])
 
     # binding.pry
 
     respond_to do |format|
       if @project.save
+        @project.update_attributes(no_of_goals: 0)
+        @user.projects << @project
         format.html { redirect_to user_project_path(@user, @project), notice: 'Project was successfully created.' }
         format.json { render json: user_project_path(@user, @project), status: :created, location: user_project_path(@user, @project) }
       else

@@ -52,10 +52,13 @@ class GoalsController < ApplicationController
 
     respond_to do |format|
       if @goal.save
-        project = @project.find(project_id: @goal.project_id)
-        x = project.no_of_goals
-        goals = x+1
-        project.update_attributes(no_of_goals: goals)
+        
+        project = Project.where(id: @goal.project_id.to_i)
+        project_to_load = project[0]
+        x = project_to_load.goals.length
+        binding.pry
+        goals = x + 1
+        project_to_load.update_attributes(no_of_goals: goals)
         format.html { redirect_to @goal, notice: 'Goal was successfully created.' }
         format.json { render json: @goal, status: :created, location: @goal }
       else
