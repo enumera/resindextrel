@@ -24,6 +24,89 @@ var main = function(){
 
  // }
 
+ $('#task_title').keypress(function(){
+
+  console.log("Im typing in the title");
+    if($('#task_title').hasClass("border-red")){
+      $('#task_title').removeClass("border-red");
+    };
+ });
+
+
+ $('#task_title').keypress(function(){
+
+  console.log("Im typing in the title");
+    if($('#task_title').hasClass("border-red")){
+      $('#task_title').removeClass("border-red");
+    };
+ });
+
+
+ var validateTaskForm = function(){
+  var foundError = false;
+   if($('#task_title').val()== ""){
+    console.log("title failed!");
+    $('#task_title').addClass("border-red");
+    foundError = true;
+
+   };
+
+   if($('#project-select').val()=="none"){
+    console.log("project failed");
+    $('#project-select').addClass("border-red");
+    foundError = true;
+
+   };
+
+
+   if($('#goal-select').val()=="none"){
+    console.log("project failed");
+    $('#goal-select').addClass("border-red");
+    foundError = true;
+
+   };
+
+   if($('#estimate-select').val()=="none"){
+    console.log("estimate failed");
+    $('#estimate-select').addClass("border-red");
+    foundError = true;
+
+   };
+
+
+   if($('#difficulty-select').val()=="none"){
+    console.log("difficulty failed");
+    $('#difficulty-select').addClass("border-red");
+    foundError = true;
+
+   };
+
+
+   if($('#importance-select').val()=="none"){
+    console.log("importance failed");
+    $('#importance-select').addClass("border-red");
+    foundError = true;
+
+   };
+
+    if($('#start_date').val()==""){
+    console.log("start date failed");
+    $('#start_date').addClass("border-red");
+    foundError = true;
+
+   };
+
+  if($('#end_date').val()==""){
+    console.log("end date failed");
+    $('#end_date').addClass("border-red");
+    foundError = true;
+
+   };
+   if(foundError ==false){
+    createTask();
+   }
+
+ };
 
  $.getJSON("/users/" + gon.user_id, function(data){
   console.log(data);
@@ -78,14 +161,65 @@ var main = function(){
     });
    };
 
+   $('#goal-select').on("change", function(){
+    // console.log("Im typing in the title");
+    if($('#goal-select').hasClass("border-red")){
+      $('#goal-select').removeClass("border-red");
+    };
+   });
+
+     $('#estimate-select').on("change", function(){
+    // console.log("Im typing in the title");
+    if($('#estimate-select').hasClass("border-red")){
+      $('#estimate-select').removeClass("border-red");
+    };
+   });
+
+  $('#difficulty-select').on("change", function(){
+    // console.log("Im typing in the title");
+    if($('#difficulty-select').hasClass("border-red")){
+      $('#difficulty-select').removeClass("border-red");
+    };
+   });
+
+    $('#importance-select').on("change", function(){
+    // console.log("Im typing in the title");
+    if($('#importance-select').hasClass("border-red")){
+      $('#importance-select').removeClass("border-red");
+    };
+   });
+
+  $('#start_date').on("change", function(){
+    // console.log("Im typing in the title");
+    if($('#start_date').hasClass("border-red")){
+      $('#start_date').removeClass("border-red");
+    };
+   });
+
+    $('#end_date').on("change", function(){
+    // console.log("Im typing in the title");
+    if($('#end_date').hasClass("border-red")){
+      $('#end_date').removeClass("border-red");
+    };
+   });
+
+
    $('#project-select').on("change", function(){
     console.log("The project has been changed");
-  var a = $('#project-select option:selected').val();
-    // var $this = $(this);
-    console.log(a);
 
-    $('#goal-options').show();
-    createGoalsOptions(a);
+    // console.log("Im typing in the title");
+    if($('#project-select').hasClass("border-red")){
+      $('#project-select').removeClass("border-red");
+    };
+
+    updateGoalList($('#project-select option:selected').val());
+
+  // var a = $('#project-select option:selected').val();
+  //   // var $this = $(this);
+  //   console.log(a);
+
+  //   $('#goal-options').show();
+  //   createGoalsOptions(a);
 
    });
 
@@ -109,11 +243,16 @@ var main = function(){
       var data = {};
 
 
-        data['importance'] = $('#importance').val();
-        data['difficulty'] = $('#difficulty').val();
+        // data['importance'] = $('#importance').val();
+        data['importance'] = $('#importance-select option:selected').val();
+        data['difficulty'] = $('#difficulty-select option:selected').val();
+        // data['difficulty'] = $('#difficulty').val();
         data['start_date'] = $('#start_date').val();
         data['end_date'] = $('#end_date').val();
-        data['estimate'] = $('#hours_estimate').val();
+        // data['estimate'] = $('#hours_estimate').val();
+        // data['goal_id'] = $('#goal-options option:selected').val();
+        data['estimate'] = $('#estimate-select option:selected').val();
+
         data['completed'] = $('#completed' + taskID).is(":checked");
         // data['card_id'] = cardDetails["card_id"];
         // data['card_name'] = cardDetails["name"];
@@ -121,8 +260,8 @@ var main = function(){
         data['card_description'] = $('#task_description').val();
         // data['url'] = cardDetails["url"];
         // data['shortlink'] = cardDetails["shortlink"] ;
-        // data['goal_id'] = $('#goal-options option:selected').val();
-        // data['project_id'] = $('#project-options option:selected').val();
+        data['goal_id'] = $('#goal-options option:selected').val();
+        data['project_id'] = $('#project-select option:selected').val();
 
         console.log(data);
 
@@ -131,8 +270,8 @@ var main = function(){
       path = "/users/" + gon.user_id + "/tasks";
       method = "POST";
       goal_id = $('#goal-options option:selected').val();
-      data['goal_id'] = $('#goal-options option:selected').val();
-      data['project_id'] = $('#project-options option:selected').val();
+      // data['goal_id'] = $('#goal-options option:selected').val();
+      // data['project_id'] = $('#project-options option:selected').val();
 
       console.log("id works okay");
     }else{
@@ -180,7 +319,7 @@ var main = function(){
             menuItems.html('');
             projectOptions.html('');
 
-            projectInitialOption = '<option id="no-project">Select prize</option>';
+            projectInitialOption = '<option value="none">Select prize</option>';
             menuItems.append('<div class="well well-lg" id="project-button">Prizes</div>');
 
             projectOptions.append(projectInitialOption);
@@ -234,6 +373,10 @@ var main = function(){
       });
     });
 
+    $(document.body).on('hover', '#task-panel', function(){
+      console.log("hello");
+    });
+
 
       var createGoalsList = function(projectID){
         var x;
@@ -283,11 +426,11 @@ var main = function(){
         $.getJSON("/projects/"+ projectID +"/goals", function(data){
 
           if(data.length == 0){
-            goalInitialOption = '<option value=0 >No goals set</option>';
+            goalInitialOption = '<option value= 0 >No goals set</option>';
             goalOptions.append(goalInitialOption);
           }else{
 
-            goalInitialOption = '<option id="no-goal">Select goal</option>';
+            goalInitialOption = '<option value="none">Select goal</option>';
             goalOptions.append(goalInitialOption);
           }
 
@@ -338,7 +481,7 @@ var main = function(){
             }
             console.log(task.completed);
 
-              var listItem = '<div class="panel panel-default"><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a comment</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed ?</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right badge"> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + '<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work session</button></span></p><p> Start date :' + task.start_date +'</p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" >Edit task</button></p></div>';
+              var listItem = '<div class="panel panel-default"><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a comment</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed ?</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right badge"> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work session</button></span></p><p> Start date :' + task.start_date +'</p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" >Edit task</button></p></div>';
 
               listItems.append(listItem);
 
@@ -418,9 +561,9 @@ var main = function(){
 
 
   $('#new-task').click(function(e){
-    
+      validateTaskForm();
   
-      createTask();
+      // createTask();
 
   });
 
@@ -532,7 +675,7 @@ function onAuthorizeSuccessful() {
       //show task frame
 
       $('#comments-panel').animate({bottom: "-200px"}, 1000).fadeOut();
-      $('#input-panel').animate({top: "0px"},3000).fadeIn();
+      $('#input-panel').animate({top: "0px"},1000).fadeIn();
     
       taskID = $this.parent().parent().attr("id");
       // console.log(data);
@@ -542,12 +685,18 @@ function onAuthorizeSuccessful() {
 
           $('.task-form-header').attr('id', taskID);
 
-          $('#slider-estimate').slider({value: data.estimate});
-          $('#hours_estimate').val(data.estimate);
-          $('#slider-difficulty').slider({ value: data.difficulty });
-          $('#difficulty').val(data.difficulty);
-          $('#slider-importance').slider({value: data.importance});
-          $('#importance').val(data.importance)
+          // $('#slider-estimate').slider({value: data.estimate});
+          // $('#hours_estimate').val(data.estimate);
+          // $('#slider-difficulty').slider({ value: data.difficulty });
+          // $('#difficulty').val(data.difficulty);
+          // $('#slider-importance').slider({value: data.importance});
+          // $('#importance').val(data.importance)
+          $('#estimate-select').val(data.estimate);
+          $('#difficulty-select').val(data.difficulty);
+          $('#importance-select').val(data.importance);
+          // $('#goal-options').fadeOut();
+          $('#project-select').val(data.project_id);
+          updateGoalList(data.project_id);
           $('#start_date').val(data.start_date);
           $('#end_date').val(data.end_date);
           // $('#task_title').text(data.card_name);
@@ -555,7 +704,9 @@ function onAuthorizeSuccessful() {
           $('#task_description').val(data.card_description);
           $('#new-task').text('Update');
           $('#new-task').addClass('update');
-          $('.task-form-header').text('Update Task')
+          $('.task-form-header').text('Update Task');
+          //need to add project and goal
+
         
       });
     });
@@ -563,12 +714,15 @@ function onAuthorizeSuccessful() {
     var taskInputReset = function(){
       console.log("in input clear");
       $('.task-form-header').attr('id', '');
-         $('#slider-estimate').slider({value: 5});
-          $('#hours_estimate').val(5);
-          $('#slider-difficulty').slider({ value: 3 });
-          $('#difficulty').val(3);
-          $('#slider-importance').slider({value: 3});
-          $('#importance').val(3)
+         // $('#slider-estimate').slider({value: 5});
+         //  $('#hours_estimate').val(5);
+         //  $('#slider-difficulty').slider({ value: 3 });
+         //  $('#difficulty').val(3);
+         //  $('#slider-importance').slider({value: 3});
+         //  $('#importance').val(3)
+          $('#estimate-select').val('none');
+          $('#difficulty-select').val('none');
+          $('#importance-select').val('none');
           $('#start_date').val('');
           $('#end_date').val('');
           // $('#task_title').text(data.card_name);
@@ -578,10 +732,54 @@ function onAuthorizeSuccessful() {
           $('#new-task').removeClass('update');
           $('#new-task').addClass('new-task');
           $('.task-form-header').text('New Thing')
+          $('#goal-select').fadeOut();
+          $('#goal-select').val('none')
+
+
+          $('#project-select').val('none')
     };
 
+    var updateGoalList = function(a){
+      // var a = $('#project-select option:selected').val();
+    // var $this = $(this);
+    console.log(a);
+
+    $('#goal-options').show();
+    createGoalsOptions(a);
+
+   };
+
+    $('#today').on('click', function(){
+      console.log("clicked today button");
+        var d = new Date;
+        var dateDay = d.getDate();
+        var dateMonth = d.getMonth() + 1;
+        var dateYear = d.getFullYear();
+        var dateStart = dateDay +"/" + dateMonth + "/" + dateYear;
+
+      $('#start_date').val(dateStart);
+      $('#end_date').val(dateStart);
+    });
+
+       $('#tomorrow').on('click', function(){
+      console.log("clicked tomorrow button");
+        var tomorrow = new Date;
+        var d = new Date;
+        var dateDay = d.getDate();
+        var dateMonth = d.getMonth() + 1;
+        var dateYear = d.getFullYear();
+        var dateStart = dateDay +"/" + dateMonth + "/" + dateYear;
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        var dateDayEnd = tomorrow.getDate();
+        var dateMonthEnd = tomorrow.getMonth() + 1;
+        var dateYearEnd = tomorrow.getFullYear();
+        var dateEnd = dateDayEnd + "/" + dateMonthEnd + "/" + dateYearEnd;
 
 
+      $('#start_date').val(dateStart);
+      $('#end_date').val(dateEnd);
+    });
 
 
     $(document.body).on('click', '.recordButton', function(){
@@ -614,7 +812,7 @@ function onAuthorizeSuccessful() {
           $this.parent().parent().prepend('<span id="hours"></span><span id="minutes"></span><span id="seconds"></span></p><p>');
 
       
-          $this.text("Now recording!");
+          $this.text("Session started");
           record(userId, taskId, 0, -1);
 
           recordingTimeout($this);
@@ -760,7 +958,7 @@ var clock = function(){
      console.log($this.val());
      var taskID = $this.val();
      var typeItem;
-     var initialCommentType = '<option id="no-project">Select Note type</option>';
+     var initialCommentType = '<option value="none">Select Note type</option>';
      console.log(taskID);
         $('.taskComment_id').attr("value", taskID);
         $('#type-select').html('');
@@ -905,7 +1103,7 @@ var addGoal = function(){
 
           dialogGoal.dialog("close");
           $('#goal-name').val('');
-  createGoalsList(project_id);
+          createGoalsList(project_id);
  });
 
 };
@@ -1021,12 +1219,6 @@ taskInputReset();
 // clock();
 createProjectList(1);
 $('#comments-panel').hide();
-
-$('.recordButton').toolbar({
-  content: '#user-toolbar-options',
-  position: 'right'
-});
-
 
 };
 

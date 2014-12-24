@@ -82,37 +82,98 @@
               </select>
             </div>
           </div>
-
+          <hr>
           <div id = "resindex-wrapper2">
             <div id="hours-wrapper">
-              <p>
+              <div class="control-group project-options">
+            <!-- <label>Estimated time</label> -->
+                <div class="controls">
+                  <select class="form-control" id="estimate-select">
+                      <option value="none">How long will it take ?</option>
+                      <option value="1">One hour</option>
+                      <option value="2">Two hours</option>
+                      <option value="3">Three hours</option>
+                      <option value="4">Foru hours</option>
+                      <option value="5">Five hours</option>
+                      <option value="6">Six hours</option>
+                      <option value="7">Seven hours</option>
+                      <option value="8">Eight hours</option>
+                      <option value="9">Nine hours</option>
+                      <option value="10">Ten hours</option>
+                  </select>
+                </div>
+              </div>
+            </div>   
+              <!-- start of slider -->
+            <!--   <p>
                 <label for="hours_estimate">Hours estimate:</label>
                 <input type="text" id="hours_estimate" readonly style="border:0; color: blue; font-weight:bold;">
               </p>
-              <div id="slider-estimate" style="height:100px;"></div>
-            </div> 
+              <div id="slider-estimate" style="height:100px;"></div> -->
+            <!-- </div>  -->
+            <!-- end of slider -->
 
 
                     
             <div id="difficulty-wrapper">
-                <p>
+              <div class="control-group project-options">
+            <!-- <label>Prize</label> -->
+                <div class="controls">
+                  <select class="form-control" id="difficulty-select">
+                      <option value="none">Difficulty</option>
+                      <option value="1">Easy-done it before</option>
+                      <option value="2">Something slightly different</option>
+                      <option value="3">Tricky</option>
+                      <option value="4">Really difficult</option>
+                      <option value="5">Mission Impossible!</option>
+                  </select>
+                </div>
+              </div>  
+            </div> 
+              <!-- start of the slider -->
+             <!--    <p>
                 <label for="difficulty">Difficulty:</label>
                 <input type="text" id="difficulty" readonly style="border:0; color: blue; font-weight:bold;">
                 </p>
-              <div id="slider-difficulty" style="height:100px;"></div>
-            </div>
+              <div id="slider-difficulty" style="height:100px;"></div> -->
+            <!-- </div> -->
+            <!-- end of slider -->
                   
 
-            <div id="importance-wrapper">
-              <p>
+            <!-- <div id="importance-wrapper"> -->
+
+
+             <!--  <p>
               <label for="importance">Importance:</label>
               <input type="text" id="importance" readonly style="border:0; color: blue; font-weight:bold;">
               </p>
-              <div id="slider-importance" style="height:100px;"></div>
-            </div>
+              <div id="slider-importance" style="height:100px;"></div> -->
+            <!-- </div> -->
+            <div id="importance-wrapper">
+              <div class="control-group project-options">
+                <!-- <label>Prize</label> -->
+                <div class="controls">
+                  <select class="form-control" id="importance-select">
+                    <option value="none">Importance</option>
+                    <option value="5">Would do</option>
+                    <option value="4">Could do</option>
+                    <option value="3">Should do</option>
+                    <option value="2">Someone needs this</option>
+                    <option value="1">Someone REALLY needs this!</option>
+                  </select>
+                </div>
+              </div> 
+            </div> 
+            </div> 
                     
-
+            <hr>
             <div id="dates-wrapper">
+              <p>To be done...</p>
+              <button class="btn btn-danger" id="today">Today</button>
+              <button class="btn btn-warning" id="tomorrow">Tomorrow</button>
+              <!-- <p>Or</p> -->
+              <button class="btn btn-info">I want to set dates</button>
+              <hr>
               <div class="dates">
                 <label for="start_date">Start Date</label>
                 <input type="text" id="start_date" name="start_date">
@@ -125,8 +186,8 @@
             </div>
           </div>           
           
-          <div class="control-group">
-            <label></label>
+          <div class="control-group" id="submit-button-group">
+        
             <div class="controls">
               <button class="btn btn-primary" id="new-task">
                     Post

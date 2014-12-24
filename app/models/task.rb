@@ -1,9 +1,10 @@
 class Task < ActiveRecord::Base
-  attr_accessible :completed, :difficulty, :end_date, :estimate, :importance, :resindex, :start_date, :trello_type, :effort, :card_id, :card_name, :card_description, :url, :shortlink, :user_ids, :goal_id, :project_list_id
+  attr_accessible :completed, :difficulty, :end_date, :estimate, :importance, :resindex, :start_date, :trello_type, :effort, :card_id, :card_name, :card_description, :url, :shortlink, :user_ids, :goal_id, :project_list_id, :project_id
 
     has_and_belongs_to_many :users
-    has_one :goal
+    belongs_to :goal
     has_many :comments
+    belongs_to :project
   
 
 

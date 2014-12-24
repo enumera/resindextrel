@@ -59,7 +59,7 @@ class TasksController < ApplicationController
     @task = Task.new(params[:task])
         # binding.pry
     @goal = Goal.find(params[:task][:goal_id])
-
+    @project = Project.find(params[:task][:project_id])
     @task.resindex = @task.calculate_resindex(@task)
   
     
@@ -68,6 +68,7 @@ class TasksController < ApplicationController
 
         @user.tasks << @task
         @goal.tasks << @task
+        @project.tasks << @task
         goal_tasks = @goal.tasks.length
         @goal.update_attributes(no_of_tasks: goal_tasks)
         # format.html { redirect_to user_task_path(@user, @task), notice: 'Task was successfully created.' }

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141223185912) do
+ActiveRecord::Schema.define(:version => 20141224185936) do
 
   create_table "comment_types", :force => true do |t|
     t.string   "name"
@@ -55,6 +55,11 @@ ActiveRecord::Schema.define(:version => 20141223185912) do
     t.integer  "no_of_goals"
   end
 
+  create_table "projects_tasks", :id => false, :force => true do |t|
+    t.integer "project_id"
+    t.integer "task_id"
+  end
+
   create_table "projects_users", :id => false, :force => true do |t|
     t.integer "project_id"
     t.integer "user_id"
@@ -79,6 +84,7 @@ ActiveRecord::Schema.define(:version => 20141223185912) do
     t.string   "shortlink"
     t.integer  "goal_id"
     t.string   "project_list_id"
+    t.integer  "project_id"
   end
 
   create_table "tasks_users", :id => false, :force => true do |t|

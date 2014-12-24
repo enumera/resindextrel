@@ -39,7 +39,7 @@ class TrelloController < ApplicationController
       # Retrieve the request token.
   request_token = session[:request_token]
 
-  binding.pry
+  # binding.pry
 
   # Use the request token to make a request to the
   # access token path.
@@ -52,7 +52,7 @@ class TrelloController < ApplicationController
   user = current_user
   token = access_token.token
   # verifier = params[:oauth_verifier]
-  binding.pry
+  # binding.pry
 
   trello = {}
 
@@ -101,7 +101,7 @@ class TrelloController < ApplicationController
     projects = HTTParty.get(url_projects)
     organisations = HTTParty.get(url_organisations)
     # lists = HTTParty.get(url_lists)
-      binding.pry
+      # binding.pry
 
     # (0..projects.length-1).each do |x|
     #   # puts "***********************************"
@@ -151,9 +151,9 @@ class TrelloController < ApplicationController
           list_return = HTTParty.get(list_to_find)
           goal_name = list_return["_value"]
           new_goal = Goal.create(name: goal_name, project_list_id: list_id)
-          binding.pry
+          # binding.pry
           project[0].goals << new_goal
-          binding.pry
+          # binding.pry
       end
 
 
@@ -161,9 +161,12 @@ class TrelloController < ApplicationController
         if !Task.where(card_id: cards[x]["id"]).exists?
           user = current_user
           goal = Goal.where(project_list_id: list_id)
+          project = Project.where(trello_project_id: board_id)
         new_task = Task.create(card_id: cards[x]["id"], card_name: cards[x]["name"], card_description: cards[x]["desc"],shortlink: cards[x]["shortLink"], url: cards[x]["url"], project_list_id: list_id)
           user.tasks << new_task
+          new_task.projects << project[0]
           goal[0].tasks << new_task
+
         end
       end
 
