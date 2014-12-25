@@ -24,6 +24,39 @@ var main = function(){
 
  // }
 
+ $('#user_tasks').text("tasks : " + gon.user_tasks + " ");
+ $('#user_projects').text("projects: " +gon.user_projects + " ");
+ $('#user_goals').text("goals : " + gon.user_goals + " ");
+
+var resindexColour = function(taskId, resindex){
+  console.log("in resindex colour");
+  console.log(taskId);
+  console.log(resindex);
+
+  if(resindex >1 && resindex < 1.5){
+    
+    console.log('.resindex.badge[value='+ taskId +']')
+      $('.resindex.badge[value='+ taskId +']').addClass('warning');
+      // a.addClass('warning');
+  }else if(resindex <1 && resindex >0){
+    $('.resindex.badge[value='+ taskId+']').addClass('success');
+  }else if (resindex==999){
+      $('.resindex.badge[value='+ taskId+']').addClass('primary');
+      $('.resindex.badge[value='+ taskId+']').text('reset');
+  }else if(resindex== -999){
+  $('.resindex.badge[value='+ taskId+']').addClass('info');
+      $('.resindex.badge[value='+ taskId+']').text('completed');
+  }else if(resindex > 1.51 && resindex < 10){
+    $('.resindex.badge[value='+ taskId+']').addClass('danger');
+  }else if(resindex == 0){
+        $('.resindex.badge[value='+ taskId+']').text('to be set');
+  }else{
+    console.log("what!!");
+  }
+};
+
+
+
  $( "#log_in" ).click(function() {
   $( "#log_in_form" ).slideDown( "slow", function() {
     // Animation complete.
@@ -35,6 +68,14 @@ var main = function(){
   console.log("Im typing in the title");
     if($('#task_title').hasClass("border-red")){
       $('#task_title').removeClass("border-red");
+    };
+ });
+
+  $('#comment-text').keypress(function(){
+
+  console.log("Im typing in the title");
+    if($('#comment-text').hasClass("border-red")){
+      $('#comment-text').removeClass("border-red");
     };
  });
 
@@ -190,6 +231,13 @@ var main = function(){
     // console.log("Im typing in the title");
     if($('#difficulty-select').hasClass("border-red")){
       $('#difficulty-select').removeClass("border-red");
+    };
+   });
+
+    $('#type-select').on("change", function(){
+    // console.log("Im typing in the title");
+    if($('#type-select').hasClass("border-red")){
+      $('#type-select').removeClass("border-red");
     };
    });
 
@@ -494,9 +542,10 @@ var main = function(){
             }
             console.log(task.completed);
 
-              var listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed ?</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right badge"> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work</button></span></p><p> Start date :' + task.start_date +'</p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + ' >Edit task</button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none">' + task.card_description + '</textarea></div></div>';
-
+              var listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right resindex badge" value='+task.id +'> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work</button></span></p><p> Start date :' + task.start_date +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + ' >Edit task</button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none">' + task.card_description + '</textarea></div></div>';
+               
               listItems.append(listItem);
+        
 
               if(task.completed===true){
                 $('#completed' + task.id).attr('checked', true);
@@ -504,6 +553,9 @@ var main = function(){
             };
           });
           listItems.fadeIn(1000);
+          $.each(data, function(i,task){
+              resindexColour(task.id, task.resindex);
+          });
         })
       }
 
@@ -713,6 +765,8 @@ function onAuthorizeSuccessful() {
           // $('#goal-options').fadeOut();
           $('#project-select').val(data.project_id);
           updateGoalList(data.project_id);
+          $('#goal-select').val(data.goal_id);
+          $('#goal-select').show();
           $('#start_date').val(data.start_date);
           $('#end_date').val(data.end_date);
           // $('#task_title').text(data.card_name);
@@ -1026,12 +1080,27 @@ var clock = function(){
 
       dialogComment.dialog( "open" );
 
-  })
+  });
+
+  var checkComment = function(){
+    var foundError = false;
+   
+      if($('#comment-text').val()==""){
+        $('#comment-text').addClass('border-red');
+        foundError = true;
+      };
+      if( $('#type-select option:selected').val()=="none"){
+        $('#type-select').addClass('border-red');
+        foundError = true;
+      };
+      return foundError;
+  };
 
 
 
     var addNewComment = function(taskId, commentType){
           console.log("in new comment")
+          var commentError = false;
           var newComment = "";
           var commentType;
           var g = new Date();
@@ -1045,8 +1114,12 @@ var clock = function(){
           console.log(taskId);
 
           if(commentType === "none"){
+            var x = checkComment();
+              if(!x){
+              
             newComment = $('#comment-text').val();
             commentType = $('#type-select option:selected').val();
+            }
           }else{
         
          switch(commentType){
@@ -1060,7 +1133,7 @@ var clock = function(){
           
               };
           };
-
+          if(!x){
 
            a = newComment + "<p><sub> logged by: " + username +" at " + n + " </sub></p>";
             newComment = a;
@@ -1086,7 +1159,7 @@ var clock = function(){
 
           showComments(taskId);
           dialogComment.dialog("close");
-          
+          };
         };
       
 
@@ -1096,6 +1169,11 @@ var stopClock = function(){
 }
 
 var addProject = function(){
+
+  if($('#project-name').val()==""){
+
+    $('#project-name').addClass('border-red');
+  }else{
 
   console.log("added new project");
 
@@ -1118,12 +1196,17 @@ var addProject = function(){
   dialog.dialog("close");
   $('#project-name').val('');
 
-
+};
 };
 
 var addGoal = function(){
 
   console.log("added new goal");
+
+  if($('#goal-name').val()==""){
+    console.log("this fails");
+    $('#goal-name').addClass('border-red');
+  }else{
 
   data = {};
 
@@ -1150,7 +1233,7 @@ var addGoal = function(){
           $('#goal-name').val('');
           createGoalsList(project_id);
  });
-
+};
 };
 
 
@@ -1225,7 +1308,7 @@ dialog = $( "#new-project-modal" ).dialog({
 $(document.body).on('click', '.task-panel', function(){
 $this = $(this);
 console.log($this);
-var taskId = $this.children().children().first().attr("value");
+var taskId = $this.parent().first().attr("value");
 // $('#input-panel').animate({bottom: "-200px"}, 500).fadeOut();
 // $('#comments-panel').animate({top: "0px"}, 500).fadeIn();
 showCommentPanel(taskId);
@@ -1281,6 +1364,25 @@ taskInputReset();
 // clock();
 createProjectList(1);
 $('#comments-panel').hide();
+
+// var resindexColour = function(taskId, resindex){
+//   switch(resindex){
+//     case (>1 && <1.5):
+
+//     $('.resindex.badge[value='+ taskId']').addClass('warning');
+
+//     break;
+//     case (>0 && <1):
+//     $('.resindex.badge[value='+ taskId']').addClass('success');
+
+//     break;
+
+//     case (>1.51):
+//        $('.resindex.badge[value='+ taskId']').addClass('danger');
+//     break;
+//   }
+
+// }
 
 };
 

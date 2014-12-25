@@ -42,14 +42,14 @@
     <div class="navbar-collapse collapse">
        <% if current_user %> 
           <ul class="nav navbar-nav navbar-right">
-             <li id="personal-header"><span id="gravatar">  <%=image_tag avatar_url(current_user)%></span><span><%=current_user.first_name%></span></li>
+             <li id="personal-header"><span id="user_projects" class="btn btn-xs btn-warning"></span><span id="user_goals" class="btn btn-xs btn-info"></span><span id="user_tasks" class="btn btn-xs btn-success"></span><span id="gravatar">  <%=image_tag avatar_url(current_user)%></span><span><%=current_user.first_name%></span></li>
     
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Do stuff <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><a href="">New Project</a></li>
                   <li><a href="#">New Goal</a></li>
-                  <li><a href="#" id="blank_task"><i class="glyphicon glyphicon-lock" ></i>New Job</a></li>
+                  <li><a href="#" id="blank_task">New Job</a></li>
 
                   <li class="divider"></li>
                   <li><a href="#">New schmoo</a></li>

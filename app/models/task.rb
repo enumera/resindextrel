@@ -13,7 +13,11 @@ class Task < ActiveRecord::Base
   def calculate_resindex(task)
    
     if start_date.nil? || end_date.nil? 
+    #   if task.completed=true
+    #     resindex = -999
+    #   else
       resindex = 0
+    # end
     else
 
 
