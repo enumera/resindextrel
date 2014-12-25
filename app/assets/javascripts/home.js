@@ -488,7 +488,7 @@ var main = function(){
             }
             console.log(task.completed);
 
-              var listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a comment</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed ?</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right badge"> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work</button></span></p><p> Start date :' + task.start_date +'</p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + ' >Edit task</button></p></div>';
+              var listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed ?</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right badge"> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work</button></span></p><p> Start date :' + task.start_date +'</p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + ' >Edit task</button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none">' + task.card_description + '</textarea></div></div>';
 
               listItems.append(listItem);
 
@@ -827,19 +827,16 @@ function onAuthorizeSuccessful() {
           console.log(taskPanelToKeep);
           console.log(editButtonToRemove);
 
-
-
-
           commentButtonToKeep.addClass("recording");
           taskPanelToKeep.addClass("recording");
           editButtonToRemove.addClass("recording");
           $('#menu-container').addClass('frozen');
+          $('.task_description_on_task[value='+ taskId + ']').show();
 
 
           $this.parent().parent().parent().addClass("active");
           $this.parent().parent().prepend('<span id="hours"></span><span id="minutes"></span><span id="seconds"></span></p><p>');
 
-      
           $this.text("work session started");
           record(userId, taskId, 0, -1);
 
