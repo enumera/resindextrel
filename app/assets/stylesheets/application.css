@@ -26,3 +26,20 @@
   
 }
 
+#gravatar img{
+height: 30px;
+width: 30px;
+border-radius: 15px;
+margin-right: 10px;
+}
+
+#personal-header{
+  margin-top: 10px;
+
+}
+
+#trello-logo{
+
+  margin-right: 5px;
+
+}

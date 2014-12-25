@@ -42,15 +42,20 @@
     <div class="navbar-collapse collapse">
        <% if current_user %> 
           <ul class="nav navbar-nav navbar-right">
+             <li id="personal-header"><span id="gravatar">  <%=image_tag avatar_url(current_user)%></span><span><%=current_user.first_name%></span></li>
+       <!--     <li id="gravatar">
+            <%=image_tag avatar_url(current_user)%>
+          </li> -->
       
          <li><a href="#" id="blank_task"><i class="glyphicon glyphicon-lock" ></i> New Task</a></li>
+        
         <li><a href="#"><i class="glyphicon glyphicon-lock"></i> New Project</a></li>
         <li><a href="/log_out"><i class="glyphicon glyphicon-lock"></i> Logout</a></li>
 
         <% if current_user.oauth_tables.length == 0 %>
-         <li><a href="/trello/oauth"><i class="glyphicon glyphicon-lock"></i> Trello</a></li>
+         <li><a href="/trello/oauth"><img id="trello-logo" src="http://c93fea60bb98e121740fc38ff31162a8.s3.amazonaws.com/wp-content/uploads/2014/07/trello.png" style="height:20px;width:20px">Get your Trello boards</a></li>
         <% else %>
-        <li><a href="/trello/access"><i class="glyphicon glyphicon-lock"></i> Refresh trello</a></li>
+        <li><a href="/trello/access"><img src="http://c93fea60bb98e121740fc38ff31162a8.s3.amazonaws.com/wp-content/uploads/2014/07/trello.png" style="height:20px;width:20px"> Refresh trello</a></li>
         <% end %>
 
          
