@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+"ruby '2.0.0'"
 
 gem 'rails', '3.2.17'
 
@@ -14,6 +15,7 @@ gem 'gon'
 gem 'rabl-rails'
 gem 'oauth'
 gem 'httparty'
+gem 'rails_12factor', group: :production
 
 # Gems used only for assets and not required
 # in production environments by default.

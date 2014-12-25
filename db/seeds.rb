@@ -6,7 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-User.create(first_name: "Andrew", family_name: "Fyfe", trello:"AndrewFyfe1", password: "password", password_confirmation: "password", email: "user@email.com")
+User.create(first_name: "Andrew", family_name: "Fyfe", trello:"AndrewFyfe1", password: "password", password_confirmation: "password", email: "enumera2000@yahoo.co.uk")
 
 Goal.create(name: "First")
 
