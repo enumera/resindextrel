@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
   has_secure_password
   attr_accessible :family_name, :first_name, :rescue, :trello, :task_ids, :work_session, :password, :email, :password_confirmation, :project_ids
 
+  validates_presence_of :first_name, :on => :create
+  validates_presence_of :family_name, :on => :create
   validates_confirmation_of :password
   validates_presence_of :password, :on => :create
   validates_presence_of :email, :on => :create

@@ -1,5 +1,6 @@
-<h1>Sign up</h1>
 
+<div class="border-form-div">
+<h2>Sign up</h2>
 <%= form_for @user do |f| %>
   <% if @user.errors.any? %>
     <div class="error_messages">
@@ -13,38 +14,40 @@
     <% end %>
 
   <p>
-  <%= f.label :first_name %><br />
-  <%= f.text_field :first_name %>
+  <!-- <%= f.label :first_name %><br /> -->
+  <%= f.text_field :first_name, :autofocus => true, :placeholder => "First Name" %>
 </p>
 
  <p>
-  <%= f.label :family_name %><br />
-  <%= f.text_field :family_name %>
+  <!-- <%= f.label :family_name %><br /> -->
+  <%= f.text_field :family_name, :placeholder => "Family name" %>
 </p>
-
+<!-- 
  <p>
   <%= f.label :trello %><br />
   <%= f.text_field :trello %>
-</p>
+</p> -->
 
 
 
   <p>
-  <%= f.label :email %><br />
-  <%= f.text_field :email %>
+  <!-- <%= f.label :email %><br /> -->
+  <%= f.email_field :email, :placeholder => "Email address" %>
 </p>
 
 <p>
-  <%= f.label :password %><br />
-  <%= f.password_field :password %>
+  <!-- <%= f.label :password %><br /> -->
+  <%= f.password_field :password, :placeholder => "password" %>
 </p>
 
 <p>
-  <%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %>
+  <!-- <%= f.label :password_confirmation %><br /> -->
+  <%= f.password_field :password_confirmation, :placeholder => "confirm password" %>
 </p>
- <p class = "button"><%= f.submit %></p>
+ <!-- <p class = "button"><%= f.submit %></p> -->
+     <%= f.submit "Sign me up",:class=>'btn btn-primary' %>
 <% end %>
+</div>
 
 
 

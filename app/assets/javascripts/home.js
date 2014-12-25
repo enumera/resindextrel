@@ -24,6 +24,12 @@ var main = function(){
 
  // }
 
+ $( "#log_in" ).click(function() {
+  $( "#log_in_form" ).slideDown( "slow", function() {
+    // Animation complete.
+  });
+});
+
  $('#task_title').keypress(function(){
 
   console.log("Im typing in the title");
