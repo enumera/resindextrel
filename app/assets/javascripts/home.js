@@ -128,6 +128,11 @@ var main = function(){
 
   });
 
+  var checkMenuPanel = function(){
+
+    $('#menu-container').hasClass('frozen');
+
+  };
 
     var refreshTasks = function(){
       console.log("in referesh tasks");
@@ -296,11 +301,13 @@ var main = function(){
       };
 
       $(document.body).on('click','#project-button', function(){
-        console.log("clicked the project button");
-        $('.projectSel').val('');
-        $('.goalSel').val('');
-        createProjectList(0);
-        taskInputReset();
+        if(!$('#menu-container').hasClass('frozen')){
+          console.log("clicked the project button");
+          $('.projectSel').val('');
+          $('.goalSel').val('');
+          createProjectList(0);
+          taskInputReset();
+        };
       });
 
 
@@ -373,9 +380,9 @@ var main = function(){
       });
     });
 
-    $(document.body).on('hover', '#task-panel', function(){
-      console.log("hello");
-    });
+    // $(document.body).on('hover', '#task-panel', function(){
+    //   console.log("hello");
+    // });
 
 
       var createGoalsList = function(projectID){
@@ -481,7 +488,7 @@ var main = function(){
             }
             console.log(task.completed);
 
-              var listItem = '<div class="panel panel-default"><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a comment</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed ?</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right badge"> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work session</button></span></p><p> Start date :' + task.start_date +'</p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" >Edit task</button></p></div>';
+              var listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a comment</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed ?</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right badge"> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work</button></span></p><p> Start date :' + task.start_date +'</p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + ' >Edit task</button></p></div>';
 
               listItems.append(listItem);
 
@@ -613,58 +620,61 @@ function onAuthorizeSuccessful() {
 // trello
 
   $(document.body).on('click', '.projects', function(){
-    $this = $(this);
-    console.log($this);
+    if(!$('#menu-container').hasClass('frozen')){
+          $this = $(this);
+          console.log($this);
 
-    projectID = $this.attr("id");
-    console.log("this is the project ID");
-    console.log($this)
+          projectID = $this.attr("id");
+          console.log("this is the project ID");
+          console.log($this)
 
-    // if ($this != $('button.new[value'+ projectID + ']')){
+          // if ($this != $('button.new[value'+ projectID + ']')){
 
-    $('button.new-goal[value='+ projectID + ']').addClass("selectedProject");
+          $('button.new-goal[value='+ projectID + ']').addClass("selectedProject");
 
-    $this.addClass("selectedProject");
+          $this.addClass("selectedProject");
 
-    $this.removeClass("well-sm");
-    $this.addClass("well-lg");
-    $('.projectSel').val(projectID);
+          $this.removeClass("well-sm");
+          $this.addClass("well-lg");
+          $('.projectSel').val(projectID);
 
 
-    $('.projects:not(.selectedProject)').fadeOut(1000);
-    $('.new-goal:not(.selectedProject').fadeOut(1000);
-    console.log();
-    console.log($('.goals').length);
+          $('.projects:not(.selectedProject)').fadeOut(1000);
+          $('.new-goal:not(.selectedProject').fadeOut(1000);
+          console.log();
+          console.log($('.goals').length);
 
-    if($('.goals').length){
-      $('.goals:not(selectedGoal)').fadeIn(1000);
-       $('.selectedGoal').removeClass("well-lg");
-      $('.selectedGoal').addClass("well-sm");
-      $('.goals.selectedGoal').removeClass('selectedGoal');
-    }else{
+          if($('.goals').length){
+            $('.goals:not(selectedGoal)').fadeIn(1000);
+             $('.selectedGoal').removeClass("well-lg");
+            $('.selectedGoal').addClass("well-sm");
+            $('.goals.selectedGoal').removeClass('selectedGoal');
+          }else{
 
-  // }
-    createGoalsList(projectID);
+        // }
+          createGoalsList(projectID);
+        };
   };
   });
 
   $(document.body).on('click', '.goals',function(){
-    $this = $(this);
-    console.log($this);
+    if(!$('#menu-container').hasClass('frozen')){
+      $this = $(this);
+      console.log($this);
 
-    goalID = $this.attr("id");
+      goalID = $this.attr("id");
 
-    $this.addClass("selectedGoal");
+      $this.addClass("selectedGoal");
 
-    $this.removeClass("well-sm");
+      $this.removeClass("well-sm");
 
-    $this.addClass("well-lg");
+      $this.addClass("well-lg");
 
-    $('.goals:not(.selectedGoal)').fadeOut(1000);
-    // $('.new-goal:not(.selectedGoal').fadeOut(1000);
-    $('.goalSel').val(goalID);
-    createTaskRecord(goalID);
-
+      $('.goals:not(.selectedGoal)').fadeOut(1000);
+      // $('.new-goal:not(.selectedGoal').fadeOut(1000);
+      $('.goalSel').val(goalID);
+      createTaskRecord(goalID);
+    };
   });
 
 
@@ -796,6 +806,7 @@ function onAuthorizeSuccessful() {
         createTaskRecord(goalId)
 
         addNewComment(taskId, "effort");
+        $('#menu-container').removeClass('frozen');
 
 
       }else{
@@ -806,13 +817,30 @@ function onAuthorizeSuccessful() {
           // taskId = parseInt($this.siblings().attr('id'));
           // alert(cardId);
 
-          $this.addClass("recording")
+          $this.addClass("recording");
+
+          var commentButtonToKeep = $('.commentButton[value=' + taskId +']');
+          var taskPanelToKeep = $('.tpanel[value=' + taskId + ']');
+          var editButtonToRemove = $('.editButton[value=' + taskId + ']');
+
+          console.log(commentButtonToKeep);
+          console.log(taskPanelToKeep);
+          console.log(editButtonToRemove);
+
+
+
+
+          commentButtonToKeep.addClass("recording");
+          taskPanelToKeep.addClass("recording");
+          editButtonToRemove.addClass("recording");
+          $('#menu-container').addClass('frozen');
+
 
           $this.parent().parent().parent().addClass("active");
           $this.parent().parent().prepend('<span id="hours"></span><span id="minutes"></span><span id="seconds"></span></p><p>');
 
       
-          $this.text("Session started");
+          $this.text("work session started");
           record(userId, taskId, 0, -1);
 
           recordingTimeout($this);
@@ -839,8 +867,14 @@ function onAuthorizeSuccessful() {
 
       item.text("Start work session");
       record(userId, taskId, recordId, -2 );
+      toggleNewTaskMenuItem(1);
 
       stopClock();
+
+
+      // $('.projects').on();
+      // $('.goals').on();
+      // $('#project-button').on();
 
       // $('#task-list-group').html('');
 
@@ -910,7 +944,15 @@ function onAuthorizeSuccessful() {
       if(action === -1){
         console.log(data);
         $('.recording').val(data.id);
-        $('.recordButton:not(.recording)').fadeOut();
+        // $('.recordButton:not(.recording)').fadeOut();
+        $('.tpanel:not(.recording)').fadeOut();
+        $('.editButton.recording').fadeOut();
+        toggleNewTaskMenuItem(0);
+        showCommentPanel(taskId);
+        // $('.projects').click(function(){return false;});
+        // $('#project-button').off('click');
+        // $('.goals').off('click');
+
       }else if(action === -2){
         $('.recordButton').fadeIn();
         updateTask(data_x.user_id, data_x.task_id);
@@ -1180,16 +1222,33 @@ dialog = $( "#new-project-modal" ).dialog({
 $(document.body).on('click', '.task-panel', function(){
 $this = $(this);
 console.log($this);
-$('#input-panel').animate({bottom: "-200px"}, 500).fadeOut();
-$('#comments-panel').animate({top: "0px"}, 500).fadeIn();
 var taskId = $this.children().children().first().attr("value");
-
-
+// $('#input-panel').animate({bottom: "-200px"}, 500).fadeOut();
+// $('#comments-panel').animate({top: "0px"}, 500).fadeIn();
+showCommentPanel(taskId);
+// var taskId = $this.children().children().first().attr("value");
 console.log(taskId);
 
-showComments(taskId);
+// showComments(taskId);
 
 });
+
+var toggleNewTaskMenuItem = function(switchInt){
+
+    if(switchInt == 0){
+      $('#blank_task').hide();
+    }else{
+      $('#blank_task').show();
+    };
+
+};
+
+
+var showCommentPanel = function(taskId){
+$('#input-panel').animate({bottom: "-200px"}, 500).fadeOut();
+$('#comments-panel').animate({top: "0px"}, 500).fadeIn();
+showComments(taskId);
+};
 
  $( "#new-project" ).click(function(e) {
   console.log("new project button pressed")
