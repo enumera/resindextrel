@@ -374,16 +374,21 @@ var resindexColour = function(taskId, resindex){
 
             var menuItems = $("#menu-container");
             var projectOptions = $("#project-select");
+            var goalOptions = $("#goal-select");
             var projectOption;
             var projectItem;
             var projectInitialOption;
             menuItems.html('');
             projectOptions.html('');
+            goalOptions.html('');
 
             projectInitialOption = '<option value="none">Select prize</option>';
             menuItems.append('<div class="well well-lg" id="project-button">Prizes</div>');
 
+            goalInitialOption = '<option value="none">Select a project first</option>';
+
             projectOptions.append(projectInitialOption);
+            goalOptions.append(goalInitialOption);
 
             $.each(data, function(i, project){
               if(menuOrOptions == 0){
@@ -487,7 +492,7 @@ var resindexColour = function(taskId, resindex){
         $.getJSON("/projects/"+ projectID +"/goals", function(data){
 
           if(data.length == 0){
-            goalInitialOption = '<option value= 0 >No goals set</option>';
+            goalInitialOption = '<option value=0 >No goals set</option>';
             goalOptions.append(goalInitialOption);
           }else{
 
@@ -764,9 +769,9 @@ function onAuthorizeSuccessful() {
           $('#importance-select').val(data.importance);
           // $('#goal-options').fadeOut();
           $('#project-select').val(data.project_id);
-          updateGoalList(data.project_id);
-          $('#goal-select').val(data.goal_id);
-          $('#goal-select').show();
+          // updateGoalList(data.project_id);
+          // $('#goal-select').val(data.goal_id);
+          // $('#goal-select').show();
           $('#start_date').val(data.start_date);
           $('#end_date').val(data.end_date);
           // $('#task_title').text(data.card_name);
@@ -775,6 +780,8 @@ function onAuthorizeSuccessful() {
           $('#new-task').text('Update');
           $('#new-task').addClass('update');
           $('.task-form-header').text('Update Task');
+            updateGoalList(data.project_id);
+          $('#goal-select').val(data.goal_id);
           //need to add project and goal
 
         
@@ -801,12 +808,13 @@ function onAuthorizeSuccessful() {
           $('#new-task').text('Post');
           $('#new-task').removeClass('update');
           $('#new-task').addClass('new-task');
-          $('.task-form-header').text('New Thing')
-          $('#goal-select').fadeOut();
-          $('#goal-select').val('none')
+          $('.task-form-header').text('New job')
+          // $('#goal-select').fadeOut();
+          $('#goal-select').html('');
+          $('#goal-select').append('<option value="none">Select a project first</option>');
 
-
-          $('#project-select').val('none')
+          $('#goal-select option:selected').val('none')
+          $('#project-select option:selected').val('none')
     };
 
     var updateGoalList = function(a){
@@ -814,7 +822,7 @@ function onAuthorizeSuccessful() {
     // var $this = $(this);
     console.log(a);
 
-    $('#goal-options').fadeIn();
+    // $('#goal-options').fadeIn();
     createGoalsOptions(a);
 
    };
@@ -1159,6 +1167,8 @@ var clock = function(){
 
           showComments(taskId);
           dialogComment.dialog("close");
+          $('#comment-text').val("");
+          $('#type-select option:selected').val("none");
           };
         };
       
@@ -1249,10 +1259,15 @@ dialogComment = $( "#new-comment-modal" ).dialog({
         },
         Cancel: function() {
           dialogComment.dialog( "close" );
+          $('#comment-text').val("");
+          $('#type-select option:selected').val("none");
+
         }
       },
       close: function() {
         dialogComment.dialog("close"); 
+          $('#comment-text').val("");
+          $('#type-select option:selected').val("none");
         // form[ 0 ].reset();
         // allFields.removeClass( "ui-state-error" );
       }
