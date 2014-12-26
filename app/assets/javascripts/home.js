@@ -29,13 +29,13 @@ var main = function(){
  $('#user_goals').text("goals : " + gon.user_goals + " ");
 
 var resindexColour = function(taskId, resindex){
-  console.log("in resindex colour");
-  console.log(taskId);
-  console.log(resindex);
+  // console.log("in resindex colour");
+  // console.log(taskId);
+  // console.log(resindex);
 
   if(resindex >1 && resindex < 1.5){
     
-    console.log('.resindex.badge[value='+ taskId +']')
+    // console.log('.resindex.badge[value='+ taskId +']')
       $('.resindex.badge[value='+ taskId +']').addClass('warning');
       // a.addClass('warning');
   }else if(resindex <1 && resindex >0){
@@ -51,7 +51,7 @@ var resindexColour = function(taskId, resindex){
   }else if(resindex == 0){
         $('.resindex.badge[value='+ taskId+']').text('to be set');
   }else{
-    console.log("what!!");
+    // console.log("what!!");
   }
 };
 
@@ -65,7 +65,7 @@ var resindexColour = function(taskId, resindex){
 
  $('#task_title').keypress(function(){
 
-  console.log("Im typing in the title");
+  // console.log("Im typing in the title");
     if($('#task_title').hasClass("border-red")){
       $('#task_title').removeClass("border-red");
     };
@@ -73,7 +73,7 @@ var resindexColour = function(taskId, resindex){
 
   $('#comment-text').keypress(function(){
 
-  console.log("Im typing in the title");
+  // console.log("Im typing in the title");
     if($('#comment-text').hasClass("border-red")){
       $('#comment-text').removeClass("border-red");
     };
@@ -82,7 +82,7 @@ var resindexColour = function(taskId, resindex){
 
  $('#task_title').keypress(function(){
 
-  console.log("Im typing in the title");
+  // console.log("Im typing in the title");
     if($('#task_title').hasClass("border-red")){
       $('#task_title').removeClass("border-red");
     };
@@ -92,14 +92,14 @@ var resindexColour = function(taskId, resindex){
  var validateTaskForm = function(){
   var foundError = false;
    if($('#task_title').val()== ""){
-    console.log("title failed!");
+    // console.log("title failed!");
     $('#task_title').addClass("border-red");
     foundError = true;
 
    };
 
    if($('#project-select').val()=="none"){
-    console.log("project failed");
+    // console.log("project failed");
     $('#project-select').addClass("border-red");
     foundError = true;
 
@@ -107,14 +107,14 @@ var resindexColour = function(taskId, resindex){
 
 
    if($('#goal-select').val()=="none"){
-    console.log("project failed");
+    // console.log("project failed");
     $('#goal-select').addClass("border-red");
     foundError = true;
 
    };
 
    if($('#estimate-select').val()=="none"){
-    console.log("estimate failed");
+    // console.log("estimate failed");
     $('#estimate-select').addClass("border-red");
     foundError = true;
 
@@ -122,7 +122,7 @@ var resindexColour = function(taskId, resindex){
 
 
    if($('#difficulty-select').val()=="none"){
-    console.log("difficulty failed");
+    // console.log("difficulty failed");
     $('#difficulty-select').addClass("border-red");
     foundError = true;
 
@@ -130,21 +130,21 @@ var resindexColour = function(taskId, resindex){
 
 
    if($('#importance-select').val()=="none"){
-    console.log("importance failed");
+    // console.log("importance failed");
     $('#importance-select').addClass("border-red");
     foundError = true;
 
    };
 
     if($('#start_date').val()==""){
-    console.log("start date failed");
+    // console.log("start date failed");
     $('#start_date').addClass("border-red");
     foundError = true;
 
    };
 
   if($('#end_date').val()==""){
-    console.log("end date failed");
+    // console.log("end date failed");
     $('#end_date').addClass("border-red");
     foundError = true;
 
@@ -287,17 +287,32 @@ var resindexColour = function(taskId, resindex){
       var goal_id;
       var taskID =$('.task-form-header').attr("id");
       console.log(taskID);
+
+      // console.log($('#start_date').val());
+        // startDatetocheck = $('#start_date').val();
+        // g = new Date(startDatetocheck);
+        // console.log(g);
+
+      //   g.setHours(03);
+      //   g.setMinutes(33);
+      //     console.log(g);
+      // console.log($('#end_date').val());
+
+      //   var startDate = new Date();
+      //   startDate.setDate("27/12/2015");
+      //   startDate.setHours(09);
+      //   startDate.setMinutes(00);
+
+
+
+      //   var endDate = new Date($('#end_date').val());
+      //   endDate.setHours(23);
+      //   endDate.setMinutes(59);
+
+      //   console.log(startDate);
+      //   console.log(endDate);
    
-    // if($('.task-form-header').attr("id") ==""){
-
-    //   path = "/users/1/tasks";
-    //   method = "POST";
-
-    //   console.log("id works okay");
-    // }else{
-    //   path = "/users/1/tasks/" + taskID.toString();
-    //   method = "PUT";
-    // }
+      
 
       var data = {};
 
@@ -308,6 +323,9 @@ var resindexColour = function(taskId, resindex){
         // data['difficulty'] = $('#difficulty').val();
         data['start_date'] = $('#start_date').val();
         data['end_date'] = $('#end_date').val();
+
+        // data['start_date'] = startDate;
+        // data['end_date'] = endDate;
         // data['estimate'] = $('#hours_estimate').val();
         // data['goal_id'] = $('#goal-options option:selected').val();
         data['estimate'] = $('#estimate-select option:selected').val();
@@ -965,7 +983,7 @@ function onAuthorizeSuccessful() {
       }).success(function(data){
 
         record(user_id, task_id, recordId, 0)
-        console.log("completed!!");
+        // console.log("completed!!");
          // resindexCards();
 
       });
@@ -1062,7 +1080,7 @@ var clock = function(){
      console.log("new comment button pressed");
      $this = $(this);
      // $('#taskComment_id').attr("value" )
-     console.log($this.val());
+     // console.log($this.val());
      var taskID = $this.val();
      var typeItem;
      var initialCommentType = '<option value="none">Select Note type</option>';
@@ -1072,7 +1090,7 @@ var clock = function(){
         $('#type-select').append(initialCommentType);
 
         $.getJSON("/comment_types", function(data){
-          console.log(data);
+          // console.log(data);
 
           $.each(data, function(i, commentType){
 
@@ -1322,7 +1340,7 @@ dialog = $( "#new-project-modal" ).dialog({
 
 $(document.body).on('click', '.task-panel', function(){
 $this = $(this);
-console.log($this);
+// console.log($this);
 var taskId = $this.parent().first().attr("value");
 // $('#input-panel').animate({bottom: "-200px"}, 500).fadeOut();
 // $('#comments-panel').animate({top: "0px"}, 500).fadeIn();
@@ -1359,7 +1377,7 @@ showComments(taskId);
  $(document.body).on('click', 'button.new-goal', function(e) {
   console.log("new goal button pressed")
   $this = $(this);
-  console.log($this);
+  // console.log($this);
  var projectGoalId = $this.val();
   console.log("project id is" + projectGoalId);
   // console.log($this.parent().parent());

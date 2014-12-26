@@ -173,4 +173,12 @@ margin-bottom: 10px;
 .modal-dialog{
     background-color: #9abc32;
 }
+/*.task_description_on_task .textarea .form-control{
+  height: 200px;
 
+}*/
+
+
+textarea.form-control{
+  height: 200px;
+}

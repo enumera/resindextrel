@@ -31,21 +31,30 @@ class Task < ActiveRecord::Base
     
     time_left_in_days = (b - a)/(3600*24)
 
-    puts '-------------------------------------------'
+    puts 'this is  resindex calc--------------------------'
     puts b
     puts a
     time_left_in_days
 
  
-    if b < a || time_left_in_days == 0
+    if b < a && (b - a) > 86400
+      
+    
       resindex = 999
+ 
    else
+    binding.pry
+    if (b-a ) < 86400
+        time_left_in_days = 1
+    end 
+
+      time_left_in_days = 1 if time_left_in_days == 0
 
       effort  = task.effort.to_f.round(2)
       estimate = task.estimate.to_f.round(2)
       
 
-    # binding.pry
+    binding.pry
     resindex = (((task.difficulty.to_f * estimate) - effort)/ (task.importance.to_f * (time_left_in_days * 7)))
       
     # binding.pry
