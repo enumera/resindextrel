@@ -19,7 +19,7 @@ class TrelloController < ApplicationController
   # the consumer. The application ID and secret will be passed in as
   # parameters and  the response will ba a request token object with a secret key.
 
-  request_token = consumer.get_request_token(oauth_callback: "http://localhost:3000/trello/callback")
+  request_token = consumer.get_request_token(oauth_callback: "https://resindex.herokupapp.com/trello/callback")
 
   # Store the request_token in the session, you'll need this during
   # the callback.
