@@ -814,7 +814,7 @@ function onAuthorizeSuccessful() {
     // var $this = $(this);
     console.log(a);
 
-    $('#goal-options').show();
+    $('#goal-options').fadeIn();
     createGoalsOptions(a);
 
    };
