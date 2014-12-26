@@ -43,7 +43,7 @@ class Task < ActiveRecord::Base
       resindex = 999
  
    else
-    binding.pry
+    # binding.pry
     if (b-a ) < 86400
         time_left_in_days = 1
     end 
@@ -54,7 +54,7 @@ class Task < ActiveRecord::Base
       estimate = task.estimate.to_f.round(2)
       
 
-    binding.pry
+    # binding.pry
     resindex = (((task.difficulty.to_f * estimate) - effort)/ (task.importance.to_f * (time_left_in_days * 7)))
       
     # binding.pry
