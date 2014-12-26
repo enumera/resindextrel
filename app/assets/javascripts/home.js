@@ -344,14 +344,14 @@ var resindexColour = function(taskId, resindex){
             method: method,
             data: {task: data},
             dataType: "json"
-          }).success(function(){
+          })
          
           createTaskRecord(goal_id);
           if(method == "PUT"){
             addNewComment(taskID, "resindex");
           }
           taskInputReset();
-        });
+        
       };
 
       $(document.body).on('click','#project-button', function(){
@@ -492,7 +492,7 @@ var resindexColour = function(taskId, resindex){
         $.getJSON("/projects/"+ projectID +"/goals", function(data){
 
           if(data.length == 0){
-            goalInitialOption = '<option value=0 >No goals set</option>';
+            goalInitialOption = '<option value=0 >Create some goals for the project</option>';
             goalOptions.append(goalInitialOption);
           }else{
 
@@ -813,8 +813,8 @@ function onAuthorizeSuccessful() {
           $('#goal-select').html('');
           $('#goal-select').append('<option value="none">Select a project first</option>');
 
-          $('#goal-select option:selected').val('none')
-          $('#project-select option:selected').val('none')
+          $('#goal-select').val('none')
+          $('#project-select').val('none')
     };
 
     var updateGoalList = function(a){
