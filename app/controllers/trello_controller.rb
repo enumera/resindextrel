@@ -19,7 +19,7 @@ class TrelloController < ApplicationController
   # the consumer. The application ID and secret will be passed in as
   # parameters and  the response will ba a request token object with a secret key.
 
-  request_token = consumer.get_request_token(oauth_callback: "https://resindex.herokuapp.com/trello/callback")
+  request_token = consumer.get_request_token(oauth_callback: "http://localhost:3000/trello/callback")
 
   # Store the request_token in the session, you'll need this during
   # the callback.
@@ -74,7 +74,7 @@ class TrelloController < ApplicationController
 
   def access
     @user = current_user
-    projects_to_load = []
+    # projects_to_load = []
     trello_api_uri = "https://trello.com/1/members/me"
     # https://api.trello.com/1/lists/name?53eb89dbc829a00dca5564abkey=8e474beb4e008617593dab5c21cd61ea&token=8d454d80c7a70da77b9da36388edb3c7412a3fe241662a59d4e179938b532c6a
     trello_keys = current_user.oauth_tables.where(website_service: "trello")
@@ -100,20 +100,8 @@ class TrelloController < ApplicationController
     cards = HTTParty.get(url_cards)
     projects = HTTParty.get(url_projects)
     organisations = HTTParty.get(url_organisations)
-    # lists = HTTParty.get(url_lists)
-      # binding.pry
-
-    # (0..projects.length-1).each do |x|
-    #   # puts "***********************************"
-    #   # puts x
-    #   # puts Project.where(trello_project_id: projects[x]["id"]).exists?
-    #   # puts projects[x]["id"]
-    #   if !Project.where(trello_project_id: projects[x]["id"]).exists?
-    #   new_project = Project.create(name: projects[x]["name"], trello_project_id: projects[x]["id"]) 
-    #     binding.pry
-    #     @user.projects << new_project 
-    #   end
-    # end
+  
+  # binding.pry
 
   new_project = ""
     # (0..cards.length-1).each do |x|
@@ -128,22 +116,21 @@ class TrelloController < ApplicationController
 
       if !Goal.where(project_list_id: list_id).exists?
           
-        (0..projects.length-1).each do |x|
+          (0..projects.length-1).each do |x|
             if found_project ==true
               break
             else
 
              if projects[x]["id"] == board_id
-              if !Project.where(trello_project_id: projects[x]["id"]).exists?
-            new_project = Project.create(name: projects[x]["name"], trello_project_id: projects[x]["id"])
-            @user.projects << new_project 
-            projects_to_load.push(projects[x]["id"])
-      
+                if !Project.where(trello_project_id: projects[x]["id"]).exists?
+                  new_project = Project.create(name: projects[x]["name"], trello_project_id: projects[x]["id"])
+                  @user.projects << new_project 
+                  # projects_to_load.push(projects[x]["id"])
+                end
+                found_project = true
               end
-            found_project = true
             end
           end
-        end
 
 
           project = Project.where(trello_project_id: board_id)
@@ -156,31 +143,61 @@ class TrelloController < ApplicationController
           # binding.pry
       end
 
-
+      # binding.pry
 
         if !Task.where(card_id: cards[x]["id"]).exists?
           user = current_user
           goal = Goal.where(project_list_id: list_id)
           project = Project.where(trello_project_id: board_id)
-        new_task = Task.create(card_id: cards[x]["id"], card_name: cards[x]["name"], card_description: cards[x]["desc"],shortlink: cards[x]["shortLink"], url: cards[x]["url"], project_list_id: list_id)
+        new_task = Task.create(trello_type:"card", card_id: cards[x]["id"], card_name: cards[x]["name"], card_description: cards[x]["desc"],shortlink: cards[x]["shortLink"], url: cards[x]["url"], project_list_id: list_id, completed: false)
           user.tasks << new_task
-          new_task.projects << project[0]
+          new_task.project = project[0]
           goal[0].tasks << new_task
 
+        else
+
+          user = current_user
+
+          user_task = Task.where(card_id: cards[x]["id"])
+
+          new_task_for_user = user_task[0]
+
+          # binding.pry
+          goal = Goal.where(project_list_id: list_id)
+
+          new_goal_for_task = goal[0]
+          # binding.pry
+          if !user.tasks.include?Task.find(new_task_for_user.id)
+            user.tasks << new_task_for_user
+          end
+          # binding.pry
+          if new_task_for_user.goal_id != new_goal_for_task.id
+            # binding.pry
+            puts "-----------------------------------------------"
+            puts new_task_for_user.id
+            puts new_task_for_user.goal_id
+            puts new_goal_for_task.id
+            goal_to_remove_task = Goal.find(new_task_for_user.goal_id)
+            puts goal_to_remove_task
+            goal_to_remove_task.tasks.delete(new_task_for_user)
+            # # binding.pry
+            new_goal_for_task.tasks << new_task_for_user
+         
+          end
         end
       end
 
       
-    
+  projects_to_load = current_user.projects
   projects_to_load.each do |project_id|
 
-    @project = Project.where(trello_project_id: project_id )
+    @project = Project.where(id: project_id.id )
     @goals = @project[0].goals
 
     @goals.each do |goal|
       tasks = goal.tasks.length
-      goal.no_of_tasks = tasks
-      goal.save
+      # goal.no_of_tasks = tasks
+      goal.update_attributes(no_of_tasks: tasks)
     end
   end
     @user = current_user
@@ -188,8 +205,9 @@ class TrelloController < ApplicationController
 
     @projects.each do |project|
       goals = project.goals.length
-      project.no_of_goals = goals
-      project.save
+      project.update_attributes(no_of_goals: goals)
+      # project.no_of_goals = goals
+      # project.save
     end
 
 

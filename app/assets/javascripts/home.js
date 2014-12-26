@@ -24,7 +24,7 @@ var main = function(){
 
  // }
 
- $('#user_tasks').text("tasks : " + gon.user_tasks + " ");
+ $('#user_tasks').text("incomplete tasks : " + gon.user_tasks + " ");
  $('#user_projects').text("projects: " +gon.user_projects + " ");
  $('#user_goals').text("goals : " + gon.user_goals + " ");
 
@@ -542,7 +542,7 @@ var resindexColour = function(taskId, resindex){
             }
             console.log(task.completed);
 
-              var listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right resindex badge" value='+task.id +'> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work</button></span></p><p> Start date :' + task.start_date +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + ' >Edit task</button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none">' + task.card_description + '</textarea></div></div>';
+              var listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right resindex badge" value='+task.id +'> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work</button></span></p><p> Start date :' + task.start_date +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + ' >Edit task</button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div></div>';
                
               listItems.append(listItem);
         
