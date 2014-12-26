@@ -10,11 +10,32 @@ class HomeController < ApplicationController
         gon.user_goals = 0
       end
       
-  
+        projects_to_load = current_user.projects
+          projects_to_load.each do |project_id|
 
-    @user = User.find(current_user.id)
-    @tasks = @user.tasks.all
-  end
+        @project = Project.where(id: project_id.id )
+        @goals = @project[0].goals
+
+        @goals.each do |goal|
+          tasks = goal.tasks.length
+          # goal.no_of_tasks = tasks
+          goal.update_attributes(no_of_tasks: tasks)
+        end
+      end
+
+      @user = current_user
+      @projects = @user.projects
+
+      @projects.each do |project|
+        goals = project.goals.length
+        project.update_attributes(no_of_goals: goals)
+        # project.no_of_goals = goals
+        # project.save
+      end
+
+      # @user = User.find(current_user.id)
+      # @tasks = @user.tasks.all
+    end
     
   end
 
