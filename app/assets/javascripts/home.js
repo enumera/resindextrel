@@ -401,7 +401,7 @@ var resindexColour = function(taskId, resindex){
             goalOptions.html('');
 
             projectInitialOption = '<option value="none">Select prize</option>';
-            menuItems.append('<div class="well well-lg" id="project-button">Prizes</div>');
+            menuItems.append('<button id="project-button">Projects</button>');
 
             goalInitialOption = '<option value="none">Select a project first</option>';
 
