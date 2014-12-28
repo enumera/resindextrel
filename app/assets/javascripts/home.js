@@ -214,12 +214,12 @@ var resindexColour = function(taskId, resindex){
       $.each(data, function(i, comment){
         console.log(comment);
 
-
-        if(comment.comment_type.comment_switch === "user"){
+        //commented out so that all comments are visible
+        // if(comment.comment_type.comment_switch === "user"){
 
         listItem = '<button type="button" class="btn btn-info btn-xs pull-right">'+ comment.comment_type.name + '</button><div class="well well-sm comments" id=' + comment.id + '><h4>' + comment.ctext + '</h4></div></div>';
         commentList.append(listItem);
-      };
+      // };
       });
     });
    };
@@ -371,12 +371,13 @@ var validateTaskFormAfterError = function(changeItem){
         searchButtonCombinations("reset_afer_update")
         if(method == "PUT"){
           if(taskID == ""){
-            addNewComment(sourceId, "resindex");
+            showComments(sourceId)
           }else{
-          addNewComment(taskID, "resindex");
+          showComments(taskID, "resindex");
           };
         };
         taskInputReset();
+
         });
        };
 
@@ -610,10 +611,17 @@ var validateTaskFormAfterError = function(changeItem){
             // console.log(task.completed);
             
           if (task.resindex == 0 || task.resindex == 999){
-            console.log(task)
+            // console.log(task)
+
+            if(task.resindex == 0){
+
+              var requirement = "Resindex has not been set for this job, please set the parameters below to ensure its ranking.";
+            }else{
+              var requirement = "Task not completed by due date - reset resindex";
+            };
 
        
-            listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' id="taskSource'+task.id+'" >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><div id = "resindex-wrapper2"><div id="hours-wrapper"><div class="control-group"><div class="controls"><select class="form-control estimate-sel" id="estimate-select'+task.id+'"><option value="none">How long to finish</option><option value="1">One hour</option><option value="2">Two hours</option><option value="3">Three hours</option><option value="4">Four hours</option><option value="5">Five hours</option><option value="6">Six hours</option><option value="7">Seven hours</option><option value="8">Eight hours</option><option value="9">Nine hours</option><option value="10">Ten hours</option></select></div></div></div><div id="difficulty-wrapper"><div class="control-group"><div class="controls"><select class="form-control difficulty-sel" id="difficulty-select'+task.id+'"><option value="none">Difficulty</option><option value="1">Easy-done it before</option><option value="2">Something slightly different</option><option value="3">Tricky</option><option value="4">Really difficult</option><option value="5">Mission Impossible!</option></select></div></div></div><div id="importance-wrapper"><div class="control-group project-options"><div class="controls"><select class="form-control importance-sel" id="importance-select'+task.id+'"><option value="none">Importance</option><option value="5">Would do</option><option value="4">Could do soon</option><option value="3">Should do this asap</option><option value="2">Someone/I needs this</option><option value="1">Someone/I REALLY needs this!</option></select></div></div></div></div><hr><div id="dates-wrapper"><p>To be done...</p><button class="btn btn-danger today" value='+task.id+'>Today</button><button class="btn btn-warning tomorrow" value='+task.id+'>Tomorrow</button><button class="btn btn-info set_dates">I want to set dates</button><hr><div class="dates"><label for="start_date">Start Date</label><input type="text" id="start_date'+task.id + '"class="start_date_sel" name="start_date"></div><div class="dates"><label for="end_date">End Date</label><input type="text" id="end_date'+ task.id + '" class="start_date_sel" name="end_date"></div></div></div><div class="control-group" id="submit-button-group"><div class="controls"><button class="btn btn-primary new-task" value='+task.id+'>Set Resindex</button><button class="btn btn-warning" id="refresh">Clear</button></div><input type="hidden" id="projectSource'+task.id+'" value="'+ task.project_id +'"><input type="hidden" id="goalSource'+task.id+'" value="'+task.goal_id+'"></div>';  
+            listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' id="taskSource'+task.id+'" >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><p>'+requirement +'<div id = "resindex-wrapper2"><div id="hours-wrapper"><div class="control-group"><div class="controls"><select class="form-control estimate-sel" id="estimate-select'+task.id+'"><option value="none">How long to finish</option><option value="1">One hour</option><option value="2">Two hours</option><option value="3">Three hours</option><option value="4">Four hours</option><option value="5">Five hours</option><option value="6">Six hours</option><option value="7">Seven hours</option><option value="8">Eight hours</option><option value="9">Nine hours</option><option value="10">Ten hours</option></select></div></div></div><div id="difficulty-wrapper"><div class="control-group"><div class="controls"><select class="form-control difficulty-sel" id="difficulty-select'+task.id+'"><option value="none">Difficulty</option><option value="1">Easy-done it before</option><option value="2">Something slightly different</option><option value="3">Tricky</option><option value="4">Really difficult</option><option value="5">Mission Impossible!</option></select></div></div></div><div id="importance-wrapper"><div class="control-group project-options"><div class="controls"><select class="form-control importance-sel" id="importance-select'+task.id+'"><option value="none">Importance</option><option value="5">Would do</option><option value="4">Could do soon</option><option value="3">Should do this asap</option><option value="2">Someone/I needs this</option><option value="1">Someone/I REALLY needs this!</option></select></div></div></div></div><hr><div id="dates-wrapper"><p>To be done...</p><button class="btn btn-danger today" value='+task.id+'>Today</button><button class="btn btn-warning tomorrow" value='+task.id+'>Tomorrow</button><button class="btn btn-info set_dates">I want to set dates</button><hr><div class="dates"><label for="start_date">Start Date</label><input type="text" id="start_date'+task.id + '"class="start_date_sel" name="start_date"></div><div class="dates"><label for="end_date">End Date</label><input type="text" id="end_date'+ task.id + '" class="start_date_sel" name="end_date"></div></div></div><div class="control-group" id="submit-button-group"><div class="controls"><button class="btn btn-primary new-task" value='+task.id+'>Set Resindex</button><button class="btn btn-warning" id="refresh">Clear</button></div><input type="hidden" id="projectSource'+task.id+'" value="'+ task.project_id +'"><input type="hidden" id="goalSource'+task.id+'" value="'+task.goal_id+'"></div>';  
           }else{
 
               listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right resindex badge" value='+task.id +'> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work</button></span></p><p> Start date :' + task.start_date +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + ' >Edit task</button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div><input type="hidden" id="projectSource'+task.id+'" value="'+ task.project_id +'"><input type="hidden" id="goalSource'+task.id+'" value="'+task.goal_id+'"></div>';
@@ -959,7 +967,7 @@ function onAuthorizeSuccessful() {
 
         createTaskRecord(goalId, 0)
 
-        addNewComment(taskId, "effort");
+        // addNewComment(taskId, "effort");
         $('#menu-container').removeClass('frozen');
 
 
@@ -1110,6 +1118,8 @@ function onAuthorizeSuccessful() {
       }else{
         console.log("closed and updated")
         refreshTasks();
+        showComments(taskId);
+        searchButtonCombinations("reset_afer_update");
         stopClock();
       };
     });
@@ -1249,12 +1259,13 @@ var clock = function(){
           method: method,
           data: {comment: data},
           dataType: "json"
-          });
+          }).success(function(){
 
           showComments(taskId);
           dialogComment.dialog("close");
           $('#comment-text').val("");
           $('#type-select option:selected').val("none");
+            });
           };
         };
       
@@ -1545,6 +1556,7 @@ $('#comments-panel').hide();
 
             if(trelloSearchStatus == true){
               $("#trello_search").removeClass("btn-danger");
+              trelloSearchStatus == false;
             };
 
               if(top10Status==true && nonTrelloSearchStatus == false){
@@ -1558,8 +1570,6 @@ $('#comments-panel').hide();
             }else if(nonTrelloSearchStatus== true){
               console.log("passed conditions");
               createTaskRecord(-1, 3);
-          
-         
             };
           break;
 
@@ -1567,9 +1577,11 @@ $('#comments-panel').hide();
 
             if(nonTrelloSearchStatus == true  && trelloSearchStatus== true){
               $("#non_trello_search").removeClass("btn-danger");
+              nonTrelloSearchStatus == false;
           
             };
               if(top10Status==true && trelloSearchStatus== false){
+                console.log("top 10 only");
                 createTaskRecord(-1, 1);
               };
           
@@ -1577,7 +1589,8 @@ $('#comments-panel').hide();
             if(top10Status == true && trelloSearchStatus == true ){
               console.log("top 10 and  trello")
               createTaskRecord(-1, 4);
-            }else{
+            }
+            if(trelloSearchStatus == true){
               console.log("trello only");
               createTaskRecord(-1, 2);
             };

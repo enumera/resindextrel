@@ -87,6 +87,8 @@ class TasksController < ApplicationController
     @user = current_user
     @task = Task.find(params[:id])
     @timerecords = TimeRecord.where(task_id: params[:id], state: "toallocate")
+    before_res = 0.0
+    after_res = 0.0
 
     puts "--------------------------------------"
     puts @timerecords
@@ -94,6 +96,8 @@ class TasksController < ApplicationController
     # binding.pry
 
     if @timerecords.length != 0
+
+      before_res = @task.resindex
 
       minutes = @timerecords.map {|t| t.minutes}.reduce(:+)
       hours = @timerecords.map {|t| t.hours}.reduce(:+)
@@ -109,26 +113,42 @@ class TasksController < ApplicationController
 
       @task.resindex = @task.calculate_resindex(@task)
 
+
+
       effort_update = {}
       effort_update["effort_update"] = {}
       effort_update["effort_update"]["effort"] = @task.effort
       effort_update["effort_update"]["resindex"] = @task.resindex
 
-      
+      after_res = @task.resindex
       @task.update_attributes(effort_update[:effort_update])
+
+      comment_text = "Resindex changed from #{before_res} to #{after_res}. <p><sub>Work done by #{@user.first_name} on #{Time.now}.</sub></p>"
+
+      Comment.create(task_id: @task.id, comment_type_id: 6, user_id: @user.id, ctext: comment_text, before_res: before_res, after_res: after_res)
        # binding.pry
     end
 
     respond_to do |format|
       if @task.update_attributes(params[:task])
+        if before_res == 0.0
+          before_res = @task.resindex
+          @task.resindex = @task.calculate_resindex(@task)
 
-        @task.resindex = @task.calculate_resindex(@task)
-         update = {}
+          update = {}
           update["changed_task"] = {}
           update["changed_task"]["resindex"] = @task.resindex
 
            @task.update_attributes(update[:changed_task])
-      
+            after_res = @task.resindex
+
+        if before_res = 999.0
+          comment_text = "Resindex set to #{after_res}. <p><sub>Set by #{@user.first_name} on #{Time.now}.</sub></p>"
+        else
+        comment_text = "Resindex changed from #{before_res} to #{after_res}. <p><sub>Changes made by #{@user.first_name} on #{Time.now}.</sub></p>"
+        end
+            Comment.create(task_id: @task.id, comment_type_id: 7, user_id: @user.id, ctext: comment_text, before_res: before_res, after_res: after_res)
+          end
 
         format.html { redirect_to user_task_path(@user, @task), notice: 'Task was successfully updated.' }
         format.json { head :no_content }
@@ -190,7 +210,7 @@ class TasksController < ApplicationController
         @user = current_user
         @tasks = @user.tasks.where(trello_type: "card").order("resindex DESC").limit(10)
 
-    # binding.pry
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @tasks }
