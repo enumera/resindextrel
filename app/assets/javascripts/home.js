@@ -366,9 +366,9 @@ var validateTaskFormAfterError = function(changeItem){
         method: method,
         data: {task: data},
         dataType: "json"
-      })
+      }).success(function(){
   
-         searchButtonCombinations("reset_afer_update")
+        searchButtonCombinations("reset_afer_update")
         if(method == "PUT"){
           if(taskID == ""){
             addNewComment(sourceId, "resindex");
@@ -377,7 +377,8 @@ var validateTaskFormAfterError = function(changeItem){
           };
         };
         taskInputReset();
-      };
+        });
+       };
 
       $(document.body).on('click','#project-button', function(){
         if(!$('#menu-container').hasClass('frozen')){
@@ -612,7 +613,7 @@ var validateTaskFormAfterError = function(changeItem){
             console.log(task)
 
        
-            listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' id="taskSource'+task.id+'" >' + task.card_name + task.id + '</div><div class="list-group-item" id= '+ task.id +'><div id = "resindex-wrapper2"><div id="hours-wrapper"><div class="control-group"><div class="controls"><select class="form-control estimate-sel" id="estimate-select'+task.id+'"><option value="none">How long to finish</option><option value="1">One hour</option><option value="2">Two hours</option><option value="3">Three hours</option><option value="4">Four hours</option><option value="5">Five hours</option><option value="6">Six hours</option><option value="7">Seven hours</option><option value="8">Eight hours</option><option value="9">Nine hours</option><option value="10">Ten hours</option></select></div></div></div><div id="difficulty-wrapper"><div class="control-group"><div class="controls"><select class="form-control difficulty-sel" id="difficulty-select'+task.id+'"><option value="none">Difficulty</option><option value="1">Easy-done it before</option><option value="2">Something slightly different</option><option value="3">Tricky</option><option value="4">Really difficult</option><option value="5">Mission Impossible!</option></select></div></div></div><div id="importance-wrapper"><div class="control-group project-options"><div class="controls"><select class="form-control importance-sel" id="importance-select'+task.id+'"><option value="none">Importance</option><option value="5">Would do</option><option value="4">Could do soon</option><option value="3">Should do this asap</option><option value="2">Someone/I needs this</option><option value="1">Someone/I REALLY needs this!</option></select></div></div></div></div><hr><div id="dates-wrapper"><p>To be done...</p><button class="btn btn-danger today" value='+task.id+'>Today</button><button class="btn btn-warning tomorrow" value='+task.id+'>Tomorrow</button><button class="btn btn-info set_dates">I want to set dates</button><hr><div class="dates"><label for="start_date">Start Date</label><input type="text" id="start_date'+task.id + '"class="start_date_sel" name="start_date"></div><div class="dates"><label for="end_date">End Date</label><input type="text" id="end_date'+ task.id + '" class="start_date_sel" name="end_date"></div></div></div><div class="control-group" id="submit-button-group"><div class="controls"><button class="btn btn-primary new-task" value='+task.id+'>Set Resindex</button><button class="btn btn-warning" id="refresh">Clear</button></div><input type="hidden" id="projectSource'+task.id+'" value="'+ task.project_id +'"><input type="hidden" id="goalSource'+task.id+'" value="'+task.goal_id+'"></div>';  
+            listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' id="taskSource'+task.id+'" >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><div id = "resindex-wrapper2"><div id="hours-wrapper"><div class="control-group"><div class="controls"><select class="form-control estimate-sel" id="estimate-select'+task.id+'"><option value="none">How long to finish</option><option value="1">One hour</option><option value="2">Two hours</option><option value="3">Three hours</option><option value="4">Four hours</option><option value="5">Five hours</option><option value="6">Six hours</option><option value="7">Seven hours</option><option value="8">Eight hours</option><option value="9">Nine hours</option><option value="10">Ten hours</option></select></div></div></div><div id="difficulty-wrapper"><div class="control-group"><div class="controls"><select class="form-control difficulty-sel" id="difficulty-select'+task.id+'"><option value="none">Difficulty</option><option value="1">Easy-done it before</option><option value="2">Something slightly different</option><option value="3">Tricky</option><option value="4">Really difficult</option><option value="5">Mission Impossible!</option></select></div></div></div><div id="importance-wrapper"><div class="control-group project-options"><div class="controls"><select class="form-control importance-sel" id="importance-select'+task.id+'"><option value="none">Importance</option><option value="5">Would do</option><option value="4">Could do soon</option><option value="3">Should do this asap</option><option value="2">Someone/I needs this</option><option value="1">Someone/I REALLY needs this!</option></select></div></div></div></div><hr><div id="dates-wrapper"><p>To be done...</p><button class="btn btn-danger today" value='+task.id+'>Today</button><button class="btn btn-warning tomorrow" value='+task.id+'>Tomorrow</button><button class="btn btn-info set_dates">I want to set dates</button><hr><div class="dates"><label for="start_date">Start Date</label><input type="text" id="start_date'+task.id + '"class="start_date_sel" name="start_date"></div><div class="dates"><label for="end_date">End Date</label><input type="text" id="end_date'+ task.id + '" class="start_date_sel" name="end_date"></div></div></div><div class="control-group" id="submit-button-group"><div class="controls"><button class="btn btn-primary new-task" value='+task.id+'>Set Resindex</button><button class="btn btn-warning" id="refresh">Clear</button></div><input type="hidden" id="projectSource'+task.id+'" value="'+ task.project_id +'"><input type="hidden" id="goalSource'+task.id+'" value="'+task.goal_id+'"></div>';  
           }else{
 
               listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right resindex badge" value='+task.id +'> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work</button></span></p><p> Start date :' + task.start_date +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + ' >Edit task</button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div><input type="hidden" id="projectSource'+task.id+'" value="'+ task.project_id +'"><input type="hidden" id="goalSource'+task.id+'" value="'+task.goal_id+'"></div>';
@@ -668,47 +669,7 @@ var validateTaskFormAfterError = function(changeItem){
 
   // setup resindex inputs
 
-   $( "#slider-difficulty" ).slider({
-      orientation: "vertical",
-      range: "min",
-      min: 1,
-      max: 5,
-      value: 3,
-      slide: function( event, ui ) {
-        $( "#difficulty" ).val( ui.value );
-      }
-    });
 
-  $( "#slider-importance" ).slider({
-      orientation: "vertical",
-      range: "min",
-      min: 1,
-      max: 5,
-      value: 3,
-      slide: function( event, ui ) {
-        $( "#importance" ).val( ui.value );
-      }
-    });
-
-
-  $( "#slider-estimate" ).slider({
-      orientation: "vertical",
-      range: "min",
-      min: 1,
-      max: 10,
-      value: 5,
-      slide: function( event, ui ) {
-        $( "#hours_estimate" ).val( ui.value );
-      }
-    });
-
-    $( "#importance" ).val( $( "#slider-importance" ).slider( "value" ) );
-
-    $( "#difficulty" ).val( $( "#slider-difficulty" ).slider( "value" ) );
-
-    $( "#hours_estimate" ).val( $( "#slider-estimate" ).slider( "value" ) );
-
-   
       $( "#start_date" ).datepicker({
       defaultDate: "+1w",
       changeMonth: true,

@@ -21,45 +21,47 @@ class Task < ActiveRecord::Base
     else
 
 
-    if task.effort.nil?
-      task.effort = 0
-    end
-   
-    a = Time.now.to_i
-    puts task.end_date
-    b = task.end_date.to_time.to_i
-    
-    time_left_in_days = (b - a)/(3600*24)
+      if task.effort.nil?
+        task.effort = 0
+      end
+     
+      a = Time.now.to_i
+      puts task.end_date
+      b = task.end_date.to_time.to_i
+      
+      time_left_in_days = (b - a)/(3600*24)
 
-    puts 'this is  resindex calc--------------------------'
-    puts b
-    puts a
-    time_left_in_days
+      puts 'this is  resindex calc--------------------------'
+      puts b
+      puts a
+      time_left_in_days
 
  
-    if b < a && (b - a) > 86400
-      
-    
+    if b < a
       resindex = 999
- 
-   else
-    # binding.pry
-    if (b-a ) < 86400
-        time_left_in_days = 1
-    end 
+       else
+        # binding.pry
+        # if (b-a ) < 86400
+        #     time_left_in_days = 1
+        
 
-      time_left_in_days = 1 if time_left_in_days == 0
+        if start_date.day == end_date.day && Time.now.day == start_date.day && start_date.month == end_date.month && Time.now.month == start_date.month
+            time_left_in_days == 1
+        end
 
-      effort  = task.effort.to_f.round(2)
-      estimate = task.estimate.to_f.round(2)
+
+          time_left_in_days = 1 if time_left_in_days == 0
+
+          effort  = task.effort.to_f.round(2)
+          estimate = task.estimate.to_f.round(2)
       
 
     # binding.pry
-    resindex = (((task.difficulty.to_f * estimate) - effort)/ (task.importance.to_f * (time_left_in_days * 7)))
-      
-    # binding.pry
+        resindex = (((task.difficulty.to_f * estimate) - effort)/ (task.importance.to_f * (time_left_in_days * 7)))
+          
+        # binding.pry
 
-    resindex = resindex.round(3)
+        resindex = resindex.round(3)
     end
 
     # binding.pry
@@ -67,10 +69,13 @@ class Task < ActiveRecord::Base
     if resindex < 0
       resindex = 888
     end
+
     if task.completed == true
       resindex = -999
     end
+
   end
+
     return resindex
 
   end
