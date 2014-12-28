@@ -33,8 +33,8 @@
 
 
     <div class="col-sm-9">
-      <div class="panel panel-default col-md-5" id ="task-panel">
-        <div class="panel-heading" id="things"><h4>Jobs to do...</h4></div>
+      <div class="panel panel-default col-md-6" id ="task-panel">
+        <div class="panel-heading" id="things"><h4>Jobs to do...</h4><span><button class= "btn btn-xs btn-info" id= "top10">Top 10</span><span><button class= "btn btn-xs btn-info" id= "trello_search">Trello jobs only</span><span><button class= "btn btn-xs btn-info" id= "non_trello_search">Non-Trello jobs only</span></div>
         <div class="panel-body" >
           <div class="list-group" id="task-list-group">
            <!--  <a href="#" class="list-group-item active"><span class="glyphicon glyphicon-collapse-down pull-right"></span></a>
@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <div class="panel panel-default col-md-6" id="input-panel">
+      <div class="panel panel-default col-md-5" id="input-panel">
         <div class="panel-heading">
           <div class="panel-title">
             <i class="glyphicon glyphicon-wrench pull-right"></i>
@@ -63,14 +63,14 @@
           <div class="control-group">
             <!-- <label>How to get that thing done</label> -->
             <div class="controls">
-              <textarea class="form-control" placeholder="Add some details" id="task_description"></textarea>
+              <textarea class="form-control" placeholder="Add some details" id="task_description" value="-1"></textarea>
             </div>
           </div> 
                              
           <div class="control-group project-options">
             <!-- <label>Prize</label> -->
             <div class="controls">
-              <select class="form-control" id="project-select"><option>options</option>
+              <select class="form-control project-sel" id="project-select" name="-1" ><option>options</option>
                 <option>options2</option>
               </select>
             </div>
@@ -79,7 +79,7 @@
            <div class="control-group" id="goal-options">
             <label>Select from project goals...</label>
             <div class="controls">
-              <select class="form-control" id="goal-select"><option>Goal1</option>
+              <select class="form-control goal-sel" id="goal-select" name="-1"><option>Goal1</option>
                 <option>Goal2</option>
               </select>
             </div>
@@ -90,12 +90,12 @@
               <div class="control-group project-options">
             <!-- <label>Estimated time</label> -->
                 <div class="controls">
-                  <select class="form-control" id="estimate-select">
+                  <select class="form-control estimate-sel" id="estimate-select-1" name="-1">
                       <option value="none">How long to finish</option>
                       <option value="1">One hour</option>
                       <option value="2">Two hours</option>
                       <option value="3">Three hours</option>
-                      <option value="4">Foru hours</option>
+                      <option value="4">Four hours</option>
                       <option value="5">Five hours</option>
                       <option value="6">Six hours</option>
                       <option value="7">Seven hours</option>
@@ -118,10 +118,10 @@
 
                     
             <div id="difficulty-wrapper">
-              <div class="control-group project-options">
+              <div class="control-group">
             <!-- <label>Prize</label> -->
                 <div class="controls">
-                  <select class="form-control" id="difficulty-select">
+                  <select class="form-control difficulty-sel" id="difficulty-select-1" name="-1">
                       <option value="none">Difficulty</option>
                       <option value="1">Easy-done it before</option>
                       <option value="2">Something slightly different</option>
@@ -152,10 +152,10 @@
               <div id="slider-importance" style="height:100px;"></div> -->
             <!-- </div> -->
             <div id="importance-wrapper">
-              <div class="control-group project-options">
+              <div class="control-group">
                 <!-- <label>Prize</label> -->
                 <div class="controls">
-                  <select class="form-control" id="importance-select">
+                  <select class="form-control importance-sel" id="importance-select-1" name="-1">
                     <option value="none">Importance</option>
                     <option value="5">Would do</option>
                     <option value="4">Could do soon</option>
@@ -171,19 +171,19 @@
             <hr>
             <div id="dates-wrapper">
               <p>To be done...</p>
-              <button class="btn btn-danger" id="today">Today</button>
-              <button class="btn btn-warning" id="tomorrow">Tomorrow</button>
+              <button class="btn btn-danger today" value="-1">Today</button>
+              <button class="btn btn-warning tomorrow" value="-1">Tomorrow</button>
               <!-- <p>Or</p> -->
-              <button class="btn btn-info">I want to set dates</button>
+              <button class="btn btn-info set_dates">I want to set dates</button>
               <hr>
               <div class="dates">
                 <label for="start_date">Start Date</label>
-                <input type="text" id="start_date" name="start_date">
+                <input type="text" id="start_date-1" class="start_date_sel"  name="start_date">
               </div>
                 
               <div class="dates">
                 <label for="end_date">End Date</label>
-                <input type="text" id="end_date" name="end_date">
+                <input type="text" id="end_date-1" class="end_date_sel" name="end_date">
               </div>
             </div>
           </div>           
@@ -191,7 +191,7 @@
           <div class="control-group" id="submit-button-group">
         
             <div class="controls">
-              <button class="btn btn-primary" id="new-task">
+              <button class="btn btn-primary new-task" id="new-task" value="-1">
                     Post
               </button>
                <button class="btn btn-warning" id="refresh">

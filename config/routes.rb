@@ -41,6 +41,16 @@ end
     get "log_out" => "sessions#destroy", :as => "log_out"
     get "log_in" => "sessions#new", :as => "log_in"
     get "sign_up" => "users#new", :as => "sign_up"
+
+    get "top_10" => "tasks#top_10", :as => "top10"
+
+    get "trello_only" => "tasks#trello_only", :as => "trello_search"
+
+    get "non_trello" => "tasks#non_trello", :as => "non_trello_search"
+
+    get "top10_trello" => "tasks#top10_trello", :as => "top10trello"
+
+    get "top10_non_trello" => "tasks#top10_non_trello", :as => "top10nontrello"
     # root :to => "users#new"
     resources :users
     resources :sessions

@@ -119,9 +119,17 @@ class TasksController < ApplicationController
        # binding.pry
     end
 
-    
     respond_to do |format|
       if @task.update_attributes(params[:task])
+
+        @task.resindex = @task.calculate_resindex(@task)
+         update = {}
+          update["changed_task"] = {}
+          update["changed_task"]["resindex"] = @task.resindex
+
+           @task.update_attributes(update[:changed_task])
+      
+
         format.html { redirect_to user_task_path(@user, @task), notice: 'Task was successfully updated.' }
         format.json { head :no_content }
       else
@@ -142,4 +150,65 @@ class TasksController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def top_10
+
+    @user = current_user
+    @tasks = @user.tasks.order("resindex DESC").limit(10)
+
+    # binding.pry
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @tasks }
+    end
+
+  end
+
+  def trello_only
+    @user = current_user
+    @tasks = @user.tasks.where(trello_type: "card").order("resindex DESC")
+
+    # binding.pry
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @tasks }
+    end
+  end
+
+  def non_trello
+        @user = current_user
+        @tasks = @user.tasks.where(trello_type: nil).order("resindex DESC")
+
+    # binding.pry
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @tasks }
+    end
+  end
+
+  def top10_trello
+        @user = current_user
+        @tasks = @user.tasks.where(trello_type: "card").order("resindex DESC").limit(10)
+
+    # binding.pry
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @tasks }
+    end
+  end
+
+
+  def top10_non_trello
+        @user = current_user
+        @tasks = @user.tasks.where(trello_type: nil).order("resindex DESC").limit(10)
+
+    # binding.pry
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @tasks }
+    end
+  end
+
+
+
 end

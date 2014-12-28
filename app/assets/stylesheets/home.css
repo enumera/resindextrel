@@ -187,7 +187,14 @@ margin-bottom: 10px;
 
 }*/
 
+.selected-search{
+  background-color: red;
+}
 
 textarea.form-control{
   height: 100px;
+}
+#non_trello_search,
+#trello_search{
+  margin-left: 10px;
 }

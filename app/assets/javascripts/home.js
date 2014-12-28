@@ -1,4 +1,3 @@
-
 function containsObject(obj, list) {
     var i;
     for (i = 0; i < list.length; i++) {
@@ -27,6 +26,12 @@ var main = function(){
  $('#user_tasks').text("incomplete tasks : " + gon.user_tasks + " ");
  $('#user_projects').text("projects: " +gon.user_projects + " ");
  $('#user_goals').text("goals : " + gon.user_goals + " ");
+
+ // if($('.trello_messsage').text() == "Get your Trello boards"){
+ //  console.log("configuring home page");
+ //  $('#trello_search').fadeOut();
+ //  $('#non_trello_search').text("Show all cards");
+ // };
 
 var resindexColour = function(taskId, resindex){
   // console.log("in resindex colour");
@@ -80,23 +85,26 @@ var resindexColour = function(taskId, resindex){
  });
 
 
- $('#task_title').keypress(function(){
+ // $('#task_title').keypress(function(){
 
-  // console.log("Im typing in the title");
-    if($('#task_title').hasClass("border-red")){
-      $('#task_title').removeClass("border-red");
-    };
- });
+ //  // console.log("Im typing in the title");
+ //    if($('#task_title').hasClass("border-red")){
+ //      $('#task_title').removeClass("border-red");
+ //    };
+ // });
 
 
- var validateTaskForm = function(){
+ var validateTaskForm = function(taskId){
   var foundError = false;
+
+  if(taskId == -1){
    if($('#task_title').val()== ""){
     // console.log("title failed!");
     $('#task_title').addClass("border-red");
     foundError = true;
 
    };
+
 
    if($('#project-select').val()=="none"){
     // console.log("project failed");
@@ -112,46 +120,49 @@ var resindexColour = function(taskId, resindex){
     foundError = true;
 
    };
+ };
 
-   if($('#estimate-select').val()=="none"){
+   if($('#estimate-select'+taskId).val()=="none"){
     // console.log("estimate failed");
-    $('#estimate-select').addClass("border-red");
+    $('#estimate-select'+taskId).addClass("border-red");
     foundError = true;
 
    };
 
 
-   if($('#difficulty-select').val()=="none"){
+   if($('#difficulty-select'+taskId).val()=="none"){
     // console.log("difficulty failed");
-    $('#difficulty-select').addClass("border-red");
+    $('#difficulty-select'+taskId).addClass("border-red");
     foundError = true;
 
    };
 
 
-   if($('#importance-select').val()=="none"){
+   if($('#importance-select'+taskId).val()=="none"){
     // console.log("importance failed");
-    $('#importance-select').addClass("border-red");
+    $('#importance-select'+taskId).addClass("border-red");
     foundError = true;
 
    };
+   console.log(taskId);
 
-    if($('#start_date').val()==""){
+
+    if($('#start_date'+ taskId).val()==""){
     // console.log("start date failed");
-    $('#start_date').addClass("border-red");
+    $('#start_date' + taskId).addClass("border-red");
     foundError = true;
 
    };
 
-  if($('#end_date').val()==""){
+  if($('#end_date'+ taskId).val()==""){
     // console.log("end date failed");
-    $('#end_date').addClass("border-red");
+    $('#end_date' + taskId).addClass("border-red");
     foundError = true;
 
    };
    if(foundError ==false){
-    createTask();
-   }
+    createTask(taskId);
+   };
 
  };
 
@@ -186,7 +197,7 @@ var resindexColour = function(taskId, resindex){
       $('#task-list-group').html('');
       goalId = $('.goalSel').val();
 
-      createTaskRecord(goalId);
+      createTaskRecord(goalId, 0);
    };
 
 
@@ -213,57 +224,66 @@ var resindexColour = function(taskId, resindex){
     });
    };
 
-   $('#goal-select').on("change", function(){
+
+     $('#goal-select').on("change", function(){
     // console.log("Im typing in the title");
-    if($('#goal-select').hasClass("border-red")){
-      $('#goal-select').removeClass("border-red");
-    };
+      if($('#goal-select').hasClass("border-red")){
+        $('#goal-select').removeClass("border-red");
+      };
    });
 
-     $('#estimate-select').on("change", function(){
-    // console.log("Im typing in the title");
-    if($('#estimate-select').hasClass("border-red")){
-      $('#estimate-select').removeClass("border-red");
+var validateTaskFormAfterError = function(changeItem){
+    var elementToCheck = "#" + changeItem ;
+        console.log(elementToCheck);
+ 
+    console.log(elementToCheck);
+
+
+    if($(elementToCheck).hasClass("border-red")){
+      $(elementToCheck).removeClass("border-red");
     };
-   });
-
-  $('#difficulty-select').on("change", function(){
-    // console.log("Im typing in the title");
-    if($('#difficulty-select').hasClass("border-red")){
-      $('#difficulty-select').removeClass("border-red");
-    };
-   });
-
-    $('#type-select').on("change", function(){
-    // console.log("Im typing in the title");
-    if($('#type-select').hasClass("border-red")){
-      $('#type-select').removeClass("border-red");
-    };
-   });
-
-    $('#importance-select').on("change", function(){
-    // console.log("Im typing in the title");
-    if($('#importance-select').hasClass("border-red")){
-      $('#importance-select').removeClass("border-red");
-    };
-   });
-
-  $('#start_date').on("change", function(){
-    // console.log("Im typing in the title");
-    if($('#start_date').hasClass("border-red")){
-      $('#start_date').removeClass("border-red");
-    };
-   });
-
-    $('#end_date').on("change", function(){
-    // console.log("Im typing in the title");
-    if($('#end_date').hasClass("border-red")){
-      $('#end_date').removeClass("border-red");
-    };
-   });
+  };
 
 
-   $('#project-select').on("change", function(){
+      $(document.body).on('change', '.estimate-sel', function(){
+          console.log("checking estimate-select");
+   
+        var changeItem = $(this).attr('id')
+        validateTaskFormAfterError(changeItem);
+      });
+
+         $(document.body).on('change', '.difficulty-sel', function(){
+          console.log("checking difficulty-select");
+     
+        var changeItem = $(this).attr('id')
+        validateTaskFormAfterError(changeItem);
+      });
+
+
+      $(document.body).on('change', '.importance-sel', function(){
+          console.log("checking importance-select");
+     
+        var changeItem = $(this).attr('id')
+        validateTaskFormAfterError(changeItem);
+      });
+
+      $(document.body).on('change', '.start_date_sel', function(){
+          console.log("checking start date");
+     
+        var changeItem = $(this).attr('id')
+        validateTaskFormAfterError(changeItem);
+      });
+      
+      $(document.body).on('change', '.end_date_sel', function(){
+          console.log("checking end date");
+     
+        var changeItem = $(this).attr('id')
+
+        validateTaskFormAfterError(changeItem);
+      });
+
+
+  $('#project-select').on("change", function(){
     console.log("The project has been changed");
 
     // console.log("Im typing in the title");
@@ -271,78 +291,56 @@ var resindexColour = function(taskId, resindex){
       $('#project-select').removeClass("border-red");
     };
 
-    updateGoalList($('#project-select option:selected').val());
-
-  // var a = $('#project-select option:selected').val();
-  //   // var $this = $(this);
-  //   console.log(a);
-
-  //   $('#goal-options').show();
-  //   createGoalsOptions(a);
+    updateGoalList($('#project-select option:selected').val(), 0);
 
    });
 
    
-    var createTask = function(){
+    var createTask = function(sourceId){
       var goal_id;
       var taskID =$('.task-form-header').attr("id");
       console.log(taskID);
-
-      // console.log($('#start_date').val());
-        // startDatetocheck = $('#start_date').val();
-        // g = new Date(startDatetocheck);
-        // console.log(g);
-
-      //   g.setHours(03);
-      //   g.setMinutes(33);
-      //     console.log(g);
-      // console.log($('#end_date').val());
-
-      //   var startDate = new Date();
-      //   startDate.setDate("27/12/2015");
-      //   startDate.setHours(09);
-      //   startDate.setMinutes(00);
-
-
-
-      //   var endDate = new Date($('#end_date').val());
-      //   endDate.setHours(23);
-      //   endDate.setMinutes(59);
-
-      //   console.log(startDate);
-      //   console.log(endDate);
-   
-      
 
       var data = {};
 
 
         // data['importance'] = $('#importance').val();
-        data['importance'] = $('#importance-select option:selected').val();
-        data['difficulty'] = $('#difficulty-select option:selected').val();
+        data['importance'] = $('#importance-select'+ sourceId +' option:selected').val();
+        data['difficulty'] = $('#difficulty-select'+ sourceId +' option:selected').val();
         // data['difficulty'] = $('#difficulty').val();
-        data['start_date'] = $('#start_date').val();
-        data['end_date'] = $('#end_date').val();
+        data['start_date'] = $('#start_date'+ sourceId).val();
+        data['end_date'] = $('#end_date'+ sourceId).val();
 
         // data['start_date'] = startDate;
         // data['end_date'] = endDate;
         // data['estimate'] = $('#hours_estimate').val();
         // data['goal_id'] = $('#goal-options option:selected').val();
-        data['estimate'] = $('#estimate-select option:selected').val();
+        data['estimate'] = $('#estimate-select'+sourceId +' option:selected').val();
 
         data['completed'] = $('#completed' + taskID).is(":checked");
         // data['card_id'] = cardDetails["card_id"];
         // data['card_name'] = cardDetails["name"];
-        data['card_name'] = $('#task_title').val();
-        data['card_description'] = $('#task_description').val();
+        // data['card_name'] = $('#task_title').val();
+        // data['card_description'] = $('#task_description').val();
         // data['url'] = cardDetails["url"];
         // data['shortlink'] = cardDetails["shortlink"] ;
-        data['goal_id'] = $('#goal-options option:selected').val();
+
+      if(sourceId == -1){
+        data['goal_id'] = $('#goal-select option:selected').val();
         data['project_id'] = $('#project-select option:selected').val();
+        data['card_name'] = $('#task_title').val();
+        data['card_description'] = $('#task_description').val();
+      };
+      // }else{
+
+      //   data['project_id'] = $('#projectSource'+ sourceId).val();
+      //   data['goal_id'] = $('#goalSource'+ sourceId).val();
+
+      // };
 
         console.log(data);
 
-    if($('.task-form-header').attr("id") ==""){
+    if($('.task-form-header').attr("id") =="" && sourceId == -1){
 
       path = "/users/" + gon.user_id + "/tasks";
       method = "POST";
@@ -352,24 +350,33 @@ var resindexColour = function(taskId, resindex){
 
       console.log("id works okay");
     }else{
-      path = "/users/"+ gon.user_id +"/tasks/" + taskID.toString();
-      method = "PUT";
-      data["id"] = taskID;
+    if (taskID == ""){
+      path = "/users/"+ gon.user_id +"/tasks/" + sourceId.toString();
+      data["id"] = sourceId;
+      }else{
+        path = "/users/"+ gon.user_id +"/tasks/" + taskID.toString();
+        data["id"] = taskID;
+      };
+       method = "PUT";
     }
+    //comment out section
 
-           $.ajax({ 
-            url: path, 
-            method: method,
-            data: {task: data},
-            dataType: "json"
-          })
-         
-          createTaskRecord(goal_id);
-          if(method == "PUT"){
-            addNewComment(taskID, "resindex");
-          }
-          taskInputReset();
-        
+      $.ajax({ 
+        url: path, 
+        method: method,
+        data: {task: data},
+        dataType: "json"
+      })
+  
+         searchButtonCombinations("reset_afer_update")
+        if(method == "PUT"){
+          if(taskID == ""){
+            addNewComment(sourceId, "resindex");
+          }else{
+          addNewComment(taskID, "resindex");
+          };
+        };
+        taskInputReset();
       };
 
       $(document.body).on('click','#project-button', function(){
@@ -492,7 +499,7 @@ var resindexColour = function(taskId, resindex){
       });
       };
     };
-     var createGoalsOptions = function(projectID){
+     var createGoalsOptions = function(projectID, goalSet){
 
         // var menuItems = $('#menu-container');
         var goalOptions = $('#goal-select');
@@ -520,18 +527,53 @@ var resindexColour = function(taskId, resindex){
 
            $.each(data, function(i, goal){
              goalOption = '<option value=' + goal.id+ '>' + goal.name +'</option>';
-             goalOptions.append(goalOption);
-             
+             goalOptions.append(goalOption); 
         });
+           if(goalSet != 0){
+            goalOptions.val(goalSet);
+           }
          
       });
       // };
     };
 
 
-      var createTaskRecord = function(goal){
+      var createTaskRecord = function(goal, search_type){
         var listItem;
-        $.getJSON("users/" + gon.user_id +"/tasks", function(data){
+        var search_url;
+        var numberOfTasks = 0;
+
+        switch(search_type){
+
+          case 0 :
+          search_url = "/users/" + gon.user_id + "/tasks";
+          break;
+
+          case 1 :
+          search_url = "/top_10";
+          break;
+
+          case 2 :
+          search_url = "/trello_only";
+          break;
+
+          case 3 :
+          search_url = "/non_trello";
+          break;
+
+           case 4 :
+          search_url = "/top10_trello";
+          break;
+           case 5 :
+          search_url = "/top10_non_trello";
+          break;
+        };
+
+
+        console.log("search_url" + search_url)
+        // $.getJSON("users/" + gon.user_id +"/tasks", function(data){
+        $.getJSON(search_url, function(data){
+
             var listItems = $("#task-list-group");
             console.log(data);
 
@@ -542,7 +584,8 @@ var resindexColour = function(taskId, resindex){
 
           $.each(data, function(i, task){
 
-          if(task.goal_id == goal){
+          if(task.goal_id == goal || goal== -1){
+            numberOfTasks += 1;
 
             if (task.effort !=0 ){
               effortMins = parseInt(task.effort * 60);
@@ -561,21 +604,20 @@ var resindexColour = function(taskId, resindex){
             if (newEffortMins < 10){
               newEffortMins.toString();
               newEffortMins = "0" + newEffortMins;
-              console.log(newEffortMins);
+              // console.log(newEffortMins);
             }
-            console.log(task.completed);
+            // console.log(task.completed);
             
-            if (task.resindex == 0 || task.resindex == 999){
+          if (task.resindex == 0 || task.resindex == 999){
+            console.log(task)
 
        
-            listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><div id = "resindex-wrapper2"><div id="hours-wrapper"><div class="control-group project-options"><div class="controls"><select class="form-control" id="estimate-select"><option value="none">How long to finish</option><option value="1">One hour</option><option value="2">Two hours</option><option value="3">Three hours</option><option value="4">Foru hours</option><option value="5">Five hours</option><option value="6">Six hours</option><option value="7">Seven hours</option><option value="8">Eight hours</option><option value="9">Nine hours</option><option value="10">Ten hours</option></select></div></div></div><div id="difficulty-wrapper"><div class="control-group project-options"><div class="controls"><select class="form-control" id="difficulty-select"><option value="none">Difficulty</option><option value="1">Easy-done it before</option><option value="2">Something slightly different</option><option value="3">Tricky</option><option value="4">Really difficult</option><option value="5">Mission Impossible!</option></select></div></div></div><div id="importance-wrapper"><div class="control-group project-options"><div class="controls"><select class="form-control" id="importance-select"><option value="none">Importance</option><option value="5">Would do</option><option value="4">Could do soon</option><option value="3">Should do this asap</option><option value="2">Someone/I needs this</option><option value="1">Someone/I REALLY needs this!</option></select></div></div></div></div><hr><div id="dates-wrapper"><p>To be done...</p><button class="btn btn-danger" id="today">Today</button><button class="btn btn-warning" id="tomorrow">Tomorrow</button><button class="btn btn-info">I want to set dates</button><hr><div class="dates"><label for="start_date">Start Date</label><input type="text" id="start_date" name="start_date"></div><div class="dates"><label for="end_date">End Date</label><input type="text" id="end_date" name="end_date"></div></div></div><div class="control-group" id="submit-button-group"><div class="controls"><button class="btn btn-primary" id="new-task">Set Resindex</button><button class="btn btn-warning" id="refresh">Clear</button></div></div>';  
+            listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' id="taskSource'+task.id+'" >' + task.card_name + task.id + '</div><div class="list-group-item" id= '+ task.id +'><div id = "resindex-wrapper2"><div id="hours-wrapper"><div class="control-group"><div class="controls"><select class="form-control estimate-sel" id="estimate-select'+task.id+'"><option value="none">How long to finish</option><option value="1">One hour</option><option value="2">Two hours</option><option value="3">Three hours</option><option value="4">Four hours</option><option value="5">Five hours</option><option value="6">Six hours</option><option value="7">Seven hours</option><option value="8">Eight hours</option><option value="9">Nine hours</option><option value="10">Ten hours</option></select></div></div></div><div id="difficulty-wrapper"><div class="control-group"><div class="controls"><select class="form-control difficulty-sel" id="difficulty-select'+task.id+'"><option value="none">Difficulty</option><option value="1">Easy-done it before</option><option value="2">Something slightly different</option><option value="3">Tricky</option><option value="4">Really difficult</option><option value="5">Mission Impossible!</option></select></div></div></div><div id="importance-wrapper"><div class="control-group project-options"><div class="controls"><select class="form-control importance-sel" id="importance-select'+task.id+'"><option value="none">Importance</option><option value="5">Would do</option><option value="4">Could do soon</option><option value="3">Should do this asap</option><option value="2">Someone/I needs this</option><option value="1">Someone/I REALLY needs this!</option></select></div></div></div></div><hr><div id="dates-wrapper"><p>To be done...</p><button class="btn btn-danger today" value='+task.id+'>Today</button><button class="btn btn-warning tomorrow" value='+task.id+'>Tomorrow</button><button class="btn btn-info set_dates">I want to set dates</button><hr><div class="dates"><label for="start_date">Start Date</label><input type="text" id="start_date'+task.id + '"class="start_date_sel" name="start_date"></div><div class="dates"><label for="end_date">End Date</label><input type="text" id="end_date'+ task.id + '" class="start_date_sel" name="end_date"></div></div></div><div class="control-group" id="submit-button-group"><div class="controls"><button class="btn btn-primary new-task" value='+task.id+'>Set Resindex</button><button class="btn btn-warning" id="refresh">Clear</button></div><input type="hidden" id="projectSource'+task.id+'" value="'+ task.project_id +'"><input type="hidden" id="goalSource'+task.id+'" value="'+task.goal_id+'"></div>';  
           }else{
 
-              listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right resindex badge" value='+task.id +'> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work</button></span></p><p> Start date :' + task.start_date +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + ' >Edit task</button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div></div>';
+              listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right resindex badge" value='+task.id +'> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work</button></span></p><p> Start date :' + task.start_date +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + ' >Edit task</button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div><input type="hidden" id="projectSource'+task.id+'" value="'+ task.project_id +'"><input type="hidden" id="goalSource'+task.id+'" value="'+task.goal_id+'"></div>';
                };
               listItems.append(listItem);
-        
-
               if(task.completed===true){
                 $('#completed' + task.id).attr('checked', true);
               };
@@ -585,8 +627,44 @@ var resindexColour = function(taskId, resindex){
           $.each(data, function(i,task){
               resindexColour(task.id, task.resindex);
           });
-        })
-      }
+          searchResultsText(numberOfTasks, search_type);
+      });
+    };
+
+      var searchResultsText = function(numberOfTasks, search_type_x){
+        // console.log()
+        var resultsItem = $('#things h4');
+        switch(search_type_x){
+          case 0:
+           resultsItem.text(numberOfTasks + " jobs sorted by resindex!");
+          break;
+          case 1:
+           resultsItem.text("Top 10 jobs sorted by resindex!");
+          break;
+          
+          case 2:
+             resultsItem.text(numberOfTasks + " Trello jobs sorted by resindex!");
+          break;
+
+          case 3:
+             resultsItem.text(numberOfTasks + " non-trello jobs sorted by resindex!");
+
+          break;
+
+
+          case 4:
+
+               resultsItem.text("Top 10 Trello jobs sorted by resindex!");
+
+          break;
+
+
+          case 5:
+            resultsItem.text("Top 10 Non-Trello jobs sorted by resindex!");
+          break;
+        };
+
+      };
 
   // setup resindex inputs
 
@@ -654,11 +732,11 @@ var resindexColour = function(taskId, resindex){
 
 
 
-  $('#new-task').click(function(e){
-      validateTaskForm();
+  $(document.body).on('click', '.new-task', function(){
+    console.log($(this).val());  
+    console.log("this works!!")    
+      validateTaskForm($(this).val());
   
-      // createTask();
-
   });
 
   //record function groupings
@@ -760,7 +838,7 @@ function onAuthorizeSuccessful() {
       $('.goals:not(.selectedGoal)').fadeOut(1000);
       // $('.new-goal:not(.selectedGoal').fadeOut(1000);
       $('.goalSel').val(goalID);
-      createTaskRecord(goalID);
+      createTaskRecord(goalID, 0);
     };
   });
 
@@ -788,24 +866,24 @@ function onAuthorizeSuccessful() {
           // $('#difficulty').val(data.difficulty);
           // $('#slider-importance').slider({value: data.importance});
           // $('#importance').val(data.importance)
-          $('#estimate-select').val(data.estimate);
-          $('#difficulty-select').val(data.difficulty);
-          $('#importance-select').val(data.importance);
+          $('#estimate-select-1').val(data.estimate);
+          $('#difficulty-select-1').val(data.difficulty);
+          $('#importance-select-1').val(data.importance);
           // $('#goal-options').fadeOut();
           $('#project-select').val(data.project_id);
           // updateGoalList(data.project_id);
           // $('#goal-select').val(data.goal_id);
           // $('#goal-select').show();
-          $('#start_date').val(data.start_date);
-          $('#end_date').val(data.end_date);
+          $('#start_date-1').val(data.start_date);
+          $('#end_date-1').val(data.end_date);
           // $('#task_title').text(data.card_name);
           $('#task_title').val(data.card_name);
           $('#task_description').val(data.card_description);
           $('#new-task').text('Update');
           $('#new-task').addClass('update');
           $('.task-form-header').text('Update Task');
-            updateGoalList(data.project_id);
-          $('#goal-select').val(data.goal_id);
+            updateGoalList(data.project_id, data.goal_id);
+          // $('#goal-select').val(data.goal_id);
           //need to add project and goal
 
         
@@ -841,30 +919,45 @@ function onAuthorizeSuccessful() {
           $('#project-select').val('none')
     };
 
-    var updateGoalList = function(a){
+    var updateGoalList = function(a, goalSet){
       // var a = $('#project-select option:selected').val();
     // var $this = $(this);
     console.log(a);
 
     // $('#goal-options').fadeIn();
-    createGoalsOptions(a);
+    createGoalsOptions(a, goalSet);
+
 
    };
 
-    $('#today').on('click', function(){
+    $(document.body).on('click', '.today', function(){
+
       console.log("clicked today button");
+      console.log($(this).val());
+      console.log($(this).attr("class"));
+       var taskId = $(this).val();
         var d = new Date;
         var dateDay = d.getDate();
         var dateMonth = d.getMonth() + 1;
         var dateYear = d.getFullYear();
         var dateStart = dateDay +"/" + dateMonth + "/" + dateYear;
 
-      $('#start_date').val(dateStart);
-      $('#end_date').val(dateStart);
+      $('#start_date'+taskId).val(dateStart);
+      $('#end_date'+taskId).val(dateStart);
+
+      if($('#start_date'+taskId).hasClass("border-red")){
+        $('#start_date'+taskId).removeClass("border-red")
+      };
+
+
+      if($('#end_date'+taskId).hasClass("border-red")){
+        $('#end_date'+taskId).removeClass("border-red")
+      };
     });
 
-       $('#tomorrow').on('click', function(){
+       $(document.body).on('click', 'button.tomorrow', function(){
       console.log("clicked tomorrow button");
+        var taskId = $(this).val();
         var tomorrow = new Date;
         var d = new Date;
         var dateDay = d.getDate();
@@ -878,9 +971,17 @@ function onAuthorizeSuccessful() {
         var dateYearEnd = tomorrow.getFullYear();
         var dateEnd = dateDayEnd + "/" + dateMonthEnd + "/" + dateYearEnd;
 
+        $('#start_date'+taskId).val(dateStart);
+        $('#end_date'+taskId).val(dateEnd);
 
-      $('#start_date').val(dateStart);
-      $('#end_date').val(dateEnd);
+      if($('#start_date'+taskId).hasClass("border-red")){
+        $('#start_date'+taskId).removeClass("border-red")
+      };
+
+
+      if($('#end_date'+taskId).hasClass("border-red")){
+        $('#end_date'+taskId).removeClass("border-red")
+      };
     });
 
 
@@ -895,7 +996,7 @@ function onAuthorizeSuccessful() {
 
         goalId = $('.goalSel').val();
 
-        createTaskRecord(goalId)
+        createTaskRecord(goalId, 0)
 
         addNewComment(taskId, "effort");
         $('#menu-container').removeClass('frozen');
@@ -1404,24 +1505,170 @@ taskInputReset();
 createProjectList(1);
 $('#comments-panel').hide();
 
-// var resindexColour = function(taskId, resindex){
-//   switch(resindex){
-//     case (>1 && <1.5):
+  // $('#top10').click(function(){
+  //   console.log("in top 10 easy !!");
+  //    searchButtonCombinations();
+  //   $(this).toggleClass("btn-danger");
+  //   createTaskRecord(0, 1);
 
-//     $('.resindex.badge[value='+ taskId']').addClass('warning');
+  // });
 
-//     break;
-//     case (>0 && <1):
-//     $('.resindex.badge[value='+ taskId']').addClass('success');
+  // $('#trello_search').click(function(){
+  //   console.log("in trello_search easy !!");
+  //   console.log($(this).attr("id"));
+  //   $(this).toggleClass("btn-danger");
+  //   if($(this).hasClass("btn-danger") && $('#top10').hasClass("btn-danger")){
+  //     createTaskRecord(0, 4);
+  //     if($("#non_trello_search").hasClass("btn-danger")){
+  //       $("#non_trello_search").toggleClass("btn-danger");
+  //     };
+  //   }else if($(this).hasClass("btn-danger")){
+  //     createTaskRecord(0, 2);
 
-//     break;
+  //     if($("#non_trello_search").hasClass("btn-danger")){
+  //       $("#non_trello_search").toggleClass("btn-danger");
+  //     };
+  //   };
+  // });
 
-//     case (>1.51):
-//        $('.resindex.badge[value='+ taskId']').addClass('danger');
-//     break;
-//   }
+    $('#trello_search').click(function(){
+    console.log("in trello easy !!");
+    var searchStringTo = $(this).attr("id");
+    // createTaskRecord(0, 3);
+    searchButtonCombinations(searchStringTo);
+  });
 
-// }
+      $('#top10').click(function(){
+    console.log("in top10 easy !!");
+    var searchStringTo = $(this).attr("id");
+    // createTaskRecord(0, 3);
+    searchButtonCombinations(searchStringTo);
+  });
+
+
+  $('#non_trello_search').click(function(){
+    console.log("in non_trello easy !!");
+    var searchStringTo = $(this).attr("id");
+    // createTaskRecord(0, 3);
+    searchButtonCombinations(searchStringTo);
+  });
+
+     var searchButtonCombinations = function(searchString){
+       console.log("checking combinations....");
+      if(searchString != "reset_afer_update"){
+      $("#" + searchString).toggleClass("btn-danger");
+      };
+
+      console.log("checking combinations....");
+
+   
+      var trelloSearchStatus = $("#trello_search").hasClass("btn-danger");
+      var nonTrelloSearchStatus = $("#non_trello_search").hasClass("btn-danger");
+      var top10Status = $("#top10").hasClass("btn-danger");
+
+      console.log("top10 " + top10Status + " trello " + trelloSearchStatus + "nontrello " + nonTrelloSearchStatus);
+
+      // console.log("checking combinations....");
+      // console.log(nonTrelloSearchStatus);
+
+      if(trelloSearchStatus == false && top10Status == false && nonTrelloSearchStatus==false){
+
+        console.log("this will clear the panel");
+        $("#task-list-group").html("");
+        $('#things h4').text("Jobs to do...")
+
+      }else{
+    
+        switch(searchString){
+          case "non_trello_search":
+
+            if(trelloSearchStatus == true){
+              $("#trello_search").removeClass("btn-danger");
+            };
+
+              if(top10Status==true && nonTrelloSearchStatus == false){
+                createTaskRecord(-1, 1);
+              };
+            
+
+            if(top10Status == true && nonTrelloSearchStatus == true ){
+              console.log("top 10 and non trello")
+              createTaskRecord(-1, 5);
+            }else if(nonTrelloSearchStatus== true){
+              console.log("passed conditions");
+              createTaskRecord(-1, 3);
+          
+         
+            };
+          break;
+
+          case "trello_search":
+
+            if(nonTrelloSearchStatus == true  && trelloSearchStatus== true){
+              $("#non_trello_search").removeClass("btn-danger");
+          
+            };
+              if(top10Status==true && trelloSearchStatus== false){
+                createTaskRecord(-1, 1);
+              };
+          
+
+            if(top10Status == true && trelloSearchStatus == true ){
+              console.log("top 10 and  trello")
+              createTaskRecord(-1, 4);
+            }else{
+              console.log("trello only");
+              createTaskRecord(-1, 2);
+            };
+          break;
+
+          case "top10":
+
+           if(top10Status == true && nonTrelloSearchStatus == false && trelloSearchStatus == false){
+              console.log("just top10");
+              createTaskRecord(-1, 1);
+            }else{
+              if(nonTrelloSearchStatus == true){
+                createTaskRecord(-1, 3);
+              }else{
+                createTaskRecord(-1, 2);
+              };
+            }
+        
+            if(nonTrelloSearchStatus == true && top10Status == true ){
+              console.log("top 10 and non trello")
+              createTaskRecord(-1, 5);
+            };
+
+              if(trelloSearchStatus == true && top10Status == true ){
+              console.log("top 10 and trello")
+              createTaskRecord(-1, 4);
+            };
+          break;
+          case "reset_afer_update":
+            if(top10Status == true && trelloSearchStatus == false && nonTrelloSearchStatus== false){
+               createTaskRecord(-1, 1);
+            }else if(top10Status == true && trelloSearchStatus == true && nonTrelloSearchStatus== false){
+              createTaskRecord(-1, 4);
+            }else if(top10Status == true && trelloSearchStatus == false && nonTrelloSearchStatus== true){
+              createTaskRecord(-1, 5);
+            }else if(top10Status == false && trelloSearchStatus == false && nonTrelloSearchStatus== true){
+                 createTaskRecord(-1, 3);
+            }else{
+              createTaskRecord(-1, 2);
+            };
+            break;
+          };
+        };
+      };
+
+      console.log($(".trello_message").text() == "Get your Trello boards");
+
+    if($(".trello_message").text() == "Get your Trello boards"){
+      console.log("configuring home page");
+      $('#trello_search').fadeOut();
+      $('#non_trello_search').text("Show all cards");
+     };
 
 };
 
