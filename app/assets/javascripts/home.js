@@ -1116,12 +1116,14 @@ var clock = function(){
         $('#type-select').append(initialCommentType);
 
         $.getJSON("/comment_types", function(data){
-          // console.log(data);
+          console.log("comment types");
+          console.log(data);
 
           $.each(data, function(i, commentType){
+            console.log(commentType.comment_switch);
 
           if(commentType.comment_switch == "user"){
-
+            console.log(commentType);
 
              typeItem = '<option value='+ commentType.id + 'id='+commentType.comment_switch + '>'+ commentType.name +'</option>';
            $('#type-select').append(typeItem);

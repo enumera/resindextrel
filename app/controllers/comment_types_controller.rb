@@ -6,7 +6,7 @@ class CommentTypesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @comment_types }
+      format.json { render json: @comment_types, root: false }
     end
   end
 
