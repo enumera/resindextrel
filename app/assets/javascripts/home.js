@@ -284,6 +284,7 @@ var validateTaskFormAfterError = function(changeItem){
       var goal_id;
       var taskID =$('.task-form-header').attr("id");
       console.log(taskID);
+      console.log(sourceId);
 
       var data = {};
 
@@ -312,6 +313,7 @@ var validateTaskFormAfterError = function(changeItem){
 
         console.log(data);
 
+
     if($('.task-form-header').attr("id") =="" && sourceId == -1){
 
       path = "/users/" + gon.user_id + "/tasks";
@@ -332,15 +334,33 @@ var validateTaskFormAfterError = function(changeItem){
        method = "PUT";
     }
     //comment out section
-
+ console.log("sending information...");
       $.ajax({ 
+     
         url: path, 
         method: method,
         data: {task: data},
         dataType: "json"
-      }).success(function(){
+      })
   
-        searchButtonCombinations("reset_afer_update")
+      console.log("in here now...");
+        // searchButtonCombinations("reset_afer_update")
+        // if(method == "PUT"){
+        //   if(taskID == ""){
+        //     showComments(sourceId)
+        //   }else{
+        //   showComments(taskID, "resindex");
+        //   };
+        // };
+        // taskInputReset();
+        postCreateTaskJobs(sourceId, taskID, method)
+
+      
+       };
+
+       var postCreateTaskJobs = function(sourceId, taskId, method){
+        console.log("in post jobs");
+         searchButtonCombinations("reset_afer_update");
         if(method == "PUT"){
           if(taskID == ""){
             showComments(sourceId)
@@ -350,8 +370,7 @@ var validateTaskFormAfterError = function(changeItem){
         };
         taskInputReset();
 
-        });
-       };
+       }
 
       $(document.body).on('click','#project-button', function(){
         if(!$('#menu-container').hasClass('frozen')){
