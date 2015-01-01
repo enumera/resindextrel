@@ -297,7 +297,7 @@ var validateTaskFormAfterError = function(changeItem){
         data['start_date'] = $('#start_date'+ sourceId).val();
         data['end_date'] = $('#end_date'+ sourceId).val();
         data['estimate'] = $('#estimate-select'+sourceId +' option:selected').val();
-        data['completed'] = $('#completed' + taskID).is(":checked");
+        data['completed'] = false
      
 
       if(sourceId == -1){
@@ -306,12 +306,7 @@ var validateTaskFormAfterError = function(changeItem){
         data['card_name'] = $('#task_title').val();
         data['card_description'] = $('#task_description').val();
       };
-      // }else{
-
-      //   data['project_id'] = $('#projectSource'+ sourceId).val();
-      //   data['goal_id'] = $('#goalSource'+ sourceId).val();
-
-      // };
+ 
 
         console.log(data);
 
@@ -404,7 +399,7 @@ var validateTaskFormAfterError = function(changeItem){
             goalOptions.html('');
 
             projectInitialOption = '<option value="none">Select prize</option>';
-            menuItems.append('<button class="btn btn-lg" id="project-button">Projects</button>');
+            menuItems.append('<button class="btn" id="project-button">Show projects</button>');
 
             goalInitialOption = '<option value="none">Select a project first</option>';
 
@@ -438,6 +433,8 @@ var validateTaskFormAfterError = function(changeItem){
     $(document.body).on('click', '.completed', function(e){
       e.preventDefault();
 
+      $(this).toggleClass('done');
+
       console.log("in completed");
       console.log($(this));
       var taskId = $(this).val();
@@ -445,20 +442,26 @@ var validateTaskFormAfterError = function(changeItem){
       console.log(gon.user_id);
       var path = "users/"+ gon.user_id +"/tasks/" + taskId;
       var method = "PUT";
-      var data = {};
+      var dataToSend = {};
 
-      data["completed"] = $("#completed" + taskId).is(":checked");
+      if($(this).hasClass('done')){
+        dataToSend["completed"] = true;
+        $(this).text('Reopen');
+
+      }else{
+      dataToSend["completed"] = false;
+      $(this).text('Mark Complete');
+      };
 
 
       $.ajax({
         url: path,
         method: method,
-        data: {task: data},
+        data: {task: dataToSend},
         dataType: "json"
       }).success(function(data){
         console.log("here");
         console.log(data);
-
       });
     });
 
@@ -617,14 +620,14 @@ var validateTaskFormAfterError = function(changeItem){
             };
 
        
-            listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' id="taskSource'+task.id+'" >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><p style="color:red"><b>'+requirement +'</b></p><div id = "resindex-wrapper2"><div id="hours-wrapper"><div class="control-group"><div class="controls"><select class="form-control estimate-sel" id="estimate-select'+task.id+'"><option value="none">How long to finish</option><option value="1">One hour</option><option value="2">Two hours</option><option value="3">Three hours</option><option value="4">Four hours</option><option value="5">Five hours</option><option value="6">Six hours</option><option value="7">Seven hours</option><option value="8">Eight hours</option><option value="9">Nine hours</option><option value="10">Ten hours</option></select></div></div></div><div id="difficulty-wrapper"><div class="control-group"><div class="controls"><select class="form-control difficulty-sel" id="difficulty-select'+task.id+'"><option value="none">Difficulty</option><option value="1">Easy-done it before</option><option value="2">Something slightly different</option><option value="3">Tricky</option><option value="4">Really difficult</option><option value="5">Mission Impossible!</option></select></div></div></div><div id="importance-wrapper"><div class="control-group project-options"><div class="controls"><select class="form-control importance-sel" id="importance-select'+task.id+'"><option value="none">Importance</option><option value="5">Would do</option><option value="4">Could do soon</option><option value="3">Should do this asap</option><option value="2">Someone/I needs this</option><option value="1">Someone/I REALLY needs this!</option></select></div></div></div></div><hr><div id="dates-wrapper"><p>To be done...</p><button class="btn btn-danger today" value='+task.id+'>Today</button><button class="btn btn-warning tomorrow" value='+task.id+'>Tomorrow</button><button class="btn btn-info set_dates">I want to set dates</button><hr><div class="dates"><label for="start_date">Start Date</label><input type="text" id="start_date'+task.id + '"class="start_date_sel" name="start_date"></div><div class="dates"><label for="end_date">End Date</label><input type="text" id="end_date'+ task.id + '" class="start_date_sel" name="end_date"></div></div></div><div class="control-group" id="submit-button-group"><div class="controls"><button class="btn btn-primary new-task" value='+task.id+'>Set Resindex</button><button class="btn btn-warning" id="refresh">Clear</button></div><p id="projectSource'+task.id +'"> Project : '+task.project.name +'</p></div>';  
+            listItem = '<div class="panel panel-default tpanel" value='+ task.id + '><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' id="taskSource'+task.id+'" >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><p style="color:red"><b>'+requirement +'</b></p><div id = "resindex-wrapper2"><div id="hours-wrapper"><div class="control-group"><div class="controls"><select class="form-control estimate-sel" id="estimate-select'+task.id+'"><option value="none">How long to finish</option><option value="1">One hour</option><option value="2">Two hours</option><option value="3">Three hours</option><option value="4">Four hours</option><option value="5">Five hours</option><option value="6">Six hours</option><option value="7">Seven hours</option><option value="8">Eight hours</option><option value="9">Nine hours</option><option value="10">Ten hours</option></select></div></div></div><div id="difficulty-wrapper"><div class="control-group"><div class="controls"><select class="form-control difficulty-sel" id="difficulty-select'+task.id+'"><option value="none">Difficulty</option><option value="1">Easy-done it before</option><option value="2">Something slightly different</option><option value="3">Tricky</option><option value="4">Really difficult</option><option value="5">Mission Impossible!</option></select></div></div></div><div id="importance-wrapper"><div class="control-group project-options"><div class="controls"><select class="form-control importance-sel" id="importance-select'+task.id+'"><option value="none">Importance</option><option value="5">Would do</option><option value="4">Could do soon</option><option value="3">Should do this asap</option><option value="2">Someone/I needs this</option><option value="1">Someone/I REALLY needs this!</option></select></div></div></div></div><hr><div id="dates-wrapper"><p>To be done...</p><button class="btn btn-danger today" value='+task.id+'>Today</button><button class="btn btn-warning tomorrow" value='+task.id+'>Tomorrow</button><button class="btn btn-info set_dates">I want to set dates</button><hr><div class="dates"><label for="start_date">Start Date</label><input type="text" id="start_date'+task.id + '"class="start_date_sel" name="start_date"></div><div class="dates"><label for="end_date">End Date</label><input type="text" id="end_date'+ task.id + '" class="start_date_sel" name="end_date"></div></div></div><div class="control-group" id="submit-button-group"><div class="controls"><button class="btn btn-primary new-task" value='+task.id+'>Set Resindex</button><button class="btn btn-warning" id="refresh">Clear</button></div><p id="projectSource'+task.id +'"> Project : '+task.project.name +'</p></div>';  
           }else{
 
-              listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right resindex badge" value='+task.id +'> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work session</button></span></p><p> Start date :' + task.start_date +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + ' >Edit task</button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div><input type="hidden" id="projectSource'+task.id+'" value="'+ task.project_id +'"><input type="hidden" id="goalSource'+task.id+'" value="'+task.goal_id+'"><p id="projectSource'+task.id +'"> Project : '+task.project.name +'</p></div>';
+              listItem = '<div class="panel panel-default tpanel" value='+ task.id + '><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><button class="viewNotesButton btn btn-xs btn-warning pull-right" value='+ task.id +' >View Notes</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><input type="hidden" value='+ task.id + '><span class ="pull-right resindex badge" value='+task.id +'> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work session</button></span></p><p> The task is set to start on '+ task.start_date +' and end on '+ task.end_date +'<span><div class="pull-left"><button class="viewDetails btn btn-xs btn-info" value='+task.id+'>View description</button></div><div class="pull-right" value='+ task.id +'><button class=" btn btn-xs completed btn-success" id="completed'+task.id +'"name="completed" value='+ task.id +'>Mark Complete</button></div></span></p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + '>Edit task</button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div><p id="projectSource'+task.id +'"> Project : '+task.project.name +'<span><button class="btn btn-xs saveDescriptionEdit pull-right btn-warning" value='+ task.id +' style="display:none">Save edit</button></span></div></div>';
                };
               listItems.append(listItem);
               if(task.completed===true){
-                $('#completed' + task.id).attr('checked', true);
+                $('#completed' + task.id).text("Reopen");
               };
             };
           });
@@ -635,6 +638,9 @@ var validateTaskFormAfterError = function(changeItem){
           searchResultsText(numberOfTasks, search_type);
       });
     };
+
+     
+    
 
       var searchResultsText = function(numberOfTasks, search_type_x){
         // console.log()
@@ -673,6 +679,28 @@ var validateTaskFormAfterError = function(changeItem){
 
   // setup resindex inputs
 
+    $(document.body).on('click', '.viewDetails', function(e){
+      console.log($(this).val());
+      var taskId = $(this).val();
+        if($('.task_description_on_task[value='+taskId+']').hasClass("in-view")){
+        $('.task_description_on_task[value='+taskId+']').slideUp();
+        $('.task_description_on_task[value='+taskId+']').toggleClass("in-view");
+        $('.saveDescriptionEdit[value='+taskId+']').hide();
+        }else{
+        $('.task_description_on_task[value='+taskId+']').slideDown();
+        $('.task_description_on_task[value='+taskId+']').toggleClass("in-view");
+        $('.saveDescriptionEdit[value='+taskId+']').show();
+      };
+    });
+
+    $(document.body).on('click', '.saveDescriptionEdit', function(e){
+      var taskId = $(this).val();
+      $('.task_description_on_task[value='+taskId+']').slideUp();
+      $('.task_description_on_task[value='+taskId+']').toggleClass("in-view");
+      $('.saveDescriptionEdit[value='+taskId+']').hide();
+
+      updateTask(gon.user_id, taskId)
+    });
 
       $( "#start_date" ).datepicker({
       defaultDate: "+1w",
@@ -796,7 +824,7 @@ var validateTaskFormAfterError = function(changeItem){
   });
 
 
-    $(document.body).on('click', '.editButton', function(){
+    $(document.body).on('click', '.editButton', function(e){
       e.preventDefault();
       $this = $(this);
       console.log($this);
@@ -1409,7 +1437,7 @@ dialog = $( "#new-project-modal" ).dialog({
 
 
 
-$(document.body).on('click', '.task-panel', function(e){
+$(document.body).on('click', '.viewNotesButton', function(e){
   e.preventDefault();
 $this = $(this);
 // console.log($this);

@@ -8,6 +8,10 @@
   overflow: auto;
 }
 
+.completed{
+  margin-left: 5px;
+}
+
 .border-red{
 
   border-color: red;
@@ -110,6 +114,10 @@ hr{
 margin-bottom: 10px;
 
 
+}
+
+.commentButton{
+  margin-left: 5px;
 }
 
 #comments-panel{
