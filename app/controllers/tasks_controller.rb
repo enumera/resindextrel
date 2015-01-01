@@ -21,7 +21,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @tasks }
+      format.json { render json: @tasks, root: false }
     end
   end
 
@@ -110,10 +110,7 @@ class TasksController < ApplicationController
 
       end
 
-
       @task.resindex = @task.calculate_resindex(@task)
-
-
 
       effort_update = {}
       effort_update["effort_update"] = {}
@@ -123,7 +120,7 @@ class TasksController < ApplicationController
       after_res = @task.resindex
       @task.update_attributes(effort_update[:effort_update])
 
-      comment_text = "Resindex changed from #{before_res} to #{after_res}. <p><sub>Work done by #{@user.first_name} on #{Time.now}.</sub></p>"
+      comment_text = "Resindex changed from #{before_res} to #{after_res}. <p><sub>Work done of #{hours} hours and #{minutes} minutes by #{@user.first_name} on #{Time.now}.</sub></p>"
 
       Comment.create(task_id: @task.id, comment_type_id: 6, user_id: @user.id, ctext: comment_text, before_res: before_res, after_res: after_res)
        # binding.pry
@@ -179,7 +176,7 @@ class TasksController < ApplicationController
     # binding.pry
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @tasks }
+      format.json { render json: @tasks, root: false }
     end
 
   end
@@ -191,7 +188,7 @@ class TasksController < ApplicationController
     # binding.pry
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @tasks }
+      format.json { render json: @tasks, root: false }
     end
   end
 
@@ -202,7 +199,7 @@ class TasksController < ApplicationController
     # binding.pry
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @tasks }
+      format.json { render json: @tasks, root: false }
     end
   end
 
@@ -213,7 +210,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @tasks }
+      format.json { render json: @tasks, root: false }
     end
   end
 
@@ -225,7 +222,7 @@ class TasksController < ApplicationController
     # binding.pry
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @tasks }
+      format.json { render json: @tasks, root: false }
     end
   end
 

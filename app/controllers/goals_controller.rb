@@ -14,7 +14,7 @@ class GoalsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @goals }
+      format.json { render json: @goals, root: false }
     end
   end
 

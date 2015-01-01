@@ -16,22 +16,15 @@ var main = function(){
   var dialogGoal;
   var dialogComment;
   var username;
+  var sessionClock;
 
- // var dateToFormat = function(){
- //  //this function will be fed a date and reformatted as a string.
- //  // all dates being sent back to the server should be in the ruby format required.
-
- // }
+var refreshUserProjectInfo = function(){
 
  $('#user_tasks').text("incomplete tasks : " + gon.user_tasks + " ");
  $('#user_projects').text("projects: " +gon.user_projects + " ");
  $('#user_goals').text("goals : " + gon.user_goals + " ");
+};
 
- // if($('.trello_messsage').text() == "Get your Trello boards"){
- //  console.log("configuring home page");
- //  $('#trello_search').fadeOut();
- //  $('#non_trello_search').text("Show all cards");
- // };
 
 var resindexColour = function(taskId, resindex){
   // console.log("in resindex colour");
@@ -83,15 +76,6 @@ var resindexColour = function(taskId, resindex){
       $('#comment-text').removeClass("border-red");
     };
  });
-
-
- // $('#task_title').keypress(function(){
-
- //  // console.log("Im typing in the title");
- //    if($('#task_title').hasClass("border-red")){
- //      $('#task_title').removeClass("border-red");
- //    };
- // });
 
 
  var validateTaskForm = function(taskId){
@@ -304,26 +288,14 @@ var validateTaskFormAfterError = function(changeItem){
       var data = {};
 
 
-        // data['importance'] = $('#importance').val();
+
         data['importance'] = $('#importance-select'+ sourceId +' option:selected').val();
         data['difficulty'] = $('#difficulty-select'+ sourceId +' option:selected').val();
-        // data['difficulty'] = $('#difficulty').val();
         data['start_date'] = $('#start_date'+ sourceId).val();
         data['end_date'] = $('#end_date'+ sourceId).val();
-
-        // data['start_date'] = startDate;
-        // data['end_date'] = endDate;
-        // data['estimate'] = $('#hours_estimate').val();
-        // data['goal_id'] = $('#goal-options option:selected').val();
         data['estimate'] = $('#estimate-select'+sourceId +' option:selected').val();
-
         data['completed'] = $('#completed' + taskID).is(":checked");
-        // data['card_id'] = cardDetails["card_id"];
-        // data['card_name'] = cardDetails["name"];
-        // data['card_name'] = $('#task_title').val();
-        // data['card_description'] = $('#task_description').val();
-        // data['url'] = cardDetails["url"];
-        // data['shortlink'] = cardDetails["shortlink"] ;
+     
 
       if(sourceId == -1){
         data['goal_id'] = $('#goal-select option:selected').val();
@@ -410,7 +382,7 @@ var validateTaskFormAfterError = function(changeItem){
             goalOptions.html('');
 
             projectInitialOption = '<option value="none">Select prize</option>';
-            menuItems.append('<button id="project-button">Projects</button>');
+            menuItems.append('<button class="btn btn-lg" id="project-button">Projects</button>');
 
             goalInitialOption = '<option value="none">Select a project first</option>';
 
@@ -426,7 +398,8 @@ var validateTaskFormAfterError = function(changeItem){
                 }else{
                   x = project.no_of_goals;
                 };
-              projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Stuff</button><div class="well well-sm projects" id=' + project.id + '>' + project.name + '<span class ="pull-right badge">' + x + '</span></div></div>';
+
+              projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Stuff</button><div class="well well-sm projects" id=' + project.id + '><button class="btn btn-sm">' + project.name + '</button><span class ="pull-right badge">' + x + '</span></div></div>';
               
               projectOption = '<option value='+project.id+ '>'+ project.name +'</option>'
               menuItems.append(projectItem);
@@ -470,15 +443,13 @@ var validateTaskFormAfterError = function(changeItem){
     //   console.log("hello");
     // });
 
+//this function creates the goal list in the Control frame.
 
       var createGoalsList = function(projectID){
         var x;
         console.log("in createGoalsList")
 
         var menuItems = $('#menu-container');
-  
-
-        // menuItems.html('');
 
         if($('.goals').length==0){
 
@@ -493,14 +464,15 @@ var validateTaskFormAfterError = function(changeItem){
                 }else{
                   x = goal.no_of_tasks;
                 };
-              var goalItem = '<div class="well well-sm goals project' + projectID + ' " id=' + goal.id + '> ' + goal.name + '<span class ="pull-right badge">  ' + x + '</span></div>';
+              var goalItem = '<div class="well well-sm goals project' + projectID + ' " id=' + goal.id + '><button class="btn btn-sm"> ' + goal.name + '</button><span class ="pull-right badge">  ' + x + '</span></div>';
               menuItems.append(goalItem);
-
-        });
-         
-      });
+            }); 
+          });
+        };
       };
-    };
+
+    //this function create the options available in the goal select on the new/update task
+
      var createGoalsOptions = function(projectID, goalSet){
 
         // var menuItems = $('#menu-container');
@@ -577,12 +549,13 @@ var validateTaskFormAfterError = function(changeItem){
         $.getJSON(search_url, function(data){
 
             var listItems = $("#task-list-group");
-            console.log(data);
+            // console.log(data);
 
             listItems.html("");
             // listItems.hide();
 
          // recordTime = '<button id='+ card.shortlink + ' class="recordButton" >Record time against task</button>'
+         console.log(data);
 
           $.each(data, function(i, task){
 
@@ -610,10 +583,10 @@ var validateTaskFormAfterError = function(changeItem){
             }
             // console.log(task.completed);
             
-          if (task.resindex == 0 || task.resindex == 999){
+          if (task.resindex == 0 || task.resindex == 999 || task.resindex == null){
             // console.log(task)
 
-            if(task.resindex == 0){
+            if(task.resindex == 0 || task.resindex == null){
 
               var requirement = "Resindex has not been set for this job, please set the parameters below to ensure its ranking.";
             }else{
@@ -621,10 +594,10 @@ var validateTaskFormAfterError = function(changeItem){
             };
 
        
-            listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' id="taskSource'+task.id+'" >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><p>'+requirement +'<div id = "resindex-wrapper2"><div id="hours-wrapper"><div class="control-group"><div class="controls"><select class="form-control estimate-sel" id="estimate-select'+task.id+'"><option value="none">How long to finish</option><option value="1">One hour</option><option value="2">Two hours</option><option value="3">Three hours</option><option value="4">Four hours</option><option value="5">Five hours</option><option value="6">Six hours</option><option value="7">Seven hours</option><option value="8">Eight hours</option><option value="9">Nine hours</option><option value="10">Ten hours</option></select></div></div></div><div id="difficulty-wrapper"><div class="control-group"><div class="controls"><select class="form-control difficulty-sel" id="difficulty-select'+task.id+'"><option value="none">Difficulty</option><option value="1">Easy-done it before</option><option value="2">Something slightly different</option><option value="3">Tricky</option><option value="4">Really difficult</option><option value="5">Mission Impossible!</option></select></div></div></div><div id="importance-wrapper"><div class="control-group project-options"><div class="controls"><select class="form-control importance-sel" id="importance-select'+task.id+'"><option value="none">Importance</option><option value="5">Would do</option><option value="4">Could do soon</option><option value="3">Should do this asap</option><option value="2">Someone/I needs this</option><option value="1">Someone/I REALLY needs this!</option></select></div></div></div></div><hr><div id="dates-wrapper"><p>To be done...</p><button class="btn btn-danger today" value='+task.id+'>Today</button><button class="btn btn-warning tomorrow" value='+task.id+'>Tomorrow</button><button class="btn btn-info set_dates">I want to set dates</button><hr><div class="dates"><label for="start_date">Start Date</label><input type="text" id="start_date'+task.id + '"class="start_date_sel" name="start_date"></div><div class="dates"><label for="end_date">End Date</label><input type="text" id="end_date'+ task.id + '" class="start_date_sel" name="end_date"></div></div></div><div class="control-group" id="submit-button-group"><div class="controls"><button class="btn btn-primary new-task" value='+task.id+'>Set Resindex</button><button class="btn btn-warning" id="refresh">Clear</button></div><input type="hidden" id="projectSource'+task.id+'" value="'+ task.project_id +'"><input type="hidden" id="goalSource'+task.id+'" value="'+task.goal_id+'"></div>';  
+            listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' id="taskSource'+task.id+'" >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><p style="color:red"><b>'+requirement +'</b></p><div id = "resindex-wrapper2"><div id="hours-wrapper"><div class="control-group"><div class="controls"><select class="form-control estimate-sel" id="estimate-select'+task.id+'"><option value="none">How long to finish</option><option value="1">One hour</option><option value="2">Two hours</option><option value="3">Three hours</option><option value="4">Four hours</option><option value="5">Five hours</option><option value="6">Six hours</option><option value="7">Seven hours</option><option value="8">Eight hours</option><option value="9">Nine hours</option><option value="10">Ten hours</option></select></div></div></div><div id="difficulty-wrapper"><div class="control-group"><div class="controls"><select class="form-control difficulty-sel" id="difficulty-select'+task.id+'"><option value="none">Difficulty</option><option value="1">Easy-done it before</option><option value="2">Something slightly different</option><option value="3">Tricky</option><option value="4">Really difficult</option><option value="5">Mission Impossible!</option></select></div></div></div><div id="importance-wrapper"><div class="control-group project-options"><div class="controls"><select class="form-control importance-sel" id="importance-select'+task.id+'"><option value="none">Importance</option><option value="5">Would do</option><option value="4">Could do soon</option><option value="3">Should do this asap</option><option value="2">Someone/I needs this</option><option value="1">Someone/I REALLY needs this!</option></select></div></div></div></div><hr><div id="dates-wrapper"><p>To be done...</p><button class="btn btn-danger today" value='+task.id+'>Today</button><button class="btn btn-warning tomorrow" value='+task.id+'>Tomorrow</button><button class="btn btn-info set_dates">I want to set dates</button><hr><div class="dates"><label for="start_date">Start Date</label><input type="text" id="start_date'+task.id + '"class="start_date_sel" name="start_date"></div><div class="dates"><label for="end_date">End Date</label><input type="text" id="end_date'+ task.id + '" class="start_date_sel" name="end_date"></div></div></div><div class="control-group" id="submit-button-group"><div class="controls"><button class="btn btn-primary new-task" value='+task.id+'>Set Resindex</button><button class="btn btn-warning" id="refresh">Clear</button></div><p id="projectSource'+task.id +'"> Project : '+task.project.name +'</p></div>';  
           }else{
 
-              listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right resindex badge" value='+task.id +'> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work</button></span></p><p> Start date :' + task.start_date +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + ' >Edit task</button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div><input type="hidden" id="projectSource'+task.id+'" value="'+ task.project_id +'"><input type="hidden" id="goalSource'+task.id+'" value="'+task.goal_id+'"></div>';
+              listItem = '<div class="panel panel-default tpanel" value='+ task.id + ' ><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'>'+ task.id + '<span class ="pull-right resindex badge" value='+task.id +'> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button id='+ task.id + ' class="recordButton btn btn-xs btn-warning" >Start work session</button></span></p><p> Start date :' + task.start_date +'<span><div class="pull-right" value='+ task.id +'><label for="completed">Completed</label><input type="checkbox" class="completed" id="completed'+task.id +'" name="completed" value='+ task.id +'></div></span></p> <p>End Date : '+ task.end_date + '</p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + ' >Edit task</button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div><input type="hidden" id="projectSource'+task.id+'" value="'+ task.project_id +'"><input type="hidden" id="goalSource'+task.id+'" value="'+task.goal_id+'"><p id="projectSource'+task.id +'"> Project : '+task.project.name +'</p></div>';
                };
               listItems.append(listItem);
               if(task.completed===true){
@@ -721,37 +694,10 @@ var validateTaskFormAfterError = function(changeItem){
     }, 600000);
   };
 
-  $('#connect-trello').click(function(){
-    console.log("in trello");
 
-    $.ajax({url:"https://api.trello.com/1/client.js?key=8e474beb4e008617593dab5c21cd61ea"}).success(function(){
 
-      AuthenticateTrello();
+//this listener listens to event on the .projects class does not work on mobiles or tablets.
 
-    });
-  });
-
-    // %script{src: "//api.trello.com/1/client.js?key=8e474beb4e008617593dab5c21cd61ea"}
-
-function AuthenticateTrello() {
-  Trello.authorize({
-    name: "resindex",
-    type: "popup",
-    interactive: true,
-    expiration: "never",
-    persist: true,
-    success: function () { onAuthorizeSuccessful(); },
-    scope: { write: false, read: true },
-  });
-}
-function onAuthorizeSuccessful() {
-  var token = Trello.token();
-  window.location.replace("/auth?token=" + token);
-}
-
-// %a{href: "javascript:void(0)", onClick: "AuthenticateTrello()"}
-//   Connect With Trello
-// trello
 
   $(document.body).on('click', '.projects', function(){
     if(!$('#menu-container').hasClass('frozen')){
@@ -762,16 +708,12 @@ function onAuthorizeSuccessful() {
           console.log("this is the project ID");
           console.log($this)
 
-          // if ($this != $('button.new[value'+ projectID + ']')){
-
           $('button.new-goal[value='+ projectID + ']').addClass("selectedProject");
 
           $this.addClass("selectedProject");
-
           $this.removeClass("well-sm");
           $this.addClass("well-lg");
           $('.projectSel').val(projectID);
-
 
           $('.projects:not(.selectedProject)').fadeOut(1000);
           $('.new-goal:not(.selectedProject').fadeOut(1000);
@@ -788,8 +730,24 @@ function onAuthorizeSuccessful() {
         // }
           createGoalsList(projectID);
         };
+      };
+    });
+
+
+
+  var showProjects = function(projectsToShow){
+    console.log(projectsToShow);
+    $('.projects').fadeOut();
+    $('.new-goal').fadeOut();
+    
+    $.each(projectsToShow, function(i, project){
+      console.log('.projects[id='+project+']')
+      $('.projects[id='+project+']').fadeIn();
+      $('.new-goal[value='+project+']').fadeIn();
+    });
   };
-  });
+
+// This function listens for events on the goals class does not work on mobiles or tablets.
 
   $(document.body).on('click', '.goals',function(){
     if(!$('#menu-container').hasClass('frozen')){
@@ -829,35 +787,21 @@ function onAuthorizeSuccessful() {
 
           $('.task-form-header').attr('id', taskID);
 
-          // $('#slider-estimate').slider({value: data.estimate});
-          // $('#hours_estimate').val(data.estimate);
-          // $('#slider-difficulty').slider({ value: data.difficulty });
-          // $('#difficulty').val(data.difficulty);
-          // $('#slider-importance').slider({value: data.importance});
-          // $('#importance').val(data.importance)
+        
           $('#estimate-select-1').val(data.estimate);
           $('#difficulty-select-1').val(data.difficulty);
           $('#importance-select-1').val(data.importance);
-          // $('#goal-options').fadeOut();
           $('#project-select').val(data.project_id);
-          // updateGoalList(data.project_id);
-          // $('#goal-select').val(data.goal_id);
-          // $('#goal-select').show();
           $('#start_date-1').val(data.start_date);
           $('#end_date-1').val(data.end_date);
-          // $('#task_title').text(data.card_name);
           $('#task_title').val(data.card_name);
           $('#task_description').val(data.card_description);
           $('#new-task').text('Update');
           $('#new-task').addClass('update');
           $('.task-form-header').text('Update Task');
-            updateGoalList(data.project_id, data.goal_id);
-          // $('#goal-select').val(data.goal_id);
-          //need to add project and goal
-
-        
+            updateGoalList(data.project_id, data.goal_id);  
+        });
       });
-    });
 
     var taskInputReset = function(){
       console.log("in input clear");
@@ -892,11 +836,8 @@ function onAuthorizeSuccessful() {
       // var a = $('#project-select option:selected').val();
     // var $this = $(this);
     console.log(a);
-
     // $('#goal-options').fadeIn();
     createGoalsOptions(a, goalSet);
-
-
    };
 
     $(document.body).on('click', '.today', function(){
@@ -969,6 +910,8 @@ function onAuthorizeSuccessful() {
 
         // addNewComment(taskId, "effort");
         $('#menu-container').removeClass('frozen');
+      
+
 
 
       }else{
@@ -999,7 +942,11 @@ function onAuthorizeSuccessful() {
           $this.parent().parent().parent().addClass("active");
           $this.parent().parent().prepend('<span id="hours"></span><span id="minutes"></span><span id="seconds"></span></p><p>');
 
-          $this.text("work session started");
+
+          $('#minutes').text('0');
+          $('#hours').text('0');
+          $('#seconds').text('0');
+          $this.text("End work session");
           record(userId, taskId, 0, -1);
 
           recordingTimeout($this);
@@ -1020,6 +967,10 @@ function onAuthorizeSuccessful() {
 
       recordId = parseInt(item.val());
 
+      $('#minutes').text(0);
+      $('#hours').text(0);
+      $('#seconds').text(0);
+
       item.removeClass("recording")
 
       item.parent().parent().parent().removeClass("active");
@@ -1030,15 +981,6 @@ function onAuthorizeSuccessful() {
 
       stopClock();
 
-
-      // $('.projects').on();
-      // $('.goals').on();
-      // $('#project-button').on();
-
-      // $('#task-list-group').html('');
-
-      // createTaskRecord();
-
     };
 
     function updateTask(user_id, task_id){
@@ -1048,7 +990,9 @@ function onAuthorizeSuccessful() {
 
 
       // data_y["user_id"] = user_id;
-      // data_y["id"] = task_id;
+      data_y["id"] = task_id;
+      data_y["card_description"] = $('.task_description_on_task[value=' + task_id +']').val();
+
 
       $.ajax({
         url: path,
@@ -1128,9 +1072,12 @@ function onAuthorizeSuccessful() {
 var clock = function(){
       var d = new Date;
       var timeStart = d.getTime();
+      console.log(timeStart);
+      $('#hours').text('');
+      $('#minutes').text('');
+      $('#seconds').text('');
 
-
-   setInterval(function() {
+      sessionClock = setInterval(function() {
           var x = new Date();
           var timeNow = x.getTime();
           var timeDiff = timeNow - timeStart;
@@ -1145,6 +1092,7 @@ var clock = function(){
 
           minutes = ' : ' + minutes;
           seconds = ' : ' + parseInt(seconds);
+          console.log("hours : " + hours + "minutes : " + minutes + "seconds : "+ seconds)
           
           $('#hours').text(hours);
           $('#minutes').text(minutes);
@@ -1271,8 +1219,8 @@ var clock = function(){
       
 
 var stopClock = function(){
+  clearInterval(sessionClock);
 
-  clearInterval(clock)
 }
 
 var addProject = function(){
@@ -1309,24 +1257,23 @@ var addProject = function(){
 var addGoal = function(){
 
   console.log("added new goal");
-
   if($('#goal-name').val()==""){
     console.log("this fails");
     $('#goal-name').addClass('border-red');
-  }else{
+    }else{
 
-  data = {};
+    data = {};
 
   var project_id = $('.goalproject_id').attr("id");
 
-  console.log("project id is" + project_id);
+    console.log("project id is" + project_id);
 
-  data["project_id"] = $('.goalproject_id').attr("id");
+    data["project_id"] = $('.goalproject_id').attr("id");
 
-  data["name"] = $('#goal-name').val();
+    data["name"] = $('#goal-name').val();
 
-  path = "/projects/" + project_id + "/goals";
-  method = "POST";
+    path = "/projects/" + project_id + "/goals";
+    method = "POST";
 
   console.log(data);
   $.ajax({ 
@@ -1338,10 +1285,14 @@ var addGoal = function(){
 
           dialogGoal.dialog("close");
           $('#goal-name').val('');
+          var project_ids = [];
+          project_ids.push(project_id);
+          showProjects(project_ids);
           createGoalsList(project_id);
- });
-};
-};
+
+      });
+    };
+  };
 
 
 dialogComment = $( "#new-comment-modal" ).dialog({
@@ -1379,9 +1330,6 @@ dialogGoal = $( "#new-goal-modal" ).dialog({
       buttons: {
         "Add new goal": function(){
           addGoal();
-          // dialogGoal.dialog("close");
-          // $('#goal-name').val('');
-          // createGoalsList(project_id);
         },
   
         Cancel: function() {
@@ -1456,18 +1404,16 @@ showComments(taskId);
  $(document.body).on('click', 'button.new-goal', function(e) {
   console.log("new goal button pressed")
   $this = $(this);
-  // console.log($this);
  var projectGoalId = $this.val();
   console.log("project id is" + projectGoalId);
-  // console.log($this.parent().parent());
-  // project_id = $this.attr("id");
+  
   $('.goalproject_id').attr("id", projectGoalId );
       dialogGoal.dialog( "open" );
   });
 
-$(document.body).on('click', '#refresh', function(){
-taskInputReset();   
-});
+    $(document.body).on('click', '#refresh', function(){
+      taskInputReset();   
+    });
 
 // $('#input-panel').animate({bottom: "-200px"}, 1000).fadeOut();
 // $('#comments-panel').animate({top: "0px"},3000);
@@ -1590,7 +1536,7 @@ $('#comments-panel').hide();
               console.log("top 10 and  trello")
               createTaskRecord(-1, 4);
             }
-            if(trelloSearchStatus == true){
+            if(trelloSearchStatus == true && top10Status== false){
               console.log("trello only");
               createTaskRecord(-1, 2);
             };
@@ -1643,6 +1589,10 @@ $('#comments-panel').hide();
       $('#trello_search').fadeOut();
       $('#non_trello_search').text("Show all cards");
      };
+
+     refreshUserProjectInfo();
+
+
 
 };
 

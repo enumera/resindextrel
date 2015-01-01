@@ -18,8 +18,9 @@ class TrelloController < ApplicationController
   # This will be make a request to the request_token_path passed into
   # the consumer. The application ID and secret will be passed in as
   # parameters and  the response will ba a request token object with a secret key.
+    request_token = consumer.get_request_token(oauth_callback: "http://localhost:3000/trello/callback")
 
-  request_token = consumer.get_request_token(oauth_callback: "https://resindex.herokuapp.com/trello/callback")
+  # request_token = consumer.get_request_token(oauth_callback: "https://resindex.herokuapp.com/trello/callback")
 
   # Store the request_token in the session, you'll need this during
   # the callback.
@@ -30,7 +31,16 @@ class TrelloController < ApplicationController
   # Redirect the user to the authorization url provided
   # by the request token.
 
-  redirect_to request_token.authorize_url
+   read_write_url = make_read_write_authorize_url(request_token)
+
+  binding.pry
+
+  # redirect_to request_token.authorize_url
+  redirect_to read_write_url
+
+
+
+
 
   end
 
@@ -114,18 +124,25 @@ class TrelloController < ApplicationController
 
       found_project = false
 
-      if !Goal.where(project_list_id: list_id).exists?
+      if Goal.where(project_list_id: list_id).exists? 
+          
+          # goal_with_project_id = Goal.where(project_list_id: list_id)
+
+          project_to_assign = Project.where(trello_project_id: board_id)
+
+          @user.projects << project_to_assign[0] unless @user.projects.where(trello_project_id: board_id).exists?
+
+      else
           
           (0..projects.length-1).each do |x|
-            if found_project ==true
+            if found_project == true
               break
             else
-
              if projects[x]["id"] == board_id
                 if !Project.where(trello_project_id: projects[x]["id"]).exists?
                   new_project = Project.create(name: projects[x]["name"], trello_project_id: projects[x]["id"])
                   @user.projects << new_project 
-                  # projects_to_load.push(projects[x]["id"])
+              
                 end
                 found_project = true
               end
@@ -189,6 +206,7 @@ class TrelloController < ApplicationController
 
       
   projects_to_load = current_user.projects
+
   projects_to_load.each do |project_id|
 
     @project = Project.where(id: project_id.id )
@@ -213,5 +231,14 @@ class TrelloController < ApplicationController
 
     redirect_to root_path
 
+  end
+
+  def make_read_write_authorize_url(request_token)
+    oauth_token_text = "?oauth_token="
+    scope_text = "&scope=read,write"
+    app_name = "&name=resindex&"
+    expiration ="expiration=30days&"
+
+    read_write_authorize_url = "#{request_token.consumer.options[:site]}#{request_token.consumer.options[:authorize_path]}#{oauth_token_text}#{request_token.params[:oauth_token]}#{app_name}#{expiration}#{scope_text}"
   end
 end
