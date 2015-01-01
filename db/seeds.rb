@@ -8,7 +8,7 @@
 
 User.create(first_name: "Andrew", family_name: "Fyfe", trello:"AndrewFyfe1", password: "password", password_confirmation: "password", email: "enumera2000@yahoo.co.uk")
 
-Goal.create(name: "First")
+# Goal.create(name: "First")
 
 CommentType.create(name: "comment", comment_switch: "user")
 CommentType.create(name: "action", comment_switch: "user")
