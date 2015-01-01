@@ -464,7 +464,7 @@ var validateTaskFormAfterError = function(changeItem){
                 }else{
                   x = goal.no_of_tasks;
                 };
-              var goalItem = '<div class="well well-sm goals project' + projectID + ' " id=' + goal.id + '><button class="btn btn-sm"> ' + goal.name + '</button><span class ="pull-right badge">  ' + x + '</span></div>';
+              var goalItem = '<div class="well well-sm goals project' + projectID + ' " id=' + goal.id + '><button class="btn btn-sm btn-warning"> ' + goal.name + '</button><span class ="pull-right badge">  ' + x + '</span></div>';
               menuItems.append(goalItem);
             }); 
           });
