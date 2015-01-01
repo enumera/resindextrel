@@ -399,7 +399,7 @@ var validateTaskFormAfterError = function(changeItem){
                   x = project.no_of_goals;
                 };
 
-              projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Stuff</button><div class="well well-sm projects" id=' + project.id + '><button class="btn btn-sm">' + project.name + '</button><span class ="pull-right badge">' + x + '</span></div></div>';
+              projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Stuff</button><div class="well well-sm projects" id=' + project.id + '><button class="btn btn-sm btn-warning">' + project.name + '</button><span class ="pull-right badge">' + x + '</span></div></div>';
               
               projectOption = '<option value='+project.id+ '>'+ project.name +'</option>'
               menuItems.append(projectItem);
