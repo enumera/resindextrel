@@ -725,7 +725,7 @@ var validateTaskFormAfterError = function(changeItem){
 
 
 
-  $(document.body).on('click', '.new-task', function(){
+  $(document.body).on('click', '.new-task', function(e){
     e.preventDefault();
     console.log($(this).val());  
     console.log("this works!!")    
@@ -802,7 +802,7 @@ var validateTaskFormAfterError = function(changeItem){
 
 // This function listens for events on the goals class does not work on mobiles or tablets.
 
-  $(document.body).on('click', '.goals',function(){
+  $(document.body).on('click', '.goals',function(e){
     e.preventDefault();
     if(!$('#menu-container').hasClass('frozen')){
       $this = $(this);
@@ -895,7 +895,7 @@ var validateTaskFormAfterError = function(changeItem){
     createGoalsOptions(a, goalSet);
    };
 
-    $(document.body).on('click', '.today', function(){
+    $(document.body).on('click', '.today', function(e){
       e.preventDefault();
 
       console.log("clicked today button");
