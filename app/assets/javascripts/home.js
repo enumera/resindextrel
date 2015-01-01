@@ -55,7 +55,8 @@ var resindexColour = function(taskId, resindex){
 
 
 
- $( "#log_in" ).click(function() {
+ $( "#log_in" ).click(function(e) {
+  e.preventDefault();
   $( "#log_in_form" ).slideDown( "slow", function() {
     // Animation complete.
   });
@@ -159,6 +160,7 @@ var resindexColour = function(taskId, resindex){
 // createProjectList(1);
 
   $('#blank_task').click(function(e){
+    e.preventDefault();
 
     console.log("blank task works");
 
@@ -372,7 +374,8 @@ var validateTaskFormAfterError = function(changeItem){
 
        }
 
-      $(document.body).on('click','#project-button', function(){
+      $(document.body).on('click','#project-button', function(e){
+        e.preventDefault();
         if(!$('#menu-container').hasClass('frozen')){
           console.log("clicked the project button");
           $('.projectSel').val('');
@@ -432,7 +435,8 @@ var validateTaskFormAfterError = function(changeItem){
         });
       };
   
-    $(document.body).on('click', '.completed', function(){
+    $(document.body).on('click', '.completed', function(e){
+      e.preventDefault();
 
       console.log("in completed");
       console.log($(this));
@@ -694,6 +698,7 @@ var validateTaskFormAfterError = function(changeItem){
 
 
   $(document.body).on('click', '.new-task', function(){
+    e.preventDefault();
     console.log($(this).val());  
     console.log("this works!!")    
       validateTaskForm($(this).val());
@@ -718,7 +723,8 @@ var validateTaskFormAfterError = function(changeItem){
 //this listener listens to event on the .projects class does not work on mobiles or tablets.
 
 
-  $(document.body).on('click', '.projects', function(){
+  $(document.body).on('click', '.projects', function(e){
+    e.preventDefault();
     if(!$('#menu-container').hasClass('frozen')){
           $this = $(this);
           console.log($this);
@@ -769,6 +775,7 @@ var validateTaskFormAfterError = function(changeItem){
 // This function listens for events on the goals class does not work on mobiles or tablets.
 
   $(document.body).on('click', '.goals',function(){
+    e.preventDefault();
     if(!$('#menu-container').hasClass('frozen')){
       $this = $(this);
       console.log($this);
@@ -790,6 +797,7 @@ var validateTaskFormAfterError = function(changeItem){
 
 
     $(document.body).on('click', '.editButton', function(){
+      e.preventDefault();
       $this = $(this);
       console.log($this);
 
@@ -860,6 +868,7 @@ var validateTaskFormAfterError = function(changeItem){
    };
 
     $(document.body).on('click', '.today', function(){
+      e.preventDefault();
 
       console.log("clicked today button");
       console.log($(this).val());
@@ -884,7 +893,8 @@ var validateTaskFormAfterError = function(changeItem){
       };
     });
 
-       $(document.body).on('click', 'button.tomorrow', function(){
+       $(document.body).on('click', 'button.tomorrow', function(e){
+        e.preventDefault();
       console.log("clicked tomorrow button");
         var taskId = $(this).val();
         var tomorrow = new Date;
@@ -914,7 +924,8 @@ var validateTaskFormAfterError = function(changeItem){
     });
 
 
-    $(document.body).on('click', '.recordButton', function(){
+    $(document.body).on('click', '.recordButton', function(e){
+      e.preventDefault();
       var goalId;
       $this = $(this);
        taskId = parseInt($this.parent().parent().parent().attr('id'));
@@ -1121,6 +1132,7 @@ var clock = function(){
 }
 
   $(document.body).on("click", '.commentButton', function(e){
+    e.preventDefault();
 
      console.log("new comment button pressed");
      $this = $(this);
@@ -1144,7 +1156,7 @@ var clock = function(){
           if(commentType.comment_switch == "user"){
             console.log(commentType);
 
-             typeItem = '<option value='+ commentType.id + 'id='+commentType.comment_switch + '>'+ commentType.name +'</option>';
+             typeItem = '<option value='+ commentType.id + ' id='+commentType.comment_switch + '>'+ commentType.name +'</option>';
            $('#type-select').append(typeItem);
             };
           });
@@ -1182,7 +1194,7 @@ var clock = function(){
           // var taskID = taskId; //stub
           var userID = gon.user_id; //stub
           
-          data = {};
+          var dataToSend = {};
 
           console.log(taskId);
 
@@ -1218,25 +1230,36 @@ var clock = function(){
 
           path = "/tasks/"+ taskId +"/comments";
           method = "POST";
-          data["ctext"] = newComment; 
-          data["task_id"] = taskId;
-          data["user_id"] = userID;
-          data["comment_type_id"] = commentType;
+          dataToSend["ctext"] = newComment; 
+          dataToSend["task_id"] = taskId;
+          dataToSend["user_id"] = userID;
+          dataToSend["comment_type_id"] = commentType;
+
+          console.log(dataToSend);
 
           $.ajax({
           url: path,
           method: method,
-          data: {comment: data},
+          data: {comment: dataToSend},
           dataType: "json"
-          }).success(function(){
+          })
+          afterCommentCreate(taskId)
+          //   console.log("in success function");
+          // showComments(taskId);
+          // dialogComment.dialog("close");
+          // $('#comment-text').val("");
+          // $('#type-select option:selected').val("none");
+          
+          };
+        };
 
+        var afterCommentCreate = function(taskId){
+              console.log("in success function");
           showComments(taskId);
           dialogComment.dialog("close");
           $('#comment-text').val("");
           $('#type-select option:selected').val("none");
-            });
-          };
-        };
+        }
       
 
 var stopClock = function(){
@@ -1386,7 +1409,8 @@ dialog = $( "#new-project-modal" ).dialog({
 
 
 
-$(document.body).on('click', '.task-panel', function(){
+$(document.body).on('click', '.task-panel', function(e){
+  e.preventDefault();
 $this = $(this);
 // console.log($this);
 var taskId = $this.parent().first().attr("value");
@@ -1418,12 +1442,14 @@ showComments(taskId);
 };
 
  $( "#new-project" ).click(function(e) {
+  e.preventDefault();
   console.log("new project button pressed")
       dialog.dialog( "open" );
     });
 
  $(document.body).on('click', 'button.new-goal', function(e) {
   console.log("new goal button pressed")
+  e.preventDefault();
   $this = $(this);
  var projectGoalId = $this.val();
   console.log("project id is" + projectGoalId);
@@ -1433,6 +1459,7 @@ showComments(taskId);
   });
 
     $(document.body).on('click', '#refresh', function(){
+      e.preventDefault();
       taskInputReset();   
     });
 
@@ -1470,14 +1497,16 @@ $('#comments-panel').hide();
   //   };
   // });
 
-    $('#trello_search').click(function(){
+    $('#trello_search').click(function(e){
+      e.preventDefault();
     console.log("in trello easy !!");
     var searchStringTo = $(this).attr("id");
     // createTaskRecord(0, 3);
     searchButtonCombinations(searchStringTo);
   });
 
-      $('#top10').click(function(){
+      $('#top10').click(function(e){
+        e.preventDefault();
     console.log("in top10 easy !!");
     var searchStringTo = $(this).attr("id");
     // createTaskRecord(0, 3);
@@ -1485,7 +1514,8 @@ $('#comments-panel').hide();
   });
 
 
-  $('#non_trello_search').click(function(){
+  $('#non_trello_search').click(function(e){
+    e.preventDefault();
     console.log("in non_trello easy !!");
     var searchStringTo = $(this).attr("id");
     // createTaskRecord(0, 3);

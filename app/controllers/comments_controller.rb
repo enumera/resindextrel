@@ -9,7 +9,7 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @comments, :include => [:comment_type]}
+      format.json { render json: @comments, root: false}
     end
   end
 
@@ -21,7 +21,7 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @comment }
+      format.json { render json: @comment, root: false }
     end
   end
 
@@ -32,7 +32,7 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @comment }
+      format.json { render json: @comment, root: false }
     end
   end
 
@@ -67,7 +67,7 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       if @comment.update_attributes(params[:comment])
-        format.html { redirect_to task_coment(@task, @comment), notice: 'Comment was successfully updated.' }
+        format.html { redirect_to task_comment(@task, @comment), notice: 'Comment was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

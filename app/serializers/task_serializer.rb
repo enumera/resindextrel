@@ -3,5 +3,6 @@ class TaskSerializer < ActiveModel::Serializer
 
   has_one :project
   has_one :goal
+  has_many :comments
 
 end
