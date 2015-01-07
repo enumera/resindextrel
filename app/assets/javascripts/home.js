@@ -17,8 +17,10 @@ var main = function(){
   var dialogComment;
   var username;
   var sessionClock;
+  var incompleteTasks;
 
 var refreshUserProjectInfo = function(){
+  incompleteTasks = gon.user_tasks;
 
  $('#user_tasks').text("incomplete tasks : " + gon.user_tasks + " ");
  $('#user_projects').text("projects: " +gon.user_projects + " ");
@@ -366,7 +368,8 @@ var validateTaskFormAfterError = function(changeItem){
           };
         };
         taskInputReset();
-
+         incompleteTasks ++;
+        $('#user_tasks').text("incomplete tasks : " + incompleteTasks + " ");
        }
 
       $(document.body).on('click','#project-button', function(e){
@@ -447,10 +450,20 @@ var validateTaskFormAfterError = function(changeItem){
       if($(this).hasClass('done')){
         dataToSend["completed"] = true;
         $(this).text('Reopen');
+        console.log(incompleteTasks);
+        incompleteTasks -- ;
+        $('#user_tasks').text("incomplete tasks : " + incompleteTasks + " ");
+        $('.badge.resindex[value='+taskId+']').text("Completed");
+        $('.recordButton[id='+taskId+']').fadeOut();
 
       }else{
-      dataToSend["completed"] = false;
-      $(this).text('Mark Complete');
+        dataToSend["completed"] = false;
+        $(this).text('Mark Complete');
+        incompleteTasks ++ ;
+        $('#user_tasks').text("incomplete tasks : " + incompleteTasks + " ");
+        $('.badge.resindex[value='+taskId+']').text("Resindex: recalculate");
+         $('.recordButton[id='+taskId+']').fadeIn();
+
       };
 
 
@@ -627,7 +640,9 @@ var validateTaskFormAfterError = function(changeItem){
                };
               listItems.append(listItem);
               if(task.completed===true){
+                $('.badge.resindex[value='+task.id+']').text("Completed")
                 $('#completed' + task.id).text("Reopen");
+                $('.recordButton[id='+taskId+']').fadeOut();
               };
             };
           });
