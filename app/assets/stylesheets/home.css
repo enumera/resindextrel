@@ -3,10 +3,13 @@
      display: inline-block;
 }
 
-#task-panel .panel-body{
+#task-panel .panel-body,
+#comments-panel .panel-body{
   height: 500px;
   overflow: auto;
 }
+
+
 
 .completed{
   margin-left: 5px;
