@@ -14,6 +14,7 @@ module Trelloindex
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+      # config.assets.paths << "#{Rails}/vendor/assets/fonts"
 
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
@@ -54,7 +55,7 @@ module Trelloindex
     config.active_record.whitelist_attributes = true
 
     config.assets.initialize_on_precompile = false
-    config.assets.paths << "#{Rails}/vendor/assets/fonts"
+
 
     # Enable the asset pipeline
     config.assets.enabled = true
