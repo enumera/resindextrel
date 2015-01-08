@@ -54,6 +54,7 @@ module Trelloindex
     config.active_record.whitelist_attributes = true
 
     config.assets.initialize_on_precompile = false
+    config.assets.paths << "#{Rails}/vendor/assets/fonts"
 
     # Enable the asset pipeline
     config.assets.enabled = true
