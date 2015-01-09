@@ -9,7 +9,7 @@
     <div class="col-sm-3">
 
       <div class="panel panel-default">
-         <button class="btn btn-primary btn-xs pull-right" id="new-project">
+         <button class="btn btn-primary btn-xs pull-right" id="new-project" title="create a new project">
                     New project
               </button>
         <div class="panel-heading">
@@ -34,7 +34,7 @@
 
     <div class="col-sm-9">
       <div class="panel panel-default col-md-6" id ="task-panel">
-        <div class="panel-heading" id="things"><h4>Jobs to do...</h4><span><button class= "btn btn-xs btn-info" id= "top10">Top 10</span><span><button class= "btn btn-xs btn-info" id= "trello_search">Trello jobs only</span><span><button class= "btn btn-xs btn-info" id= "non_trello_search">Non-Trello jobs only</span></div>
+        <div class="panel-heading" id="things"><h4>Jobs to do...</h4><span><button class= "btn btn-xs btn-info" id= "top10" title="Find the top 10 jobs sorted by resindex across all projects.">Top 10</span><span><button class= "btn btn-xs btn-info" id= "trello_search" title="Only display trello jobs sorted by resindex.">Trello jobs only</span><span><button class= "btn btn-xs btn-info" id= "non_trello_search" title="Show only non-trello jobs sorted by resindex.">Non-Trello jobs only</span></div>
         <div class="panel-body" >
           <div class="list-group" id="task-list-group">
            <!--  <a href="#" class="list-group-item active"><span class="glyphicon glyphicon-collapse-down pull-right"></span></a>
@@ -171,10 +171,10 @@
             <hr>
             <div id="dates-wrapper">
               <p>To be done...</p>
-              <button class="btn btn-danger today" value="-1">Today</button>
-              <button class="btn btn-warning tomorrow" value="-1">Tomorrow</button>
+              <button class="btn btn-danger today" value="-1" title="Set to get this job today">Today</button>
+              <button class="btn btn-warning tomorrow" value="-1" title="Set this job to be done by tomorrow.">Tomorrow</button>
               <!-- <p>Or</p> -->
-              <button class="btn btn-info set_dates">I want to set dates</button>
+              <button class="btn btn-info set_dates" title="Select your own dates.">I want to set dates</button>
               <hr>
               <div class="dates">
                 <label for="start_date">Start Date</label>
