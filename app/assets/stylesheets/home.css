@@ -10,7 +10,7 @@
 }
 
 #comment-text {
-  height: 67px;
+  height: 60px;
   width: 260px;
 
 }
@@ -178,6 +178,7 @@ margin-bottom: 10px;
 
 .badge.info{
   background-color: yellow;
+  color:blue;
 }
 
 .badge.danger{
