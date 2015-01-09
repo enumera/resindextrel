@@ -9,6 +9,12 @@
   overflow: auto;
 }
 
+#comment-text {
+  height: 67px;
+  width: 260px;
+
+}
+
 
 
 .completed{

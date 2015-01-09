@@ -27,14 +27,16 @@ class Task < ActiveRecord::Base
      
       a = Time.now.to_i
       puts task.end_date
-      b = task.end_date.to_time.to_i
+      b = task.end_date.to_time.to_i + (3599 * 24)
+
+      seconds_in_a_day = 3600*24
       
-      time_left_in_days = (b - a)/(3600*24)
+      time_left_in_days = ((b - a)/seconds_in_a_day.to_f).round(3)
 
       puts 'this is  resindex calc--------------------------'
       puts b
       puts a
-      time_left_in_days
+      puts time_left_in_days
 
  
     if b < a
@@ -45,12 +47,12 @@ class Task < ActiveRecord::Base
         #     time_left_in_days = 1
         
 
-        if start_date.day == end_date.day && Time.now.day == start_date.day && start_date.month == end_date.month && Time.now.month == start_date.month
-            time_left_in_days == 1
-        end
+        # if start_date.day == end_date.day && Time.now.day == start_date.day && start_date.month == end_date.month && Time.now.month == start_date.month
+        #     time_left_in_days == 1
+        # end
 
 
-          time_left_in_days = 1 if time_left_in_days == 0
+          # time_left_in_days = 1 if time_left_in_days == 0
 
           effort  = task.effort.to_f.round(2)
           estimate = task.estimate.to_f.round(2)
