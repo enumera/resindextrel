@@ -169,7 +169,19 @@ margin-bottom: 10px;
 }
 
 .badge.warning{
-  background-color: red;
+  background-color: orange;
+}
+
+.badge.success{
+  background-color: green;
+}
+
+.badge.info{
+  background-color: yellow;
+}
+
+.badge.danger{
+background-color: red;
 }
 
 #task_title{

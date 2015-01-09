@@ -127,7 +127,7 @@ var main = function(){
 
 
  $(document.body).on('click', '.link_to_project', function(){
-  alert("this works");
+  // alert("this works");
   console.log($(this).attr('name'));
   console.log($(this).val());
   var goalId = $(this).attr('name');
@@ -154,19 +154,22 @@ var main = function(){
     console.log(data);
    var project = data.project;
 
-    projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Stuff</button><div class="well well-lg projects" id=' + project.id + '><button class="btn btn-sm btn-warning">' + project.name + '</button><span class ="pull-right badge">' + project.no_of_goals + '</span></div></div>';
-
+    projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Stuff</button><div class="well well-lg projects selectedProject" id=' + project.id + '><button class="btn btn-sm btn-warning">' + project.name + '</button><span class ="pull-right badge">' + project.no_of_goals + '</span></div></div>';
+      menuItems.append(projectItem);
     var goals = data.project.goals;
     console.log(goals);
 
     $.each(goals, function(i, goal){
       if(goal.id == goal_id){
-        goalItem = '<div class="well well-lg goals project' + goal.project_id + ' " id=' + goal.id + '><button class="btn btn-sm btn-warning"> ' + goal.name + '</button><span class ="pull-right badge">  ' + goal.no_of_tasks + '</span></div>';
+        goalItem = '<div class="well well-lg goals project' + goal.project_id + ' selectedGoal" id=' + goal.id + '><button class="btn btn-sm btn-warning"> ' + goal.name + '</button><span class ="pull-right badge">  ' + goal.no_of_tasks + '</span></div>';
+      }else{
+          goalItem = '<div class="well well-sm goals project' + goal.project_id + ' " id=' + goal.id + ' style="display:none"><button class="btn btn-sm btn-warning"> ' + goal.name + '</button><span class ="pull-right badge">  ' + goal.no_of_tasks + '</span></div>';
       };
+          menuItems.append(goalItem);
     });
 
-      menuItems.append(projectItem);
-      menuItems.append(goalItem);
+      // menuItems.append(projectItem);
+      // menuItems.append(goalItem);
   });
  }; 
 
@@ -197,7 +200,7 @@ var resindexColour = function(taskId, resindex){
   }else if(resindex== -999){
   $('.resindex.badge[value='+ taskId+']').addClass('info');
       $('.resindex.badge[value='+ taskId+']').text('completed');
-  }else if(resindex > 1.51 && resindex < 10){
+  }else if(resindex > 1.51 && resindex < 20){
     $('.resindex.badge[value='+ taskId+']').addClass('danger');
   }else if(resindex == 0){
         $('.resindex.badge[value='+ taskId+']').text('to be set');
