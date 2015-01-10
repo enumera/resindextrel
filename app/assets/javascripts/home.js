@@ -162,7 +162,7 @@ var main = function(){
 
   menuItems.html('');
   
-  menuItems.append('<div class="well-lg" id="project-button">Project</div>');
+  menuItems.append('<div class="well" id="project-button">Project</div>');
 
   var projectPath = "/projects/"+ project_id;
 
@@ -585,7 +585,7 @@ var validateTaskFormAfterError = function(changeItem){
             goalOptions.html('');
 
             projectInitialOption = '<option value="none">Select prize</option>';
-            menuItems.append('<div class="well-lg" id="project-button">Show projects</div>');
+            menuItems.append('<div class="well" id="project-button">Show projects</div>');
 
             goalInitialOption = '<option value="none">Select a project first</option>';
 
