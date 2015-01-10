@@ -140,7 +140,7 @@ class TasksController < ApplicationController
             after_res = @task.resindex
 
         if before_res = 999.0
-          comment_text = "Resindex set to #{after_res}. <p><sub>Set by #{@user.first_name} on #{Time.now}.</sub></p>"
+          comment_text = "Job mark as completed. <p><sub>Set by #{@user.first_name} on #{Time.now}.</sub></p>"
         else
         comment_text = "Resindex changed from #{before_res} to #{after_res}. <p><sub>Changes made by #{@user.first_name} on #{Time.now}.</sub></p>"
         end

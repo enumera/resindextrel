@@ -148,7 +148,7 @@ var main = function(){
 
   menuItems.html('');
   
-  menuItems.append('<button class="btn" id="project-button">Project</button>');
+  menuItems.append('<div class="well-lg" id="project-button">Project</div>');
 
   var projectPath = "/projects/"+ project_id;
 
@@ -158,14 +158,14 @@ var main = function(){
     // console.log(data);
    var project = data.project;
 
-    projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Stuff</button><div class="well well-lg projects selectedProject" id=' + project.id + '><button class="btn btn-sm btn-warning">' + project.name + '</button><span class ="pull-right badge">' + project.no_of_goals + '</span></div></div>';
+    projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Goal</button><div class="well well-lg projects selectedProject" id=' + project.id + '>' + project.name + '<span class ="pull-right badge">' + project.no_of_goals + '</span></div></div>';
       menuItems.append(projectItem);
     var goals = data.project.goals;
     // console.log(goals);
 
     $.each(goals, function(i, goal){
       if(goal.id == goal_id){
-        goalItem = '<div class="well well-lg goals project' + goal.project_id + ' selectedGoal" id=' + goal.id + '><button class="btn btn-sm btn-warning"> ' + goal.name + '</button><span class ="pull-right badge">  ' + goal.no_of_tasks + '</span></div>';
+        goalItem = '<div class="well well-lg goals project' + goal.project_id + ' selectedGoal" id=' + goal.id + '> ' + goal.name + '<span class ="pull-right badge">  ' + goal.no_of_tasks + '</span></div>';
       }else{
           goalItem = '<div class="well well-sm goals project' + goal.project_id + ' " id=' + goal.id + ' style="display:none"><button class="btn btn-sm btn-warning"> ' + goal.name + '</button><span class ="pull-right badge">  ' + goal.no_of_tasks + '</span></div>';
       };
@@ -560,7 +560,7 @@ var validateTaskFormAfterError = function(changeItem){
             goalOptions.html('');
 
             projectInitialOption = '<option value="none">Select prize</option>';
-            menuItems.append('<button class="btn" id="project-button">Show projects</button>');
+            menuItems.append('<div class="well-lg" id="project-button">Show projects</div>');
 
             goalInitialOption = '<option value="none">Select a project first</option>';
 
@@ -577,7 +577,7 @@ var validateTaskFormAfterError = function(changeItem){
                   x = project.no_of_goals;
                 };
 
-              projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Stuff</button><div class="well well-sm projects" id=' + project.id + '><button class="btn btn-sm btn-warning">' + project.name + '</button><span class ="pull-right badge">' + x + '</span></div></div>';
+              projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Goal</button><div class="well well-sm projects" id=' + project.id + '>' + project.name + '<span class ="pull-right badge">' + x + '</span></div></div>';
               
               projectOption = '<option value='+project.id+ '>'+ project.name +'</option>'
               menuItems.append(projectItem);
@@ -663,7 +663,7 @@ var validateTaskFormAfterError = function(changeItem){
                 }else{
                   x = goal.no_of_tasks;
                 };
-              var goalItem = '<div class="well well-sm goals project' + projectID + ' " id=' + goal.id + '><button class="btn btn-sm btn-warning"> ' + goal.name + '</button><span class ="pull-right badge">  ' + x + '</span></div>';
+              var goalItem = '<div class="well well-sm goals project' + projectID + ' " id=' + goal.id + '> ' + goal.name + '<span class ="pull-right badge tasks-left" value='+goal.id+'"> Jobs open: ' + x + '</span></div>';
               menuItems.append(goalItem);
             }); 
           });
