@@ -9,6 +9,17 @@ function containsObject(obj, list) {
     return false;
 };
 
+function createDate(dateToChange){
+  var d = new Date(dateToChange);
+    var dateDay = d.getDate();
+    var dateMonth = d.getMonth() + 1;
+    var dateYear = d.getFullYear();
+    var dateNewFormat = dateDay +"/" + dateMonth + "/" + dateYear;
+
+    return dateNewFormat;
+
+};
+
 var main = function(){
   // console.log("logged in user is:");
   // console.log(gon.user_id);
@@ -104,12 +115,15 @@ var main = function(){
             }else{
               var requirement = "Task not completed by due date - reset resindex";
             };
-
        
             listItem = '<div class="panel panel-default tpanel" value='+ task.id + '><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' >Add a note</button><div class="panel-heading task-panel" value='+ task.id +' id="taskSource'+task.id+'" >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><p style="color:red"><b>'+requirement +'</b></p><div id = "resindex-wrapper2"><div id="hours-wrapper"><div class="control-group"><div class="controls"><select class="form-control estimate-sel" id="estimate-select'+task.id+'"><option value="none">How long to finish</option><option value="1">One hour</option><option value="2">Two hours</option><option value="3">Three hours</option><option value="4">Four hours</option><option value="5">Five hours</option><option value="6">Six hours</option><option value="7">Seven hours</option><option value="8">Eight hours</option><option value="9">Nine hours</option><option value="10">Ten hours</option></select></div></div></div><div id="difficulty-wrapper"><div class="control-group"><div class="controls"><select class="form-control difficulty-sel" id="difficulty-select'+task.id+'"><option value="none">Difficulty</option><option value="1">Easy-done it before</option><option value="2">Something slightly different</option><option value="3">Tricky</option><option value="4">Really difficult</option><option value="5">Mission Impossible!</option></select></div></div></div><div id="importance-wrapper"><div class="control-group project-options"><div class="controls"><select class="form-control importance-sel" id="importance-select'+task.id+'"><option value="none">Importance</option><option value="5">Would do</option><option value="4">Could do soon</option><option value="3">Should do this asap</option><option value="2">Someone/I needs this</option><option value="1">Someone/I REALLY needs this!</option></select></div></div></div></div><hr><div id="dates-wrapper"><p>To be done...</p><button class="btn btn-danger today" value='+task.id+'>Today</button><button class="btn btn-warning tomorrow" value='+task.id+'>Tomorrow</button><button class="btn btn-info set_dates">I want to set dates</button><hr><div class="dates"><label for="start_date">Start Date</label><input type="text" id="start_date'+task.id + '"class="start_date_sel" name="start_date"></div><div class="dates"><label for="end_date">End Date</label><input type="text" id="end_date'+ task.id + '" class="start_date_sel" name="end_date"></div></div></div><div class="control-group" id="submit-button-group"><div class="controls"><button class="btn btn-primary new-task" value='+task.id+'>Set Resindex</button><button class="btn btn-warning" id="refresh">Clear</button></div><p id="projectSource'+task.id +'"> Project : '+task.project.name +'</p></div>';  
           }else{
 
-              listItem = '<div class="panel panel-default tpanel" value='+ task.id + '><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class="glyphicon glyphicon-pencil" title="Add a note."></span></button><button class="viewNotesButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class ="glyphicon glyphicon-list-alt" title="Show all notes."></span></button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><input type="hidden" value='+ task.id + '><span class ="pull-right resindex badge" value='+task.id +'> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button class="recordButton btn btn-xs btn-warning" value='+task.id+' ><span class="glyphicon glyphicon-time" title="Start a work session."></span></button></span></p><p> The task is set to start on '+ task.start_date +' and end on '+ task.end_date +'<span><div class="pull-left"><button class="viewDetails btn btn-xs btn-info" value='+task.id+'><span class="glyphicon glyphicon-chevron-down" title="Show details."></span></button></div><div class="pull-right" value='+ task.id +'><button class=" btn btn-xs completed btn-success" id="completed'+task.id +'" name="completed" value='+ task.id +'><span class="glyphicon glyphicon-ok" title="Mark completed."></span></button></div></span></p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + '><span class="glyphicon glyphicon-edit" title="Edit job."></span></button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div><p id="projectSource'+task.id +'"> Project : <button class="btn btn-info btn-xs link_to_project" name='+task.goal_id+' value='+task.project.id+'>'+task.project.name +' : '+task.goal.name+'</button><span><button class="btn btn-xs saveDescriptionEdit pull-right btn-warning" value='+ task.id +' style="display:none">Save edit</button></span></div></div>';
+              var startDate = new Date(task.start_date).toDateString();
+              var endDate = new Date(task.end_date).toDateString();
+             
+
+              listItem = '<div class="panel panel-default tpanel" value='+ task.id + '><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class="glyphicon glyphicon-pencil" title="Add a note."></span></button><button class="viewNotesButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class ="glyphicon glyphicon-list-alt" title="Show all notes."></span></button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><input type="hidden" value='+ task.id + '><span class ="pull-right resindex badge" value='+task.id +' title="Tool tip to be defined."> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button class="recordButton btn btn-xs btn-warning" value='+task.id+' ><span class="glyphicon glyphicon-time" title="Start a work session."></span></button></span></p><p> The task is set to start on '+ startDate +' and end on '+ endDate +'<span><div class="pull-left"><button class="viewDetails btn btn-xs btn-info" value='+task.id+'><span class="glyphicon glyphicon-chevron-down" title="Show details."></span></button></div><div class="pull-right" value='+ task.id +'><button class=" btn btn-xs completed btn-success" id="completed'+task.id +'" name="completed" value='+ task.id +'><span class="glyphicon glyphicon-ok" title="Mark completed."></span></button></div></span></p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + '><span class="glyphicon glyphicon-edit" title="Edit job."></span></button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div><p id="projectSource'+task.id +'"> Project : <button class="btn btn-info btn-xs link_to_project" name='+task.goal_id+' value='+task.project.id+'>'+task.project.name +' : '+task.goal.name+'</button><span><button class="btn btn-xs saveDescriptionEdit pull-right btn-warning" value='+ task.id +' style="display:none">Save edit</button></span></div></div>';
                };
               listItems.append(listItem);
               if(task.completed===true){
@@ -539,7 +553,7 @@ var validateTaskFormAfterError = function(changeItem){
         taskInputReset();
         //  incompleteTasks ++;
         // $('#user_tasks').text("incomplete tasks : " + incompleteTasks + " ");
-       }
+       };
 
       $(document.body).on('click','#project-button', function(e){
         e.preventDefault();
@@ -794,23 +808,23 @@ var validateTaskFormAfterError = function(changeItem){
       updateTask(gon.user_id, taskId)
     });
 
-      $( "#start_date" ).datepicker({
+      $( "#start_date-1" ).datepicker({
       defaultDate: "+1w",
       changeMonth: true,
       numberOfMonths: 2,
       dateFormat: "dd/mm/yy",
       onClose: function( selectedDate ) {
-        $( "#end_date" ).datepicker( "option", "minDate", selectedDate );
+        $( "#end_date-1" ).datepicker( "option", "minDate", selectedDate );
       }
       });
 
-    $( "#end_date" ).datepicker({
+    $( "#end_date-1" ).datepicker({
       defaultDate: "+1w",
       changeMonth: true,
       numberOfMonths: 2,
       dateFormat: "dd/mm/yy",
       onClose: function( selectedDate ) {
-        $( "#start_date" ).datepicker( "option", "maxDate", selectedDate );
+        $( "#start_date-1" ).datepicker( "option", "maxDate", selectedDate );
       }
     });
   //create a new task
@@ -943,8 +957,10 @@ var validateTaskFormAfterError = function(changeItem){
           $('#difficulty-select-1').val(data.difficulty);
           $('#importance-select-1').val(data.importance);
           $('#project-select').val(data.project_id);
-          $('#start_date-1').val(data.start_date);
-          $('#end_date-1').val(data.end_date);
+          var startDate = createDate(data.start_date);
+          var endDate = createDate(data.end_date);
+          $('#start_date-1').val(startDate);
+          $('#end_date-1').val(endDate);
           $('#task_title').val(data.card_name);
           $('#task_description').val(data.card_description);
           $('#new-task').text('Update');

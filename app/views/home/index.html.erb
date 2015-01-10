@@ -174,8 +174,10 @@
               <button class="btn btn-danger today" value="-1" title="Set to get this job today">Today</button>
               <button class="btn btn-warning tomorrow" value="-1" title="Set this job to be done by tomorrow.">Tomorrow</button>
               <!-- <p>Or</p> -->
-              <button class="btn btn-info set_dates" title="Select your own dates.">I want to set dates</button>
+              <button class="btn btn-info set_dates" title="Select your own dates." data-toggle="collapse" href="#dates-to-set">I want to set dates</button>
+              <div id="dates-to-set" class="collapse">
               <hr>
+
               <div class="dates">
                 <label for="start_date">Start Date</label>
                 <input type="text" id="start_date-1" class="start_date_sel"  name="start_date">
@@ -185,6 +187,7 @@
                 <label for="end_date">End Date</label>
                 <input type="text" id="end_date-1" class="end_date_sel" name="end_date">
               </div>
+            </div>
             </div>
           </div>           
           
