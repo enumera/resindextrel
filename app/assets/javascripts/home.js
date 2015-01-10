@@ -514,13 +514,20 @@ var validateTaskFormAfterError = function(changeItem){
             showComments(sourceId);
             showProject(projectId, goalId);
              // createTaskRecord(goalId, 0);
+             if(searchButtonsTest() == true){
+              createTaskRecord(goalId, 0);
+            }else{
               searchButtonCombinations("reset_afer_update");
+            };
           }else{
             showComments(taskId);
             showProject(projectId, goalId);
             // createTaskRecord(goalId, 0);
-             searchButtonCombinations("reset_afer_update");
-
+            if(searchButtonsTest() == true){
+              createTaskRecord(goalId, 0);
+            }else{
+              searchButtonCombinations("reset_afer_update");
+            };
           };
         }else{
            showProject(projectId, goalId);
@@ -1674,6 +1681,18 @@ $('#comments-panel').hide();
     // createTaskRecord(0, 3);
     searchButtonCombinations(searchStringTo);
   });
+
+  var searchButtonsTest = function(){
+    var trelloSearchStatus = $("#trello_search").hasClass("btn-danger");
+    var nonTrelloSearchStatus = $("#non_trello_search").hasClass("btn-danger");
+    var top10Status = $("#top10").hasClass("btn-danger");
+
+     if(trelloSearchStatus == false && top10Status == false && nonTrelloSearchStatus==false){
+      return true;
+      }else{
+      return false;
+      };
+    };
 
      var searchButtonCombinations = function(searchString){
        console.log("checking combinations....");
