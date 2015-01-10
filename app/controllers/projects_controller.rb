@@ -95,4 +95,16 @@ class ProjectsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def get_last_project
+     @user = current_user
+      @project = @user.projects.last
+    # @projects = user_projects.order("no_of_goals DESC")
+
+      respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @project, root: false }
+    end
+  end
+
 end

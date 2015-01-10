@@ -55,6 +55,8 @@ end
     resources :users
     resources :sessions
 
+    get "get_last_project" => "projects#get_last_project", :as => "lastProject"
+
   # root :to => 'home#index'
 
 

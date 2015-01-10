@@ -656,7 +656,7 @@ var validateTaskFormAfterError = function(changeItem){
 
         $.getJSON("/projects/"+ projectID +"/goals", function(data){
           // console.log(data);
-
+            menuItems.append('<p>Goals</p><hr></hr>')
            $.each(data, function(i, goal){
             // console.log(goal.no_of_tasks);
 
@@ -1381,10 +1381,16 @@ var stopClock = function(){
 }
 
 var addProject = function(){
+  console.log("in add project");
 
   if($('#project-name').val()==""){
 
     $('#project-name').addClass('border-red');
+
+    // }else if($('#first-goal-name').val()==""){
+
+    // $('#goal-name').addClass('border-red');
+
   }else{
 
   // console.log("added new project");
@@ -1403,12 +1409,40 @@ var addProject = function(){
         method: method,
         data: {project: data},
         dataType: "json"
-      })
+      });
 
-  dialog.dialog("close");
+  // dialog.dialog("close");
+  // $('#project-name').val('');
+
+  $.getJSON("/get_last_project", function(data){
+    console.log(data);
+  
+    var goal_data = {};
+
+    var project_id = data.id
+
+    goal_data["project_id"] = data.id
+
+    goal_data["name"] = $('#first-goal-name').val();
+
+    debugger;
+
+    console.log($('#first-goal-name').val());
+
+    path = "/projects/" + project_id + "/goals";
+    method = "POST";
+
+  // console.log(data);
+  $.ajax({ 
+        url: path, 
+        method: method,
+        data: {goal: goal_data},
+        dataType: "json"
+      });
+  });
+    dialog.dialog("close");
   $('#project-name').val('');
-
-};
+  };
 };
 
 var addGoal = function(){
@@ -1506,7 +1540,7 @@ dialog = $( "#new-project-modal" ).dialog({
       width: 350,
       modal: true,
       buttons: {
-        "Add new prize": addProject,
+        "Save project": addProject,
         Cancel: function() {
           dialog.dialog( "close" );
         }
