@@ -56,7 +56,7 @@ class GoalsController < ApplicationController
         project = Project.where(id: @goal.project_id.to_i)
         project_to_load = project[0]
         x = project_to_load.goals.length
-        binding.pry
+        # binding.pry
         goals = x 
         project_to_load.update_attributes(no_of_goals: goals)
         format.html { redirect_to @goal, notice: 'Goal was successfully created.' }

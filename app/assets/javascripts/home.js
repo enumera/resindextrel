@@ -1442,6 +1442,7 @@ var addProject = function(){
   });
     dialog.dialog("close");
   $('#project-name').val('');
+  $('#first-goal-name').val('');
   };
 };
 
