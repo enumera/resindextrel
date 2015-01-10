@@ -158,16 +158,17 @@ var main = function(){
     // console.log(data);
    var project = data.project;
 
-    projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Goal</button><div class="well well-lg projects selectedProject" id=' + project.id + '>' + project.name + '<span class ="pull-right badge">' + project.no_of_goals + '</span></div></div>';
+    projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Goal</button><div class="well well-lg projects selectedProject" id=' + project.id + '>' + project.name + '<span class ="pull-right badge goals-left"> Goals : ' + project.no_of_goals + '</span></div></div>';
       menuItems.append(projectItem);
+      menuItems.append('<p>Goals</p><hr></hr>');
     var goals = data.project.goals;
     // console.log(goals);
 
     $.each(goals, function(i, goal){
       if(goal.id == goal_id){
-        goalItem = '<div class="well well-lg goals project' + goal.project_id + ' selectedGoal" id=' + goal.id + '> ' + goal.name + '<span class ="pull-right badge">  ' + goal.no_of_tasks + '</span></div>';
+        goalItem = '<div class="well well-lg goals project' + goal.project_id + ' selectedGoal" id=' + goal.id + '> ' + goal.name + '<span class ="pull-right badge tasks-left"> Jobs open: ' + goal.no_of_tasks + '</span></div>';
       }else{
-          goalItem = '<div class="well well-sm goals project' + goal.project_id + ' " id=' + goal.id + ' style="display:none"><button class="btn btn-sm btn-warning"> ' + goal.name + '</button><span class ="pull-right badge">  ' + goal.no_of_tasks + '</span></div>';
+          goalItem = '<div class="well well-sm goals project' + goal.project_id + ' " id=' + goal.id + ' style="display:none"> ' + goal.name + '<span class ="pull-right badge tasks-left"> Jobs open: ' + goal.no_of_tasks + '</span></div>';
       };
           menuItems.append(goalItem);
     });
@@ -450,8 +451,6 @@ var validateTaskFormAfterError = function(changeItem){
 
       var data = {};
 
-
-
         data['importance'] = $('#importance-select'+ sourceId +' option:selected').val();
         data['difficulty'] = $('#difficulty-select'+ sourceId +' option:selected').val();
         data['start_date'] = $('#start_date'+ sourceId).val();
@@ -461,6 +460,8 @@ var validateTaskFormAfterError = function(changeItem){
      
 
       if(sourceId == -1){
+        var goalId = $('#goal-select option:selected').val();
+        var projectId = $('#project-select option:selected').val();
         data['goal_id'] = $('#goal-select option:selected').val();
         data['project_id'] = $('#project-select option:selected').val();
         data['card_name'] = $('#task_title').val();
@@ -490,8 +491,10 @@ var validateTaskFormAfterError = function(changeItem){
       };
        method = "PUT";
     }
-    //comment out section
- // console.log("sending information...");
+ 
+ console.log("sending information...");
+ console.log(data);
+ 
       $.ajax({ 
      
         url: path, 
@@ -499,35 +502,36 @@ var validateTaskFormAfterError = function(changeItem){
         data: {task: data},
         dataType: "json"
       })
-  
-      // console.log("in here now...");
-        // searchButtonCombinations("reset_afer_update")
-        // if(method == "PUT"){
-        //   if(taskID == ""){
-        //     showComments(sourceId)
-        //   }else{
-        //   showComments(taskID, "resindex");
-        //   };
-        // };
-        // taskInputReset();
-        postCreateTaskJobs(sourceId, taskID, method)
 
-      
-       };
+        postCreateTaskJobs(sourceId, taskID, method, goalId, projectId)
+      };
 
-       var postCreateTaskJobs = function(sourceId, taskId, method){
+       var postCreateTaskJobs = function(sourceId, taskId, method, goalId, projectId){
         // console.log("in post jobs");
-         searchButtonCombinations("reset_afer_update");
+         // searchButtonCombinations("reset_afer_update");
         if(method == "PUT"){
-          if(taskID == ""){
-            showComments(sourceId)
+          if(taskId == ""){
+            showComments(sourceId);
+            showProject(projectId, goalId);
+             // createTaskRecord(goalId, 0);
+              searchButtonCombinations("reset_afer_update");
           }else{
-          showComments(taskID, "resindex");
+            showComments(taskId);
+            showProject(projectId, goalId);
+            // createTaskRecord(goalId, 0);
+             searchButtonCombinations("reset_afer_update");
+
           };
-        };
+        }else{
+           showProject(projectId, goalId);
+           createTaskRecord(goalId, 0);
+          incompleteTasks ++;
+          $('#user_tasks').text("incomplete tasks : " + incompleteTasks + " ");
+          searchButtonCombinations("clear");
+         };
         taskInputReset();
-         incompleteTasks ++;
-        $('#user_tasks').text("incomplete tasks : " + incompleteTasks + " ");
+        //  incompleteTasks ++;
+        // $('#user_tasks').text("incomplete tasks : " + incompleteTasks + " ");
        }
 
       $(document.body).on('click','#project-button', function(e){
@@ -577,7 +581,7 @@ var validateTaskFormAfterError = function(changeItem){
                   x = project.no_of_goals;
                 };
 
-              projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Goal</button><div class="well well-sm projects" id=' + project.id + '>' + project.name + '<span class ="pull-right badge">' + x + '</span></div></div>';
+              projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Goal</button><div class="well well-sm projects" id=' + project.id + '>' + project.name + '<span class ="pull-right badge goals-left"> Goals :' + x + '</span></div></div>';
               
               projectOption = '<option value='+project.id+ '>'+ project.name +'</option>'
               menuItems.append(projectItem);
@@ -952,11 +956,11 @@ var validateTaskFormAfterError = function(changeItem){
          //  $('#difficulty').val(3);
          //  $('#slider-importance').slider({value: 3});
          //  $('#importance').val(3)
-          $('#estimate-select').val('none');
-          $('#difficulty-select').val('none');
-          $('#importance-select').val('none');
-          $('#start_date').val('');
-          $('#end_date').val('');
+          $('#estimate-select-1').val('none');
+          $('#difficulty-select-1').val('none');
+          $('#importance-select-1').val('none');
+          $('#start_date-1').val('');
+          $('#end_date-1').val('');
           // $('#task_title').text(data.card_name);
           $('#task_title').val('');
           $('#task_description').val('');
@@ -1481,6 +1485,7 @@ var addGoal = function(){
           project_ids.push(project_id);
           showProjects(project_ids);
           createGoalsList(project_id);
+
 
       });
     };

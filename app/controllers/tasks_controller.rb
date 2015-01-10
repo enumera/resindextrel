@@ -72,6 +72,9 @@ class TasksController < ApplicationController
         goal_tasks = @goal.tasks.length
         @goal.update_attributes(no_of_tasks: goal_tasks)
         # format.html { redirect_to user_task_path(@user, @task), notice: 'Task was successfully created.' }
+          comment_text = "New task created with Resindex set from to #{@task.resindex}. <p><sub>By #{@user.first_name} on #{Time.now}.</sub></p>"
+
+      Comment.create(task_id: @task.id, comment_type_id: 6, user_id: @user.id, ctext: comment_text, before_res: @task.resindex, after_res: 0.0)
         format.json { render json: user_task_path(@user, @task), status: :created, location: user_task_path(@user, @task) }
       else
         format.html { render action: "new" }
@@ -86,7 +89,11 @@ class TasksController < ApplicationController
     # @user = User.find(params[:user_id])
     @user = current_user
     @task = Task.find(params[:id])
+    initial_task = @task
     @timerecords = TimeRecord.where(task_id: params[:id], state: "toallocate")
+    before_change_res = @task.resindex
+    @goal = Goal.find(@task.goal_id)
+    @project = Project.find(@task.project_id)
     before_res = 0.0
     after_res = 0.0
 
@@ -126,26 +133,56 @@ class TasksController < ApplicationController
        # binding.pry
     end
 
+
+
     respond_to do |format|
       if @task.update_attributes(params[:task])
-        if before_res == 0.0
-          before_res = @task.resindex
-          @task.resindex = @task.calculate_resindex(@task)
+        
+          if before_res == 0.0
+            before_res = @task.resindex
+            @task.resindex = @task.calculate_resindex(@task)
 
-          update = {}
-          update["changed_task"] = {}
-          update["changed_task"]["resindex"] = @task.resindex
+              update = {}
+              update["changed_task"] = {}
+              update["changed_task"]["resindex"] = @task.resindex
 
-           @task.update_attributes(update[:changed_task])
-            after_res = @task.resindex
+               @task.update_attributes(update[:changed_task])
+               after_res = @task.resindex
+          
+            if after_res == -999.0 && before_res != after_res
+              comment_text = "Job marked as completed. <p><sub>Set by #{@user.first_name} on #{Time.now}.</sub></p>"
 
-        if before_res = 999.0
-          comment_text = "Job mark as completed. <p><sub>Set by #{@user.first_name} on #{Time.now}.</sub></p>"
-        else
-        comment_text = "Resindex changed from #{before_res} to #{after_res}. <p><sub>Changes made by #{@user.first_name} on #{Time.now}.</sub></p>"
-        end
-            Comment.create(task_id: @task.id, comment_type_id: 7, user_id: @user.id, ctext: comment_text, before_res: before_res, after_res: after_res)
+              Comment.create(task_id: @task.id, comment_type_id: 7, user_id: @user.id, ctext: comment_text, before_res: before_res, after_res: after_res)
+
+            elsif before_res != after_res  && after_res != 999.0
+              comment_text = "Resindex changed from #{before_res} to #{after_res}. <p><sub>Changes made by #{@user.first_name} on #{Time.now}.</sub></p>"
+        
+              Comment.create(task_id: @task.id, comment_type_id: 7, user_id: @user.id, ctext: comment_text, before_res: before_res, after_res: after_res)
+            end
+
           end
+            if @goal.id != initial_task.goal_id
+
+            first_goal_tasks_to_change = Goal.find(initial_task.goal_id)
+            new_no_of_tasks = first_goal_tasks_to_change.tasks.length
+
+            first_goal_tasks_to_change.update_attributes(no_of_tasks: new_no_of_tasks)
+
+            second_goal_tasks_to_change = Goal.find(@goal.id)
+            
+            new_no_of_tasks2 = second_goal_tasks_to_change.tasks.length
+
+            second_goal_tasks_to_change.update_attributes(no_of_tasks: new_no_of_tasks2) 
+
+            # binding.pry
+
+           comment_text = "Goal changed from  #{second_goal_tasks_to_change.name} to #{first_goal_tasks_to_change.name}. <p><sub>Changes made by #{@user.first_name} on #{Time.now}.</sub></p>"
+
+          Comment.create(task_id: @task.id, comment_type_id: 7, user_id: @user.id, ctext: comment_text, before_res: before_res, after_res: after_res)
+
+          end
+        
+
 
         format.html { redirect_to user_task_path(@user, @task), notice: 'Task was successfully updated.' }
         format.json { head :no_content }
