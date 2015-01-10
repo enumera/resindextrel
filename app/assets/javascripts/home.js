@@ -617,6 +617,8 @@ var validateTaskFormAfterError = function(changeItem){
         $('.badge.resindex[value='+taskId+']').text("Completed");
         $('.recordButton[value='+taskId+']').fadeOut();
 
+        // $('.badge.task-open[value='+)
+
       }else{
         // console.log("In non-completed")
         dataToSend["completed"] = false;
