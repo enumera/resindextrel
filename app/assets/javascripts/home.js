@@ -19,7 +19,9 @@ var main = function(){
   var sessionClock;
   var incompleteTasks;
 
-  $(document).tooltip();
+
+
+  $('title').text('RESINDEX');
 
 
       var createTaskRecord = function(goal, search_type){
@@ -1765,5 +1767,5 @@ $('#comments-panel').hide();
      };
      refreshUserProjectInfo();
     };
-
+// $(document).tooltip();
 $(document).ready(main)
