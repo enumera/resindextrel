@@ -1482,7 +1482,7 @@ var addProject = function(){
 
     goal_data["name"] = $('#first-goal-name').val();
 
-    debugger;
+  
 
     console.log($('#first-goal-name').val());
 
