@@ -11,11 +11,12 @@ class ApplicationController < ActionController::Base
   def logged_in?
     !!current_user
   end
+
   private
   def authenticate
     unless logged_in?
-      flash[:error] = "You must be logged in to access this section of the site"
-      redirect_to log_in_path
+      # flash[:error] = "You must be logged in to access this section of the site"
+      redirect_to root_path
     end
   end
 
@@ -47,7 +48,7 @@ class ApplicationController < ActionController::Base
               end
             end
           when "projects" then
-            
+
             if action=="get_last_project"
               true
             else
