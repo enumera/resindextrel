@@ -1,4 +1,6 @@
 class HomeController < ApplicationController
+  before_filter :authenticate
+  
   def index
     if !current_user.nil? 
      gon.user_id = current_user.id

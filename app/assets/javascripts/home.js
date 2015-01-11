@@ -164,7 +164,7 @@ var main = function(){
   
   menuItems.append('<div class="well-lg" id="project-button">Project</div>');
 
-  var projectPath = "/projects/"+ project_id;
+  var projectPath = "users/"+gon.user_id+"/projects/"+ project_id;
 
   // console.log(projectPath);
 

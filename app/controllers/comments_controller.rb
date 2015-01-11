@@ -1,8 +1,12 @@
 
-
 class CommentsController < ApplicationController
   # GET /comments
   # GET /comments.json
+  before_filter :authenticate
+
+  before_filter :can_access_route
+  
+  
   def index
     @task = Task.find(params[:task_id])
     @comments = @task.comments.order("created_at DESC")
