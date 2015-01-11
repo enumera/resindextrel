@@ -1467,7 +1467,7 @@ var addProject = function(){
           data: {project: data_project},
           dataType: "json"
     })
-      createFirstGoal(goalName);
+      setTimeout(function(){createFirstGoal(goalName)},1000);
   };
 };
 
