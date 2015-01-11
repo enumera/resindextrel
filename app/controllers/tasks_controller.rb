@@ -1,6 +1,10 @@
 class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
+
+  before_filter :authenticate
+
+  before_filter :can_access_route
   def index
     @user = current_user
 

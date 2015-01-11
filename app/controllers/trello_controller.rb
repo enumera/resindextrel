@@ -1,4 +1,6 @@
 class TrelloController < ApplicationController
+  before_filter :authenticate
+  
   require 'httparty'
   def oauth
 

@@ -1,6 +1,8 @@
 class TimeRecordsController < ApplicationController
   # GET /time_records
   # GET /time_records.json
+  before_filter :authenticate
+  
   def index
     @time_records = TimeRecord.all
 

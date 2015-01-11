@@ -1,6 +1,8 @@
 class CommentTypesController < ApplicationController
   # GET /comment_types
   # GET /comment_types.json
+
+  before_filter :authenticate
   def index
     @comment_types = CommentType.all
 

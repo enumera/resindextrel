@@ -1,6 +1,8 @@
 class GoalsController < ApplicationController
   # GET /goals
   # GET /goals.json
+  before_filter :authenticate
+  
   def index
     @project = Project.find(params[:project_id])
     project_goals = @project.goals
