@@ -162,7 +162,7 @@ var main = function(){
 
   menuItems.html('');
   
-  menuItems.append('<div class="well" id="project-button">Project</div>');
+  menuItems.append('<div class="well" id="project-button"><h4>Projects</h4></div>');
 
   var projectPath = "users/"+gon.user_id+"/projects/"+ project_id;
 
@@ -585,7 +585,7 @@ var validateTaskFormAfterError = function(changeItem){
             goalOptions.html('');
 
             projectInitialOption = '<option value="none">Select prize</option>';
-            menuItems.append('<div class="well" id="project-button">Show projects</div>');
+            menuItems.append('<div class="well" id="project-button"><h4>Projects</h4></div>');
 
             goalInitialOption = '<option value="none">Select a project first</option>';
 
@@ -1655,6 +1655,13 @@ $('#input-panel').animate({bottom: "-200px"}, 500).fadeOut();
 $('#comments-panel').animate({top: "0px"}, 500).fadeIn();
 showComments(taskId);
 };
+
+$('#menu-new-project').click(function(e){
+  e.preventDefault();
+  // console.log("new project button pressed")
+      dialog.dialog( "open" );
+
+});
 
  $( "#new-project" ).click(function(e) {
   e.preventDefault();
