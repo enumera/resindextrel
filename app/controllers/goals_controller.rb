@@ -54,9 +54,9 @@ class GoalsController < ApplicationController
 
     respond_to do |format|
       if @goal.save
-        
-        project = Project.where(id: @goal.project_id.to_i)
-        project_to_load = project[0]
+      
+        project = Project.find(@goal.project_id.to_i)
+        project_to_load = project
         x = project_to_load.goals.length
         # binding.pry
         goals = x 
