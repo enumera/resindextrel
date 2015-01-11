@@ -263,6 +263,48 @@ class TasksController < ApplicationController
     end
   end
 
+  def tasks_with_no_resindex
+        @user = current_user
+        @tasks = @user.tasks.where(resindex: 0)
+
+    # binding.pry
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @tasks, root: false }
+    end
+  end
+
+    def tasks_with_resindex
+        @user = current_user
+        tasks_to_search = @user.tasks
+        tasks_to_sort = []
+
+        tasks_to_search.each do |task|
+          if task.resindex > 0 && task.resindex < 999
+            tasks_to_sort.push(task)
+          end
+        end
+
+        @tasks = tasks_to_sort.sort_by {|task| task[:end_date]}
+
+        # binding.pry
+
+      # binding.pry
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @tasks, root: false }
+      end
+    end
 
 
+   def tasks_resindex_to_be_reset
+        @user = current_user
+        @tasks = Task.where(resindex: 999)
+
+    # binding.pry
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @tasks, root: false }
+    end
+  end
 end

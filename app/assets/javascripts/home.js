@@ -33,6 +33,98 @@ var main = function(){
 
 
   $('title').text('RESINDEX');
+   $('#heat-map-panel').hide();
+
+  $(document.body).on('click', '.show-heat-map',function(){
+    console.log("in heat map");
+    $('#control-panel').hide();
+    $('#heat-map-panel').show();
+    var noResindex = $('#noResindex');
+    var withResindex = $('#withResindex');
+    var resindexReset = $('#resindexToBeReset');
+
+    var heatMap = $('#heat-map-container');
+
+    $.getJSON("/tasks_with_no_resindex", function(data){
+     
+        console.log(noResindex);
+      
+      $.each(data, function(i, task){
+        // console.log(task); 
+        var taskItem = '<div class="well well-sm noResindex">'+task.card_name +' <span>Resindex to be set</span></div>';
+      // console.log(taskItem);
+        noResindex.append(taskItem);
+        // console.log(noResindex);
+      });
+    });
+
+    $.getJSON("/tasks_with_resindex", function(data){
+        // var noResindex = $('#noResindex');
+        // console.log(noResindex);
+        var output = true;
+        var endDateCheck;
+      
+      $.each(data, function(i, task){
+        console.log(i); 
+
+        if(i==0){
+          console.log(i)
+        endDateCheck = task.end_date;
+        var endDate = createDate(task.end_date)
+        // console.log(endDate);
+        var dateItem = '<p>'+ endDate +'</p><hr></hr>';
+        console.log(endDateCheck);
+
+        }else if(task.end_date != endDateCheck){
+           console.log(endDateCheck);
+              endDateCheck = task.end_date;
+              var endDate = createDate(task.end_date)
+              console.log(endDate);
+              var dateItem = '<p>'+ endDate +'</p><hr></hr>';
+              output = true;
+            }else{
+               console.log(endDateCheck);
+              output= false;
+            };
+
+        var taskItem = '<div class="well well-sm heat-task" value='+task.id+'>'+task.card_name +'</div>';
+      // console.log(taskItem);
+      if(output == true){
+        withResindex.append(dateItem);
+      };
+        withResindex.append(taskItem);
+        console.log(task.resindex);
+        if(task.resindex < 1){
+          $('.heat-task[value='+task.id+']').addClass('ok');
+        }else if(task.resindex >1 && task.resindex <2){
+          $('.heat-task[value='+task.id+']').addClass('dodgy');
+        }else{
+          $('.heat-task[value='+task.id+']').addClass('out');
+
+        }
+      });
+    });
+
+      $.getJSON("/tasks_resindex_to_be_reset", function(data){
+        // var noResindex = $('#noResindex');
+        console.log(noResindex);
+      
+      $.each(data, function(i, task){
+        // console.log(task); 
+        var taskItem = '<div class="well well-sm">'+task.card_name +' <span>Resindex set</span></div>';
+      // console.log(taskItem);
+        resindexReset.append(taskItem);
+        console.log(resindexReset);
+      });
+    });
+
+
+
+
+
+
+  });
+
 
 
       var createTaskRecord = function(goal, search_type){
@@ -343,6 +435,7 @@ var resindexColour = function(taskId, resindex){
 
 
       $('#comments-panel').animate({bottom: "-200px"}, 500).fadeOut();
+
       $('#input-panel').animate({top: "0px"}, 500).fadeIn();
 
   });
@@ -1143,9 +1236,9 @@ var validateTaskFormAfterError = function(changeItem){
           $this.parent().parent().prepend('<span id="hours"></span><span id="minutes"></span><span id="seconds"></span></p><p>');
 
 
-          $('#minutes').text('0');
-          $('#hours').text('0');
-          $('#seconds').text('0');
+          // $('#minutes').text('0');
+          // $('#hours').text('0');
+          // $('#seconds').text('0');
           $this.text("End work session");
           record(userId, taskId, 0, -1);
 
@@ -1677,32 +1770,6 @@ showComments(taskId);
 createProjectList(1);
 $('#comments-panel').hide();
 
-  // $('#top10').click(function(){
-  //   console.log("in top 10 easy !!");
-  //    searchButtonCombinations();
-  //   $(this).toggleClass("btn-danger");
-  //   createTaskRecord(0, 1);
-
-  // });
-
-  // $('#trello_search').click(function(){
-  //   console.log("in trello_search easy !!");
-  //   console.log($(this).attr("id"));
-  //   $(this).toggleClass("btn-danger");
-  //   if($(this).hasClass("btn-danger") && $('#top10').hasClass("btn-danger")){
-  //     createTaskRecord(0, 4);
-  //     if($("#non_trello_search").hasClass("btn-danger")){
-  //       $("#non_trello_search").toggleClass("btn-danger");
-  //     };
-  //   }else if($(this).hasClass("btn-danger")){
-  //     createTaskRecord(0, 2);
-
-  //     if($("#non_trello_search").hasClass("btn-danger")){
-  //       $("#non_trello_search").toggleClass("btn-danger");
-  //     };
-  //   };
-  // });
-
     $('#trello_search').click(function(e){
       e.preventDefault();
     // console.log("in trello easy !!");
@@ -1865,7 +1932,6 @@ $('#comments-panel').hide();
         };
       };
 
-      // console.log($(".trello_message").text() == "Get your Trello boards");
 
     if($(".trello_message").text() == "Get your Trello boards"){
       // console.log("configuring home page");
@@ -1874,5 +1940,18 @@ $('#comments-panel').hide();
      };
      refreshUserProjectInfo();
     };
+
+ 
+
+    var createHeatMap = function(){
+      $.getJSON("/users/"+gon.user_id+"/tasks", function(data){
+
+        console.log(data);
+      });
+    };
+
+
+
+
 // $(document).tooltip();
 $(document).ready(main)

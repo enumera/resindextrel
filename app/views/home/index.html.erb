@@ -5,29 +5,41 @@
   <input type="hidden" class="goalSel"></input>
 
  <div class="row">
-
     <div class="col-sm-3">
 
-      <div class="panel panel-default">
+      <div class="panel panel-default" id="control-panel">
          <button class="btn btn-primary btn-xs pull-right" id="new-project" data-toggle="tooltip" data-placement="right" title="create a new project">
                     New project
               </button>
+        <button class="show-heat-map btn btn-primary btn-xs pull-left" id="show-heat-map" data-toggle="tooltip" data-placement="right" title="show the heat map">
+                  <span class="glyphicon glyphicon-th-list"></span>
+          </button>
+
         <div class="panel-heading">
-       <h4>Control</h4>
-
-       <!--        <span class="pull-right">
-        <button class="btn btn-primary" id="new-project">
-                    Create new Project
-              </button></span></h4> -->
-
+          <h4>Control</h4>
         </div>
         <div class="panel-body" id="menu-container">
           <div class="well well" id="project-button">
             Projects
-           
           </div>
         </div>
       </div>
+
+      <div class="panel panel-default" id="heat-map-panel">
+        <div class="panel-heading">
+          <h4>Heat Map</h4>
+        </div>
+        <div class="panel-body" >
+          <div class = "list-group" id="heat-map-container">
+          <button class="btn btn-info btn-xs" type="button" data-toggle="collapse" data-target="#noResindex" aria-expanded="false">Resindex not set</button><hr></hr>
+          <div class="collapse" id="noResindex"></div>
+          <button class="btn btn-info btn-xs" type="button" data-toggle="collapse" data-target="#withResindex">With resindex</button><hr></hr>
+          <div class="collapse" id="withResindex"></div>
+           <button class="btn btn-info btn-xs" type="button" data-toggle="collapse" data-target="#resindexToBeReset">Resindex to be reset</button><hr></hr>
+          <div class="collapse" id="resindexToBeReset"></div>
+          </div>
+        </div>
+      </div> 
     </div>
 
 
@@ -37,9 +49,6 @@
         <div class="panel-heading" id="things"><h4>Jobs to do...</h4><span><button class= "btn btn-xs btn-info" id= "top10" title="Find the top 10 jobs sorted by resindex across all projects.">Top 10</span><span><button class= "btn btn-xs btn-info" id= "trello_search" title="Only display trello jobs sorted by resindex.">Trello jobs only</span><span><button class= "btn btn-xs btn-info" id= "non_trello_search" title="Show only non-trello jobs sorted by resindex.">Non-Trello jobs only</span></div>
         <div class="panel-body" >
           <div class="list-group" id="task-list-group">
-           <!--  <a href="#" class="list-group-item active"><span class="glyphicon glyphicon-collapse-down pull-right"></span></a>
-            <a href="#" class="list-group-item">Dedicated server doesn't..</a>
-            <a href="#" class="list-group-item">RHEL 6 install on new..</a> -->
           </div>
         </div>
       </div>
@@ -106,14 +115,7 @@
                 </div>
               </div>
             </div>   
-              <!-- start of slider -->
-            <!--   <p>
-                <label for="hours_estimate">Hours estimate:</label>
-                <input type="text" id="hours_estimate" readonly style="border:0; color: blue; font-weight:bold;">
-              </p>
-              <div id="slider-estimate" style="height:100px;"></div> -->
-            <!-- </div>  -->
-            <!-- end of slider -->
+            
 
 
                     
@@ -132,25 +134,9 @@
                 </div>
               </div>  
             </div> 
-              <!-- start of the slider -->
-             <!--    <p>
-                <label for="difficulty">Difficulty:</label>
-                <input type="text" id="difficulty" readonly style="border:0; color: blue; font-weight:bold;">
-                </p>
-              <div id="slider-difficulty" style="height:100px;"></div> -->
-            <!-- </div> -->
-            <!-- end of slider -->
+             
                   
 
-            <!-- <div id="importance-wrapper"> -->
-
-
-             <!--  <p>
-              <label for="importance">Importance:</label>
-              <input type="text" id="importance" readonly style="border:0; color: blue; font-weight:bold;">
-              </p>
-              <div id="slider-importance" style="height:100px;"></div> -->
-            <!-- </div> -->
             <div id="importance-wrapper">
               <div class="control-group">
                 <!-- <label>Prize</label> -->

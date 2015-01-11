@@ -15,6 +15,10 @@
 
 }
 
+.noResindex{
+  background-color: yellow;
+}
+
 
 
 .completed{
@@ -166,6 +170,18 @@ margin-bottom: 10px;
 
 .comments{
   background-color: #d9edf7;
+}
+
+.heat-task.ok{
+  background-color:green;
+}
+
+.heat-task.dodgy{
+  background-color: orange;
+}
+
+.heat-task.out{
+  background-color: red;
 }
 
 .badge.warning{

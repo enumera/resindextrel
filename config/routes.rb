@@ -51,6 +51,11 @@ end
     get "top10_trello" => "tasks#top10_trello", :as => "top10trello"
 
     get "top10_non_trello" => "tasks#top10_non_trello", :as => "top10nontrello"
+     get "tasks_with_no_resindex" => "tasks#tasks_with_no_resindex", :as => "no_resindex_tasks"
+     get "tasks_with_resindex" => "tasks#tasks_with_resindex", :as => "resindex_tasks"
+
+     get "tasks_resindex_to_be_reset" => "tasks#tasks_resindex_to_be_reset", :as => "resindex_reset"
+
     # root :to => "users#new"
     resources :users
     resources :sessions
