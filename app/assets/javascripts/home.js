@@ -1452,55 +1452,65 @@ var addProject = function(){
 
   // console.log("added new project");
 
-  path = "/users/" + gon.user_id+ "/projects";
-  method = "POST";
-
-  var data_project = {};
-  var data_goal = {};
-
-  data_project["name"] = $('#project-name').val();
-  data_goal["name"] = $('#first-goal-name').val();
-
-  // data["user_id"] = gon.user_id;
-
-  // console.log(data);
-  $.ajax({ 
-        url: path, 
-        method: method,
-        data: {project: data_project},
-        dataType: "json"
-      });
-
-  $.getJSON("/get_last_project", function(data){
-    console.log(data);
-  
-    // var goal_data = {};
-
-    var project_id = data.id
-
-    data_goal["project_id"] = data.id
-
-    console.log(data_goal);
-    // goal_data["name"] = $('#first-goal-name').val();
-
-    // console.log($('#first-goal-name').val());
-
-    path = "/projects/" + project_id + "/goals";
+    path = "/users/" + gon.user_id+ "/projects";
     method = "POST";
 
-  // console.log(data);
-  $.ajax({ 
-        url: path, 
-        method: method,
-        data: {goal: data_goal},
-        dataType: "json"
-      });
-  });
-    dialog.dialog("close");
-  $('#project-name').val('');
-  $('#first-goal-name').val('');
+    var data_project = {};
+    var goalName;
+    var timeOfProjectCreation;
+
+    data_project["name"] = $('#project-name').val();
+    goalName = $('#first-goal-name').val();
+    $.ajax({ 
+          url: path, 
+          method: method,
+          data: {project: data_project},
+          dataType: "json"
+    })
+      createFirstGoal(goalName);
   };
 };
+
+  var createFirstGoal = function(goalName){
+    var data_goal = {};
+    var project_id;
+
+    $.getJSON("/get_last_project", function(data){
+      console.log(data);
+    
+      // var goal_data = {};
+
+      project_id = data.id
+
+      data_goal["project_id"] = data.id;
+  
+
+      data_goal["name"] = goalName;
+
+      console.log(data_goal);
+      // goal_data["name"] = $('#first-goal-name').val();
+
+      // console.log($('#first-goal-name').val());
+
+      var path = "/projects/" + project_id + "/goals";
+      var method = "POST";
+  
+
+    // console.log(data);
+    $.ajax({ 
+          url: path, 
+          method: method,
+          data: {goal: data_goal},
+          dataType: "json"
+    });
+  });
+
+
+    dialog.dialog("close");
+    $('#project-name').val('');
+    $('#first-goal-name').val('');
+  };
+
 
 var addGoal = function(){
 
