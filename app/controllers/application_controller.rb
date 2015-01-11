@@ -14,19 +14,29 @@ class ApplicationController < ActionController::Base
 
   private
   def authenticate
-    unless logged_in?
-      # flash[:error] = "You must be logged in to access this section of the site"
-      redirect_to root_path
+   
+  unless logged_in?
+    if params[:controller] == "users" 
+      case params[:actions]
+      when "index" "show" "destroy" "update"
+       flash[:error] = "Please log in."
+      redirect_to log_in_path
+      end
+
     end
   end
+end
 
   private
   def can_access_route
+    if logged_in?
     raise 'Permissions rejected' unless authorized?(current_user, params[:controller], params[:action])
+  end
   end
 
   private
   def authorized?(user, controller, action)
+    # if current_user
     # binding.pry
     case user.try(:role)
       when "admin" then true
@@ -67,7 +77,8 @@ class ApplicationController < ActionController::Base
       else 
           false
       end
+    end
    
-  end
+  # end
 
 end
