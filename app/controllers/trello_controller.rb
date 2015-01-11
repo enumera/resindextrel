@@ -18,7 +18,7 @@ class TrelloController < ApplicationController
   # This will be make a request to the request_token_path passed into
   # the consumer. The application ID and secret will be passed in as
   # parameters and  the response will ba a request token object with a secret key.
-    request_token = consumer.get_request_token(oauth_callback: "http://localhost:3000/trello/callback")
+    request_token = consumer.get_request_token(oauth_callback: "http://resindex.herokuapp.com/trello/callback")
 
   # request_token = consumer.get_request_token(oauth_callback: "https://resindex.herokuapp.com/trello/callback")
 
