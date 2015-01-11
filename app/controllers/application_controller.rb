@@ -47,6 +47,7 @@ class ApplicationController < ActionController::Base
               end
             end
           when "projects" then
+            
             if action=="get_last_project"
               true
             else
