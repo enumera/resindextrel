@@ -40,10 +40,6 @@ class TrelloController < ApplicationController
   # redirect_to request_token.authorize_url
   redirect_to read_write_url
 
-
-
-
-
   end
 
   def callback
