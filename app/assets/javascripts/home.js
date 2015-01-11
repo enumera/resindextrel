@@ -1455,36 +1455,35 @@ var addProject = function(){
   path = "/users/" + gon.user_id+ "/projects";
   method = "POST";
 
-  data = {};
+  var data_project = {};
+  var data_goal = {};
 
-  data["name"] = $('#project-name').val();
+  data_project["name"] = $('#project-name').val();
+  data_goal["name"] = $('#first-goal-name').val();
+
   // data["user_id"] = gon.user_id;
 
   // console.log(data);
   $.ajax({ 
         url: path, 
         method: method,
-        data: {project: data},
+        data: {project: data_project},
         dataType: "json"
       });
-
-  // dialog.dialog("close");
-  // $('#project-name').val('');
 
   $.getJSON("/get_last_project", function(data){
     console.log(data);
   
-    var goal_data = {};
+    // var goal_data = {};
 
     var project_id = data.id
 
-    goal_data["project_id"] = data.id
+    data_goal["project_id"] = data.id
 
-    goal_data["name"] = $('#first-goal-name').val();
+    console.log(data_goal);
+    // goal_data["name"] = $('#first-goal-name').val();
 
-  
-
-    console.log($('#first-goal-name').val());
+    // console.log($('#first-goal-name').val());
 
     path = "/projects/" + project_id + "/goals";
     method = "POST";
@@ -1493,7 +1492,7 @@ var addProject = function(){
   $.ajax({ 
         url: path, 
         method: method,
-        data: {goal: goal_data},
+        data: {goal: data_goal},
         dataType: "json"
       });
   });
