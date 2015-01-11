@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
+
   def index
     @user = current_user
 
