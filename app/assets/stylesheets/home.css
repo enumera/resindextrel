@@ -174,14 +174,17 @@ margin-bottom: 10px;
 
 .heat-task.ok{
   background-color:green;
+  color: white;
 }
 
 .heat-task.dodgy{
   background-color: orange;
+  colo:white;
 }
 
 .heat-task.out{
   background-color: red;
+  color: white;
 }
 
 .badge.warning{

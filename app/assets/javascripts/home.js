@@ -36,6 +36,11 @@ var main = function(){
 
    $('#heat-map-panel').hide();
 
+ $(document.body).on('click', '.to_control', function(){
+      $('#control-panel').show();
+    $('#heat-map-panel').hide();
+ })
+
   $(document.body).on('click', '.show-heat-map',function(){
     console.log("in heat map");
     $('#control-panel').hide();
@@ -52,7 +57,8 @@ var main = function(){
       
       $.each(data, function(i, task){
         // console.log(task); 
-        var taskItem = '<div class="well well-sm noResindex">'+task.card_name +' <span>Resindex to be set</span></div>';
+       
+         var taskItem = '<p>Project : '+ task.project.name +', Goal :'+ task.goal.name+'</p><input type="hidden" class="heat-map-goal'+task.id+'" value ='+task.goal.id+'></input><div class="well well-lg heat-task noResindex" value='+task.id+'>'+task.card_name +'<span class="pull-right"> Resindex to be set</span></div>';
       // console.log(taskItem);
         noResindex.append(taskItem);
         // console.log(noResindex);
@@ -88,7 +94,7 @@ var main = function(){
               output= false;
             };
 
-        var taskItem = '<div class="well well-sm heat-task" value='+task.id+'>'+task.card_name +'</div>';
+        var taskItem = '<p>Project : '+ task.project.name +', Goal :'+ task.goal.name+'</p><input type="hidden" class="heat-map-goal'+task.id+'" value ='+task.goal.id+'></input><div class="well well-lg heat-task" value='+task.id+'>'+task.card_name +'<span class="pull-right"> Resindex : '+task.resindex +'</span></div>';
       // console.log(taskItem);
       if(output == true){
         withResindex.append(dateItem);
@@ -101,8 +107,7 @@ var main = function(){
           $('.heat-task[value='+task.id+']').addClass('dodgy');
         }else{
           $('.heat-task[value='+task.id+']').addClass('out');
-
-        }
+        };
       });
     });
 
@@ -112,7 +117,7 @@ var main = function(){
       
       $.each(data, function(i, task){
         // console.log(task); 
-        var taskItem = '<div class="well well-sm">'+task.card_name +' <span>Resindex set</span></div>';
+         var taskItem = '<p>Project : '+ task.project.name +', Goal :'+ task.goal.name+'</p><input type="hidden" class="heat-map-goal'+task.id+'" value ='+task.goal.id+'></input><div class="well well-lg heat-task" value='+task.id+'>'+task.card_name +'<span class="pull-right"> Resindex : To be reset </span></div>';
       // console.log(taskItem);
         resindexReset.append(taskItem);
         console.log(resindexReset);
@@ -120,15 +125,30 @@ var main = function(){
     });
   });
 
+$(document.body).on('click', '.heat-task', function(e){
+  console.log("in heat task click");
+  $this = $(this);
+  console.log($this);
+  var taskId = $this.attr("value");
+  console.log(taskId);
+
+  var goalId = $('.heat-map-goal'+taskId).val();
+  console.log(goalId);
+
+  createTaskRecord(goalId,0, taskId );
+
+});
 
 
 
-      var createTaskRecord = function(goal, search_type){
+
+      var createTaskRecord = function(goal, search_type, taskIdToShow){
         var listItem;
         var search_url;
         var numberOfTasks = 0;
 
         switch(search_type){
+
 
           case 0 :
           search_url = "/users/" + gon.user_id + "/tasks";
@@ -152,12 +172,14 @@ var main = function(){
            case 5 :
           search_url = "/top10_non_trello";
           break;
+
         };
 
 
         // console.log("search_url" + search_url)
         // $.getJSON("users/" + gon.user_id +"/tasks", function(data){
         $.getJSON(search_url, function(data){
+          console.log(data);
 
             var listItems = $("#task-list-group");
             // console.log(data);
@@ -219,7 +241,6 @@ var main = function(){
                 $('#completed' + task.id).text("Reopen");
                 $('#completed' + task.id).addClass("done");
                 $('.recordButton[value='+task.id+']').fadeOut();
-
               };
             };
           });
@@ -227,9 +248,20 @@ var main = function(){
           $.each(data, function(i,task){
               resindexColour(task.id, task.resindex);
           });
-          searchResultsText(numberOfTasks, search_type);
+
+          if(taskIdToShow == -1){
+            searchResultsText(numberOfTasks, search_type);
+          }else{
+            console.log("just show one");
+           
+            $('.tpanel').hide();
+            $('.tpanel[value='+taskIdToShow+']').show();
+          };
+          
       });
     };
+
+
 
 
  $(document.body).on('click', '.link_to_project', function(){
@@ -447,7 +479,7 @@ var resindexColour = function(taskId, resindex){
       $('#task-list-group').html('');
       goalId = $('.goalSel').val();
 
-      createTaskRecord(goalId, 0);
+      createTaskRecord(goalId, 0, -1);
    };
 
 
@@ -618,7 +650,7 @@ var validateTaskFormAfterError = function(changeItem){
             showProject(projectId, goalId);
              // createTaskRecord(goalId, 0);
              if(searchButtonsTest() == true){
-              createTaskRecord(goalId, 0);
+              createTaskRecord(goalId, 0, -1);
             }else{
               searchButtonCombinations("reset_afer_update");
             };
@@ -627,14 +659,14 @@ var validateTaskFormAfterError = function(changeItem){
             showProject(projectId, goalId);
             // createTaskRecord(goalId, 0);
             if(searchButtonsTest() == true){
-              createTaskRecord(goalId, 0);
+              createTaskRecord(goalId, 0, -1);
             }else{
               searchButtonCombinations("reset_afer_update");
             };
           };
         }else{
            showProject(projectId, goalId);
-           createTaskRecord(goalId, 0);
+           createTaskRecord(goalId, 0, -1);
           incompleteTasks ++;
           $('#user_tasks').text("incomplete tasks : " + incompleteTasks + " ");
           searchButtonCombinations("clear");
@@ -854,7 +886,7 @@ var validateTaskFormAfterError = function(changeItem){
 
           case 4:
 
-               resultsItem.text("Top 10 Trello jobs sorted by resindex!");
+            resultsItem.text("Top 10 Trello jobs sorted by resindex!");
 
           break;
 
@@ -1018,7 +1050,7 @@ var validateTaskFormAfterError = function(changeItem){
       // $('.new-goal:not(.selectedGoal').fadeOut(1000);
       $('.goalSel').val(goalID);
       searchButtonCombinations("clear");
-      createTaskRecord(goalID, 0);
+      createTaskRecord(goalID, 0, -1);
     };
   });
 
@@ -1199,7 +1231,7 @@ var validateTaskFormAfterError = function(changeItem){
 
         goalId = $('.goalSel').val();
 
-        createTaskRecord(goalId, 0)
+        createTaskRecord(goalId, 0, -1)
 
         // addNewComment(taskId, "effort");
         $('#menu-container').removeClass('frozen');
@@ -1865,16 +1897,16 @@ $('#comments-panel').hide();
             };
 
               if(top10Status==true && nonTrelloSearchStatus == false){
-                createTaskRecord(-1, 1);
+                createTaskRecord(-1, 1, -1);
               };
             
 
             if(top10Status == true && nonTrelloSearchStatus == true ){
               // console.log("top 10 and non trello")
-              createTaskRecord(-1, 5);
+              createTaskRecord(-1, 5, -1);
             }else if(nonTrelloSearchStatus== true){
               // console.log("passed conditions");
-              createTaskRecord(-1, 3);
+              createTaskRecord(-1, 3, -1);
             };
           break;
 
@@ -1887,17 +1919,17 @@ $('#comments-panel').hide();
             };
               if(top10Status==true && trelloSearchStatus== false){
                 console.log("top 10 only");
-                createTaskRecord(-1, 1);
+                createTaskRecord(-1, 1, -1);
               };
           
 
             if(top10Status == true && trelloSearchStatus == true ){
               console.log("top 10 and  trello")
-              createTaskRecord(-1, 4);
+              createTaskRecord(-1, 4, -1);
             }
             if(trelloSearchStatus == true && top10Status== false){
               console.log("trello only");
-              createTaskRecord(-1, 2);
+              createTaskRecord(-1, 2, -1);
             };
           break;
 
@@ -1905,36 +1937,36 @@ $('#comments-panel').hide();
 
            if(top10Status == true && nonTrelloSearchStatus == false && trelloSearchStatus == false){
               console.log("just top10");
-              createTaskRecord(-1, 1);
+              createTaskRecord(-1, 1, -1);
             }else{
               if(nonTrelloSearchStatus == true){
-                createTaskRecord(-1, 3);
+                createTaskRecord(-1, 3,-1);
               }else{
-                createTaskRecord(-1, 2);
+                createTaskRecord(-1, 2, -1);
               };
             }
         
             if(nonTrelloSearchStatus == true && top10Status == true ){
               console.log("top 10 and non trello")
-              createTaskRecord(-1, 5);
+              createTaskRecord(-1, 5, -1);
             };
 
               if(trelloSearchStatus == true && top10Status == true ){
               console.log("top 10 and trello")
-              createTaskRecord(-1, 4);
+              createTaskRecord(-1, 4, -1);
             };
           break;
           case "reset_afer_update":
             if(top10Status == true && trelloSearchStatus == false && nonTrelloSearchStatus== false){
-               createTaskRecord(-1, 1);
+               createTaskRecord(-1, 1, -1);
             }else if(top10Status == true && trelloSearchStatus == true && nonTrelloSearchStatus== false){
-              createTaskRecord(-1, 4);
+              createTaskRecord(-1, 4, -1);
             }else if(top10Status == true && trelloSearchStatus == false && nonTrelloSearchStatus== true){
-              createTaskRecord(-1, 5);
+              createTaskRecord(-1, 5, -1);
             }else if(top10Status == false && trelloSearchStatus == false && nonTrelloSearchStatus== true){
-                 createTaskRecord(-1, 3);
+                 createTaskRecord(-1, 3, -1);
             }else{
-              createTaskRecord(-1, 2);
+              createTaskRecord(-1, 2, -1);
             };
             break;
 
