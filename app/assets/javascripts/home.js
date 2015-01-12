@@ -32,7 +32,7 @@ var main = function(){
 
 
 
-  $('title').text('RESINDEX');
+  // $('title').text('RESINDEX');
    $('#heat-map-panel').hide();
 
   $(document.body).on('click', '.show-heat-map',function(){
