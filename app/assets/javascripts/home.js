@@ -1098,7 +1098,11 @@ var validateTaskFormAfterError = function(changeItem){
       e.preventDefault();
       var goalId;
       $this = $(this);
-       taskId = parseInt($this.parent().parent().parent().attr('id'));
+      console.log($this.val());
+      var taskId = parseInt($this.parent().parent().parent().attr('id'));
+      var taskId2 = $this.val();
+       console.log(taskId);
+       console.log(taskId2);
 
       if($this.hasClass("recording")){
 
@@ -1111,12 +1115,11 @@ var validateTaskFormAfterError = function(changeItem){
         // addNewComment(taskId, "effort");
         $('#menu-container').removeClass('frozen');
       
-
-
-
       }else{
 
           taskId = parseInt($this.parent().parent().parent().attr('id'));
+          console.log($this.val());
+          console.log(taskId);
           userId = gon.user_id;
           // console.log(taskId);
           // taskId = parseInt($this.siblings().attr('id'));
@@ -1137,18 +1140,14 @@ var validateTaskFormAfterError = function(changeItem){
           editButtonToRemove.addClass("recording");
           $('#menu-container').addClass('frozen');
           $('.task_description_on_task[value='+ taskId + ']').show();
-
-
           $this.parent().parent().parent().addClass("active");
           $this.parent().parent().prepend('<span id="hours"></span><span id="minutes"></span><span id="seconds"></span></p><p>');
 
 
-          // $('#minutes').text('0');
-          // $('#hours').text('0');
-          // $('#seconds').text('0');
+        
           $this.text("End work session");
           record(userId, taskId, 0, -1);
-
+          console.log($this);
           recordingTimeout($this);
           clock();
       };
@@ -1305,10 +1304,16 @@ var clock = function(){
     e.preventDefault();
 
      // console.log("new comment button pressed");
-     $this = $(this);
+
+    if($('.active').length==0){
+     var $this = $(this);
      // $('#taskComment_id').attr("value" )
      // console.log($this.val());
      var taskID = $this.val();
+   }else{
+   var taskID = $('.active').attr('id');
+   };
+     console.log(taskID);
      var typeItem;
      var initialCommentType = '<option value="none">Select Note type</option>';
      // console.log(taskID);
@@ -1626,9 +1631,16 @@ dialog = $( "#new-project-modal" ).dialog({
 
 $(document.body).on('click', '.viewNotesButton', function(e){
   e.preventDefault();
-$this = $(this);
+
+if($('.active').length == 0){
+    $this = $(this);
 // console.log($this);
-var taskId = $this.parent().first().attr("value");
+    var taskId = $this.parent().first().attr("value");
+  }else{
+    var taskId = $('.active').attr('id');
+  };
+
+
 // $('#input-panel').animate({bottom: "-200px"}, 500).fadeOut();
 // $('#comments-panel').animate({top: "0px"}, 500).fadeIn();
 showCommentPanel(taskId);
