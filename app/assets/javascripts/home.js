@@ -33,6 +33,7 @@ var main = function(){
 
 
   // $('title').text('RESINDEX');
+
    $('#heat-map-panel').hide();
 
   $(document.body).on('click', '.show-heat-map',function(){
@@ -124,6 +125,7 @@ var main = function(){
 
 
   });
+
 
 
 
@@ -254,9 +256,9 @@ var main = function(){
 
   menuItems.html('');
   
-  menuItems.append('<div class="well" id="project-button">Project</div>');
+  menuItems.append('<div class="well" id="project-button"><h4>Projects</h4></div>');
 
-  var projectPath = "/projects/"+ project_id;
+  var projectPath = "users/"+gon.user_id+"/projects/"+ project_id;
 
   // console.log(projectPath);
 
@@ -678,7 +680,7 @@ var validateTaskFormAfterError = function(changeItem){
             goalOptions.html('');
 
             projectInitialOption = '<option value="none">Select prize</option>';
-            menuItems.append('<div class="well" id="project-button">Show projects</div>');
+            menuItems.append('<div class="well" id="project-button"><h4>Projects</h4></div>');
 
             goalInitialOption = '<option value="none">Select a project first</option>';
 
@@ -942,7 +944,7 @@ var validateTaskFormAfterError = function(changeItem){
            
           // alert("hello")
 
-    }, 600000);
+    }, 2700000);
   };
 
 
@@ -1191,7 +1193,11 @@ var validateTaskFormAfterError = function(changeItem){
       e.preventDefault();
       var goalId;
       $this = $(this);
-       taskId = parseInt($this.parent().parent().parent().attr('id'));
+      console.log($this.val());
+      var taskId = parseInt($this.parent().parent().parent().attr('id'));
+      var taskId2 = $this.val();
+       console.log(taskId);
+       console.log(taskId2);
 
       if($this.hasClass("recording")){
 
@@ -1204,12 +1210,11 @@ var validateTaskFormAfterError = function(changeItem){
         // addNewComment(taskId, "effort");
         $('#menu-container').removeClass('frozen');
       
-
-
-
       }else{
 
           taskId = parseInt($this.parent().parent().parent().attr('id'));
+          console.log($this.val());
+          console.log(taskId);
           userId = gon.user_id;
           // console.log(taskId);
           // taskId = parseInt($this.siblings().attr('id'));
@@ -1230,18 +1235,13 @@ var validateTaskFormAfterError = function(changeItem){
           editButtonToRemove.addClass("recording");
           $('#menu-container').addClass('frozen');
           $('.task_description_on_task[value='+ taskId + ']').show();
-
-
           $this.parent().parent().parent().addClass("active");
           $this.parent().parent().prepend('<span id="hours"></span><span id="minutes"></span><span id="seconds"></span></p><p>');
 
 
-          // $('#minutes').text('0');
-          // $('#hours').text('0');
-          // $('#seconds').text('0');
           $this.text("End work session");
           record(userId, taskId, 0, -1);
-
+          console.log($this);
           recordingTimeout($this);
           clock();
       };
@@ -1260,9 +1260,9 @@ var validateTaskFormAfterError = function(changeItem){
 
       recordId = parseInt(item.val());
 
-      $('#minutes').text(0);
-      $('#hours').text(0);
-      $('#seconds').text(0);
+      // $('#minutes').text(0);
+      // $('#hours').text(0);
+      // $('#seconds').text(0);
 
       item.removeClass("recording")
 
@@ -1398,10 +1398,16 @@ var clock = function(){
     e.preventDefault();
 
      // console.log("new comment button pressed");
-     $this = $(this);
+
+    if($('.active').length==0){
+     var $this = $(this);
      // $('#taskComment_id').attr("value" )
      // console.log($this.val());
      var taskID = $this.val();
+   }else{
+   var taskID = $('.active').attr('id');
+   };
+     console.log(taskID);
      var typeItem;
      var initialCommentType = '<option value="none">Select Note type</option>';
      // console.log(taskID);
@@ -1545,56 +1551,65 @@ var addProject = function(){
 
   // console.log("added new project");
 
-  path = "/users/" + gon.user_id+ "/projects";
-  method = "POST";
-
-  data = {};
-
-  data["name"] = $('#project-name').val();
-  // data["user_id"] = gon.user_id;
-
-  // console.log(data);
-  $.ajax({ 
-        url: path, 
-        method: method,
-        data: {project: data},
-        dataType: "json"
-      });
-
-  // dialog.dialog("close");
-  // $('#project-name').val('');
-
-  $.getJSON("/get_last_project", function(data){
-    console.log(data);
-  
-    var goal_data = {};
-
-    var project_id = data.id
-
-    goal_data["project_id"] = data.id
-
-    goal_data["name"] = $('#first-goal-name').val();
-
-    debugger;
-
-    console.log($('#first-goal-name').val());
-
-    path = "/projects/" + project_id + "/goals";
+    path = "/users/" + gon.user_id+ "/projects";
     method = "POST";
 
-  // console.log(data);
-  $.ajax({ 
-        url: path, 
-        method: method,
-        data: {goal: goal_data},
-        dataType: "json"
-      });
-  });
-    dialog.dialog("close");
-  $('#project-name').val('');
-  $('#first-goal-name').val('');
+    var data_project = {};
+    var goalName;
+    var timeOfProjectCreation;
+
+    data_project["name"] = $('#project-name').val();
+    goalName = $('#first-goal-name').val();
+    $.ajax({ 
+          url: path, 
+          method: method,
+          data: {project: data_project},
+          dataType: "json"
+    })
+      setTimeout(function(){createFirstGoal(goalName)},1000);
   };
 };
+
+  var createFirstGoal = function(goalName){
+    var data_goal = {};
+    var project_id;
+
+    $.getJSON("/get_last_project", function(data){
+      console.log(data);
+    
+      // var goal_data = {};
+
+      project_id = data.id
+
+      data_goal["project_id"] = data.id;
+  
+
+      data_goal["name"] = goalName;
+
+      console.log(data_goal);
+      // goal_data["name"] = $('#first-goal-name').val();
+
+      // console.log($('#first-goal-name').val());
+
+      var path = "/projects/" + project_id + "/goals";
+      var method = "POST";
+  
+
+    // console.log(data);
+    $.ajax({ 
+          url: path, 
+          method: method,
+          data: {goal: data_goal},
+          dataType: "json"
+    });
+  });
+
+
+    dialog.dialog("close");
+    $('#project-name').val('');
+    $('#first-goal-name').val('');
+  };
+
 
 var addGoal = function(){
 
@@ -1710,9 +1725,16 @@ dialog = $( "#new-project-modal" ).dialog({
 
 $(document.body).on('click', '.viewNotesButton', function(e){
   e.preventDefault();
-$this = $(this);
+
+if($('.active').length == 0){
+    $this = $(this);
 // console.log($this);
-var taskId = $this.parent().first().attr("value");
+    var taskId = $this.parent().first().attr("value");
+  }else{
+    var taskId = $('.active').attr('id');
+  };
+
+
 // $('#input-panel').animate({bottom: "-200px"}, 500).fadeOut();
 // $('#comments-panel').animate({top: "0px"}, 500).fadeIn();
 showCommentPanel(taskId);
@@ -1739,6 +1761,13 @@ $('#input-panel').animate({bottom: "-200px"}, 500).fadeOut();
 $('#comments-panel').animate({top: "0px"}, 500).fadeIn();
 showComments(taskId);
 };
+
+$('#menu-new-project').click(function(e){
+  e.preventDefault();
+  // console.log("new project button pressed")
+      dialog.dialog( "open" );
+
+});
 
  $( "#new-project" ).click(function(e) {
   e.preventDefault();

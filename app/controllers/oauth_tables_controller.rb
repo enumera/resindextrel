@@ -1,6 +1,8 @@
 class OauthTablesController < ApplicationController
   # GET /oauth_tables
   # GET /oauth_tables.json
+  before_filter :authenticate
+  
   def index
     @oauth_tables = OauthTable.all
 

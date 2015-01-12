@@ -1,4 +1,7 @@
 class SessionsController < ApplicationController
+  
+  # before_filter :can_access_route
+
   def new
   end
 

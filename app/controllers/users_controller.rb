@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   # GET /users
   # GET /users.json
+  before_filter :authenticate
+  before_filter :can_access_route
   def index
     @users = User.all
 
@@ -44,6 +46,10 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        if @user.id != 1 then
+          @user.update_attributes(role: "user")
+        end
+
         format.html { redirect_to root_path, notice: 'Signed up' }
         format.json { render json: @user, status: :created, location: @user }
       else
