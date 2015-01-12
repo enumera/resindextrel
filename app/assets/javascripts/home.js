@@ -118,12 +118,6 @@ var main = function(){
         console.log(resindexReset);
       });
     });
-
-
-
-
-
-
   });
 
 
