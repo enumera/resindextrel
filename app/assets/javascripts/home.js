@@ -32,7 +32,7 @@ var main = function(){
 
 
 
-  $('title').text('RESINDEX');
+  // $('title').text('RESINDEX');
 
 
       var createTaskRecord = function(goal, search_type){
@@ -849,7 +849,7 @@ var validateTaskFormAfterError = function(changeItem){
            
           // alert("hello")
 
-    }, 600000);
+    }, 2700000);
   };
 
 
@@ -1143,9 +1143,9 @@ var validateTaskFormAfterError = function(changeItem){
           $this.parent().parent().prepend('<span id="hours"></span><span id="minutes"></span><span id="seconds"></span></p><p>');
 
 
-          $('#minutes').text('0');
-          $('#hours').text('0');
-          $('#seconds').text('0');
+          // $('#minutes').text('0');
+          // $('#hours').text('0');
+          // $('#seconds').text('0');
           $this.text("End work session");
           record(userId, taskId, 0, -1);
 
