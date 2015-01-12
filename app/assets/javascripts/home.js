@@ -1166,9 +1166,9 @@ var validateTaskFormAfterError = function(changeItem){
 
       recordId = parseInt(item.val());
 
-      $('#minutes').text(0);
-      $('#hours').text(0);
-      $('#seconds').text(0);
+      // $('#minutes').text(0);
+      // $('#hours').text(0);
+      // $('#seconds').text(0);
 
       item.removeClass("recording")
 
