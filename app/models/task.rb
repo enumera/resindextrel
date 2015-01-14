@@ -10,14 +10,12 @@ class Task < ActiveRecord::Base
 
 
 
-  def calculate_resindex(task)
+  def calculate_resindex(task, user_ref)
    
     if start_date.nil? || end_date.nil? 
-    #   if task.completed=true
-    #     resindex = -999
-    #   else
+   
       resindex = 0
-    # end
+
     else
 
 
@@ -42,31 +40,25 @@ class Task < ActiveRecord::Base
     if b < a
       resindex = 999
        else
-        # binding.pry
-        # if (b-a ) < 86400
-        #     time_left_in_days = 1
-        
+  
 
-        # if start_date.day == end_date.day && Time.now.day == start_date.day && start_date.month == end_date.month && Time.now.month == start_date.month
-        #     time_left_in_days == 1
-        # end
+        effort  = task.effort.to_f.round(2)
+        estimate = task.estimate.to_f.round(2)
 
-
-          # time_left_in_days = 1 if time_left_in_days == 0
-
-          effort  = task.effort.to_f.round(2)
-          estimate = task.estimate.to_f.round(2)
+       user_difficulty_record = user_ref.difficulties.where(difficulty_ref: task.difficulty)
+       difficulty = user_difficulty_record[0].difficulty_value
       
+      user_importance_record = user_ref.importances.where(importance_ref: task.importance)
+      importance = user_importance_record[0].importance_value
 
     # binding.pry
-        resindex = (((task.difficulty.to_f * estimate) - effort)/ (task.importance.to_f * (time_left_in_days * 7)))
+        resindex = (((difficulty * estimate) - effort)/ (importance * (time_left_in_days * 7)))
           
         # binding.pry
 
         resindex = resindex.round(3)
     end
 
-    # binding.pry
 
     if resindex < 0
       resindex = 888

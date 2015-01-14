@@ -1,5 +1,11 @@
 Trelloindex::Application.routes.draw do
   
+  resources :difficulties
+
+
+  resources :importances
+
+
   resources :oauth_tables
 
 

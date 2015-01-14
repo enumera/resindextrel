@@ -13,7 +13,7 @@ class TasksController < ApplicationController
     task = @user.tasks
 
     task.each do |t|
-      t.resindex = t.calculate_resindex(t)
+      t.resindex = t.calculate_resindex(t, @user)
 
       effort_update = {}
       effort_update["resindex_update"] = {}
@@ -66,7 +66,7 @@ class TasksController < ApplicationController
         # binding.pry
     @goal = Goal.find(params[:task][:goal_id])
     @project = Project.find(params[:task][:project_id])
-    @task.resindex = @task.calculate_resindex(@task)
+    @task.resindex = @task.calculate_resindex(@task, @user)
   
     
     respond_to do |format|
@@ -123,7 +123,7 @@ class TasksController < ApplicationController
 
       end
 
-      @task.resindex = @task.calculate_resindex(@task)
+      @task.resindex = @task.calculate_resindex(@task, @user)
 
       effort_update = {}
       effort_update["effort_update"] = {}
@@ -146,7 +146,7 @@ class TasksController < ApplicationController
         
           if before_res == 0.0
             before_res = @task.resindex
-            @task.resindex = @task.calculate_resindex(@task)
+            @task.resindex = @task.calculate_resindex(@task, @user)
 
               update = {}
               update["changed_task"] = {}

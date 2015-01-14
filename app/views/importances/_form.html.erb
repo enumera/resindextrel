@@ -1,0 +1,29 @@
+<%= form_for(@importance) do |f| %>
+  <% if @importance.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@importance.errors.count, "error") %> prohibited this importance from being saved:</h2>
+
+      <ul>
+      <% @importance.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :user_id %><br />
+    <%= f.number_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :importance_ref %><br />
+    <%= f.number_field :importance_ref %>
+  </div>
+  <div class="field">
+    <%= f.label :importance_value %><br />
+    <%= f.text_field :importance_value %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
