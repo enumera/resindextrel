@@ -48,8 +48,10 @@ var main = function(){
     var noResindex = $('#noResindex');
     var withResindex = $('#withResindex');
     var resindexReset = $('#resindexToBeReset');
-
     var heatMap = $('#heat-map-container');
+   noResindex.html('');
+   withResindex.html('');
+   resindexReset.html('');
 
     $.getJSON("/tasks_with_no_resindex", function(data){
      
