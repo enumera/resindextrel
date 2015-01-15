@@ -9,6 +9,11 @@
   overflow: auto;
 }
 
+#heat-map-container{
+   height: 500px;
+  overflow: auto;
+}
+
 #comment-text {
   height: 60px;
   width: 260px;
