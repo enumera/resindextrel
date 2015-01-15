@@ -1430,9 +1430,10 @@ var clock = function(){
     if($('.active').length==0){
      var $this = $(this);
      // $('#taskComment_id').attr("value" )
-     // console.log($this.val());
+     console.log($this.val());
      var taskID = $this.val();
    }else{
+    console.log("i went here");
    var taskID = $('.active').attr('id');
    };
      console.log(taskID);
@@ -1526,6 +1527,7 @@ var clock = function(){
           // $scope.newComment = $scope.newComment + ":created at "+ n;
 
           path = "/tasks/"+ taskId +"/comments";
+          console.log('path of comment' + path);
           method = "POST";
           dataToSend["ctext"] = newComment; 
           dataToSend["task_id"] = taskId;
