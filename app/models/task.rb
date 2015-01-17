@@ -45,10 +45,10 @@ class Task < ActiveRecord::Base
         effort  = task.effort.to_f.round(2)
         estimate = task.estimate.to_f.round(2)
 
-       user_difficulty_record = user_ref.difficulties.where(difficulty_ref: task.difficulty)
+       user_difficulty_record = user_ref.difficulties.where(difficulty_ref: task.difficulty, name_status: "active")
        difficulty = user_difficulty_record[0].difficulty_value
       
-      user_importance_record = user_ref.importances.where(importance_ref: task.importance)
+      user_importance_record = user_ref.importances.where(importance_ref: task.importance, name_status: "active")
       importance = user_importance_record[0].importance_value
 
     # binding.pry
