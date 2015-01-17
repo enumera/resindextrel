@@ -6,7 +6,7 @@ class ImportancesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @importances }
+      format.json { render json: @importances, root: false }
     end
   end
 

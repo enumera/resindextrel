@@ -6,7 +6,7 @@ class DifficultiesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @difficulties }
+      format.json { render json: @difficulties, root: false }
     end
   end
 
