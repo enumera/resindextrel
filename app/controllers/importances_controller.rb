@@ -2,7 +2,8 @@ class ImportancesController < ApplicationController
   # GET /importances
   # GET /importances.json
   def index
-    @importances = Importance.all
+    @user = current_user
+    @importances = @user.importances.order("importance_ref ASC").where(name_status: "active")
 
     respond_to do |format|
       format.html # index.html.erb

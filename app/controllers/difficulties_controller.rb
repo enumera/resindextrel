@@ -2,8 +2,10 @@ class DifficultiesController < ApplicationController
   # GET /difficulties
   # GET /difficulties.json
   def index
-    @difficulties = Difficulty.all
+    @user = current_user
+    @difficulties = @user.difficulties.order("difficulty_ref ASC").where(name_status: "active")
 
+ 
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @difficulties, root: false }
