@@ -63,16 +63,16 @@ width: 88px;
   margin-top: 10px;
 }
 
-#estimate-select{
+.estimate-sel{
   width: 100%;
   /*margin-right: 150px*/
 }
-#difficulty-select{
-  width: 100%;
+.difficulty-sel{
+  width: 108%;
   /*margin-right: 150px*/
 }
-#importance-select{
-  width: 100%;
+.importance-sel{
+  width: 109%;
   /*margin-right: 150px*/
 }
 
