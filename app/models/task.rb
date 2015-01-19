@@ -8,7 +8,7 @@ class Task < ActiveRecord::Base
   
 
 
-
+# rewrite this resindex method and apply tests in ruby
 
   def calculate_resindex(task, user_ref)
    
