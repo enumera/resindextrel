@@ -56,7 +56,7 @@ var main = function(){
       $.each(difficultyOptions, function(i, difficulty){
 
         // console.log(difficulty);
-        difficultyItem = '<option value='+difficulty.diffculty_ref+'>'+difficulty.name+'</option>';
+        difficultyItem = '<option value='+difficulty.difficulty_ref+'>'+difficulty.name+'</option>';
         // console.log(importanceItem);
         difficultySelection.append(difficultyItem);
       });
