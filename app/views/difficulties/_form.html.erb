@@ -1,0 +1,29 @@
+<%= form_for(@difficulty) do |f| %>
+  <% if @difficulty.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@difficulty.errors.count, "error") %> prohibited this difficulty from being saved:</h2>
+
+      <ul>
+      <% @difficulty.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :user_id %><br />
+    <%= f.number_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :difficulty_ref %><br />
+    <%= f.number_field :difficulty_ref %>
+  </div>
+  <div class="field">
+    <%= f.label :difficulty_value %><br />
+    <%= f.text_field :difficulty_value %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

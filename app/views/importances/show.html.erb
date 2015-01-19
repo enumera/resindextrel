@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>User:</b>
+  <%= @importance.user_id %>
+</p>
+
+<p>
+  <b>Importance ref:</b>
+  <%= @importance.importance_ref %>
+</p>
+
+<p>
+  <b>Importance value:</b>
+  <%= @importance.importance_value %>
+</p>
+
+
+<%= link_to 'Edit', edit_importance_path(@importance) %> |
+<%= link_to 'Back', importances_path %>

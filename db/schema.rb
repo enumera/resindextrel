@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150111140357) do
+ActiveRecord::Schema.define(:version => 20150115132139) do
 
   create_table "comment_types", :force => true do |t|
     t.string   "name"
@@ -31,6 +31,16 @@ ActiveRecord::Schema.define(:version => 20150111140357) do
     t.float    "after_res"
   end
 
+  create_table "difficulties", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "difficulty_ref"
+    t.float    "difficulty_value"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "name"
+    t.string   "name_status"
+  end
+
   create_table "goals", :force => true do |t|
     t.string   "name"
     t.integer  "project_id"
@@ -38,6 +48,16 @@ ActiveRecord::Schema.define(:version => 20150111140357) do
     t.datetime "updated_at",      :null => false
     t.string   "project_list_id"
     t.integer  "no_of_tasks"
+  end
+
+  create_table "importances", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "importance_ref"
+    t.float    "importance_value"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "name"
+    t.string   "name_status"
   end
 
   create_table "oauth_tables", :force => true do |t|
