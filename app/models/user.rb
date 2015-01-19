@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
   has_secure_password
+  after_create :update_after_create
+  
   attr_accessible :family_name, :first_name, :rescue, :trello, :task_ids, :work_session, :password, :email, :password_confirmation, :project_ids, :role, :difficulty_ids, :importance_ids
 
   validates_presence_of :first_name, :on => :create
@@ -16,8 +18,24 @@ class User < ActiveRecord::Base
   has_many :importances
   has_many :difficulties
 
+  def update_after_create
+
+    if self.id != 1 then
+            self.update_attributes(role: "user")
+    end
 
 
+    Difficulty.create(name:"Easy-done it before", difficulty_ref: 1, difficulty_value: 1, user_id: self.id, name_status: "active" )
+    Difficulty.create(name:"Something slightly different", difficulty_ref: 2, difficulty_value: 2, user_id: self.id, name_status: "active" )
+    Difficulty.create(name:"Tricky", difficulty_ref: 3, difficulty_value: 3, user_id: 1, name_status: "active" )
+    Difficulty.create(name:"Really difficult", difficulty_ref: 4, difficulty_value: 4, user_id: self.id, name_status: "active" )
+    Difficulty.create(name:"Mission Impossible!", difficulty_ref: 5, difficulty_value: 5, user_id: self.id, name_status: "active" )
 
+    Importance.create(name:"Would do", importance_ref: 1, importance_value: 5, user_id: self.id, name_status: "active" )
+    Importance.create(name:"Could do", importance_ref: 2, importance_value: 4, user_id: self.id, name_status: "active" )
+    Importance.create(name:"Should do", importance_ref: 3, importance_value: 3, user_id: self.id, name_status: "active" )
+    Importance.create(name:"Someone/I really needs this", importance_ref: 4, importance_value: 2, user_id: self.id, name_status: "active" )
+    Importance.create(name:"Someone/I REALLY needs this", importance_ref: 5, importance_value: 1, user_id: self.id, name_status: "active" )
+  end
 
 end
