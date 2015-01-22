@@ -560,6 +560,9 @@ var resindexColour = function(taskId, resindex){
     $('#input-panel').animate({bottom: "-200px"}, 500).fadeOut();
     $('#comments-panel').animate({top: "0px"}, 500).fadeIn();
     var commentList =  $('#comment-list-group');
+
+      var taskName = $('.task-panel[value='+ taskId+']').text();
+        $('#notes-panel-header').text('Notes for '+taskName);
   
     commentList.html('');
 
@@ -1513,6 +1516,9 @@ var clock = function(){
         $('.taskComment_id').attr("value", taskID);
         $('#type-select').html('');
         $('#type-select').append(initialCommentType);
+
+      var taskName = $('.task-panel[value='+ taskID+']').text();
+        $('#ui-id-1').text('Note for '+taskName);
 
         $.getJSON("/comment_types", function(data){
           // console.log("comment types");
