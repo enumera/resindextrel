@@ -138,11 +138,21 @@ margin-bottom: 10px;
   margin-left: 5px;
 }
 
+/*#heat-map-panel,*/
 #comments-panel{
   /*display: none;*/
   top: +100px;
   margin-left: 10px;
 
+}
+
+#heat-map-panel{
+  position:relative;
+  top: +100px;
+}
+
+#control-panel{
+  position:relative;
 }
 .projects{
   background-color: #5cb85c;
