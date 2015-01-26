@@ -1,5 +1,11 @@
 Trelloindex::Application.routes.draw do
   
+  resources :checklist_items
+
+
+  resources :checklists
+
+
   resources :difficulties
 
 
