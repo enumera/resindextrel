@@ -104,13 +104,13 @@ var main = function(){
     //   $('#control-panel').show();
     // $('#heat-map-panel').hide();
 
-      $('#heat-map-panel').animate({bottom: "-200px"}, 500).fadeOut();
+      $('#heat-map-panel').animate({bottom: "-200px"}, 1000).fadeOut();
       $('#control-panel').animate({top: "0px"}, 500).fadeIn();
  });
 
   $(document.body).on('click', '.show-heat-map',function(){
     console.log("in heat map");
-     $('#control-panel').animate({bottom: "-200px"}, 500).fadeOut();
+     $('#control-panel').animate({bottom: "-200px"}, 1000).fadeOut();
       $('#heat-map-panel').animate({top: "0px"}, 500).fadeIn();
     // $('#control-panel').animate()
     // $('#heat-map-panel').show();
