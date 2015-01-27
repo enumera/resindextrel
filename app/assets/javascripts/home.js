@@ -338,7 +338,7 @@ $(document.body).on('click', '.heat-task', function(e){
 
       $.each(data, function(i, checklist_item){
 
-        var checklist_list_item = '<hr></hr><button class="col-sm-2 btn btn-xs btn-info checklist_button"><span class="glyphicon glyphicon-remove"></span></button><div class="col-sm-10"><p class="form-control-static checklist_text">'+checklist_item.name+'</p><hr></hr>';
+        var checklist_list_item = '<hr></hr><button class="col-sm-2 btn btn-xs btn-info checklist_button" value='+checklist_item.id+'><span class="glyphicon glyphicon-remove"></span></button><div class="col-sm-10"><p class="form-control-static checklist_text'+checklist_item.id+'">'+checklist_item.name+'</p><hr></hr>';
         checklist_list.append(checklist_list_item);
       });
         checklist_list.append('<button class="col-sm-2 btn btn-success">Add</button><textarea class="col-sm-10" placeholder="Add a new checklist item"></textarea>');
@@ -348,10 +348,20 @@ $(document.body).on('click', '.heat-task', function(e){
  show_checklist(1);
 
  $(document.body).on('click', '.checklist_button', function(){
-    $('.checklist_button').html('<span class="glyphicon glyphicon-ok"></span>');
-    $('.checklist_button').removeClass('btn-info');
-    $('.checklist_button').addClass('btn-success');
 
+  var $this = $(this);
+  var id = $this.val();
+
+  console.log(id);
+
+
+    // var check_item = $('.checklist_button[value=')
+
+  $this.html('<span class="glyphicon glyphicon-ok"></span>');
+  $this.removeClass('btn-info');
+  $this.addClass('btn-success');
+  $this.addClass('cl-completed');
+  $('p.checklist_text'+id).css("text-decoration", "line-through")
  });
 
 
