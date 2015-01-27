@@ -32,17 +32,6 @@ var main = function(){
   var difficulties;
   var importances;
 
-  // var getImportance = function(){
-
-    //   $.getJSON("/difficulties", function(data){
-    //   difficulties = data;
-    // });
-
-    //   $.getJSON("/importances", function(data){
-    //   importances = data;
-    //   console.log(data)
-    // });
-      // console.log(importances);
 
    var showDifficulties = function(taskId, difficultyOptions){
     console.log("Loading difficulties");
@@ -82,7 +71,7 @@ var main = function(){
       });
     };
 
-      $.getJSON("/difficulties", function(data){
+    $.getJSON("/difficulties", function(data){
       difficulties = data;
       console.log(difficulties);
       showDifficulties(-1, difficulties)
@@ -93,16 +82,11 @@ var main = function(){
       showImportances(-1, importances);
     });
   
-  // showImportances(-1, importances);
-
-
-  // $('title').text('RESINDEX');
+ 
 
  $('#heat-map-panel').hide();
 
  $(document.body).on('click', '.to_control', function(){
-    //   $('#control-panel').show();
-    // $('#heat-map-panel').hide();
 
       $('#heat-map-panel').animate({bottom: "-200px"}, 1000).fadeOut();
       $('#control-panel').animate({top: "0px"}, 500).fadeIn();
@@ -112,8 +96,7 @@ var main = function(){
     console.log("in heat map");
      $('#control-panel').animate({bottom: "-200px"}, 1000).fadeOut();
       $('#heat-map-panel').animate({top: "0px"}, 500).fadeIn();
-    // $('#control-panel').animate()
-    // $('#heat-map-panel').show();
+  
     var noResindex = $('#noResindex');
     var withResindex = $('#withResindex');
     var resindexReset = $('#resindexToBeReset');
@@ -331,10 +314,7 @@ $(document.body).on('click', '.heat-task', function(e){
            
             $('.tpanel').hide();
             $('.tpanel[value='+taskIdToShow+']').show();
-          };
-
-
-          
+          };   
       });
     };
 
@@ -342,12 +322,36 @@ $(document.body).on('click', '.heat-task', function(e){
 
 
  $(document.body).on('click', '.link_to_project', function(){
-  // alert("this works");
-  // console.log($(this).attr('name'));
-  // console.log($(this).val());
   var goalId = $(this).attr('name');
   var projectId = $(this).val();
   showProject(projectId, goalId);
+ });
+
+ var show_checklist = function(checklist){
+    $.getJSON("/checklists/"+checklist+"/checklist_items", function(data){
+
+        console.log(data);
+
+        var checklist_list = $('#checklist-container');
+
+        checklist_list.html('');
+
+      $.each(data, function(i, checklist_item){
+
+        var checklist_list_item = '<hr></hr><button class="col-sm-2 btn btn-xs btn-info checklist_button"><span class="glyphicon glyphicon-remove"></span></button><div class="col-sm-10"><p class="form-control-static checklist_text">'+checklist_item.name+'</p><hr></hr>';
+        checklist_list.append(checklist_list_item);
+      });
+        checklist_list.append('<button class="col-sm-2 btn btn-success">Add</button><textarea class="col-sm-10" placeholder="Add a new checklist item"></textarea>');
+    });
+ };
+
+ show_checklist(1);
+
+ $(document.body).on('click', '.checklist_button', function(){
+    $('.checklist_button').html('<span class="glyphicon glyphicon-ok"></span>');
+    $('.checklist_button').removeClass('btn-info');
+    $('.checklist_button').addClass('btn-success');
+
  });
 
 
