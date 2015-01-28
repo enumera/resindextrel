@@ -334,14 +334,18 @@ $(document.body).on('click', '.heat-task', function(e){
 
         var checklist_list = $('#checklist-container');
 
+        var countOfItems = 0;
+
         checklist_list.html('');
 
       $.each(data, function(i, checklist_item){
 
-        var checklist_list_item = '<hr></hr><button class="col-sm-2 btn btn-xs btn-info checklist_button" value='+checklist_item.id+'><span class="glyphicon glyphicon-remove"></span></button><div class="col-sm-10"><p class="form-control-static checklist_text'+checklist_item.id+'">'+checklist_item.name+'</p><hr></hr>';
+        var checklist_list_item = '<div class="checklistitem"><hr></hr><button class="col-sm-2 btn btn-xs btn-info checklist_button" value='+checklist_item.id+'><span class="glyphicon glyphicon-remove"></span></button><div class="col-sm-10"><p class="form-control-static checklist_text'+checklist_item.id+'">'+checklist_item.name+'</p><hr></hr></div>';
         checklist_list.append(checklist_list_item);
+        countOfItems++;
+        console.log(countOfItems);
       });
-        checklist_list.append('<button class="col-sm-2 btn btn-success">Add</button><textarea class="col-sm-10" placeholder="Add a new checklist item"></textarea>');
+        checklist_list.append('<button class="col-sm-2 btn btn-success add_item_button">Add</button><textarea class="col-sm-10 add_checklist_text" placeholder="Add a new checklist item"></textarea>');
     });
  };
 
@@ -354,15 +358,31 @@ $(document.body).on('click', '.heat-task', function(e){
 
   console.log(id);
 
-
-    // var check_item = $('.checklist_button[value=')
+  if ($this.hasClass('cl-completed')){
+  $this.html('<span class="glyphicon glyphicon-remove"></span>');
+  $this.toggleClass('btn-info');
+  $this.toggleClass('btn-success');
+  $this.toggleClass('cl-completed');
+  $('p.checklist_text'+id).toggleClass('stroke-through');
+  }else{
 
   $this.html('<span class="glyphicon glyphicon-ok"></span>');
-  $this.removeClass('btn-info');
-  $this.addClass('btn-success');
-  $this.addClass('cl-completed');
-  $('p.checklist_text'+id).css("text-decoration", "line-through")
+  $this.toggleClass('btn-info');
+  $this.toggleClass('btn-success');
+  $this.toggleClass('cl-completed');
+  $('p.checklist_text'+id).toggleClass('stroke-through');
+    };
  });
+
+
+$(document.body).on('click', '.add_item_button', function(){
+  var checklist_item_text = $('.add_checklist_text').val();
+  var last_check_item = $('.checklistitem').last();
+  var checklist_list_item = '<div class="checklistitem"><hr></hr><button class="col-sm-2 btn btn-xs btn-info checklist_button" value="12"><span class="glyphicon glyphicon-remove"></span></button><div class="col-sm-10"><p class="form-control-static checklist_text12">'+ checklist_item_text +'</p><hr></hr></div>';
+
+    $('#checklist-container .checklistitem:last').after(checklist_list_item);
+
+})
 
 
  var showProject = function(project_id, goal_id){

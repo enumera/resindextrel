@@ -366,6 +366,10 @@ p.copyright {
   font-size: 14px;
   margin-bottom: 20px;
 }
+.stroke-through{
+
+  text-decoration: line-through;
+}
 
 /* line 390, ../scss/app.scss */
 a.terms {
