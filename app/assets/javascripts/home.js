@@ -327,14 +327,18 @@ $(document.body).on('click', '.heat-task', function(e){
   showProject(projectId, goalId);
  });
 
- var show_checklist = function(checklist){
+
+////////---------Checklist functional code start-------------------------------///////
+
+
+ var showChecklist = function(checklist){
     $.getJSON("/checklists/"+checklist+"/checklist_items", function(data){
 
-        console.log(data);
+        // console.log(data);
 
         var checklist_list = $('#checklist-container');
 
-        var countOfItems = 0;
+     
 
         checklist_list.html('');
 
@@ -342,21 +346,21 @@ $(document.body).on('click', '.heat-task', function(e){
 
         var checklist_list_item = '<div class="checklistitem"><hr></hr><button class="col-sm-2 btn btn-xs btn-info checklist_button" value='+checklist_item.id+'><span class="glyphicon glyphicon-remove"></span></button><div class="col-sm-10"><p class="form-control-static checklist_text'+checklist_item.id+'">'+checklist_item.name+'</p><hr></hr></div>';
         checklist_list.append(checklist_list_item);
-        countOfItems++;
-        console.log(countOfItems);
+     
+        // console.log(countOfItems);
       });
         checklist_list.append('<button class="col-sm-2 btn btn-success add_item_button">Add</button><textarea class="col-sm-10 add_checklist_text" placeholder="Add a new checklist item"></textarea>');
     });
  };
 
- show_checklist(1);
+ showChecklist(1);
 
  $(document.body).on('click', '.checklist_button', function(){
 
   var $this = $(this);
   var id = $this.val();
 
-  console.log(id);
+  // console.log(id);
 
   if ($this.hasClass('cl-completed')){
   $this.html('<span class="glyphicon glyphicon-remove"></span>');
@@ -377,13 +381,30 @@ $(document.body).on('click', '.heat-task', function(e){
 
 $(document.body).on('click', '.add_item_button', function(){
   var checklist_item_text = $('.add_checklist_text').val();
-  var last_check_item = $('.checklistitem').last();
-  var checklist_list_item = '<div class="checklistitem"><hr></hr><button class="col-sm-2 btn btn-xs btn-info checklist_button" value="12"><span class="glyphicon glyphicon-remove"></span></button><div class="col-sm-10"><p class="form-control-static checklist_text12">'+ checklist_item_text +'</p><hr></hr></div>';
+  // var last_check_item = $('.checklistitem').last();
+  // var checklist_list_item = '<div class="checklistitem"><hr></hr><button class="col-sm-2 btn btn-xs btn-info checklist_button" value="12"><span class="glyphicon glyphicon-remove"></span></button><div class="col-sm-10"><p class="form-control-static checklist_text12">'+ checklist_item_text +'</p><hr></hr></div>';
 
-    $('#checklist-container .checklistitem:last').after(checklist_list_item);
+    // $('#checklist-container .checklistitem:last').after(checklist_list_item);
 
+    var path = "/checklists/1/checklist_items";
+    var method = "POST";
+    var checklistItemData ={};
+
+    checklistItemData["name"] = checklist_item_text;
+    checklistItemData["completed"] = false;
+    checklistItemData["checklist_id"] = 1;
+
+    $.ajax({
+      url: path,
+      type: method,
+      data: {checklist_item:checklistItemData }
+      // dataType: "json"
+    });
+    setTimeout(function(){showChecklist(1)}, 500);
 })
 
+/////------------------Checklist code end--------------------------//////////////
+  
 
  var showProject = function(project_id, goal_id){
   // console.log("in showproject");

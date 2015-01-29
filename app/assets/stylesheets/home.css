@@ -7,11 +7,8 @@ color: rgb(119, 119, 119);
 }
 
 #project-button h4:hover{
-color: white;
+color: rgb(135, 145, 145);
 }
-
-
-
 
 #task-panel .panel-body,
 #comments-panel .panel-body{
