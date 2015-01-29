@@ -2,10 +2,10 @@ Trelloindex::Application.routes.draw do
   
   # resources :checklist_items
 
+  resources :checklists
 
-  resources :checklists do
-     resources :checklist_items
-    end
+  resources :checklist_items
+
 
 
   resources :difficulties

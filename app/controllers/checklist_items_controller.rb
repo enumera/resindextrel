@@ -2,7 +2,8 @@ class ChecklistItemsController < ApplicationController
   # GET /checklist_items
   # GET /checklist_items.json
   def index
-   @checklist = Checklist.find(params[:checklist_id])
+  
+   @checklist = Checklist.find(params[:checklist])
     @checklist_items = @checklist.checklist_items(params[:id])
 
     respond_to do |format|
@@ -46,14 +47,14 @@ class ChecklistItemsController < ApplicationController
   # POST /checklist_items
   # POST /checklist_items.json
   def create
-    @checklist = Checklist.find(params[:checklist_id])
+    @checklist = Checklist.find(params[:checklist_item][:checklist_id])
     @checklist_item = ChecklistItem.new(params[:checklist_item])
 
     respond_to do |format|
       if @checklist_item.save
         @checklist.checklist_items << @checklist_item
         # format.html { redirect_to checklist_checklist_item_url(@checklist, @checklist_item), notice: 'Checklist item was successfully created.' }
-        format.json { render json: checklist_checklist_item_url(@checklist, @checklist_item), status: :created, location: checklist_checklist_item_url(@checklist,@checklist_item) }
+        format.json { render json: @checklist_item, status: :created, location: @checklist_item }
       else
         format.html { render action: "new" }
         format.json { render json: @checklist_item.errors, status: :unprocessable_entity }

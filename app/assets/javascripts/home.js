@@ -318,29 +318,88 @@ $(document.body).on('click', '.heat-task', function(e){
       });
     };
 
-
-
-
  $(document.body).on('click', '.link_to_project', function(){
   var goalId = $(this).attr('name');
   var projectId = $(this).val();
   showProject(projectId, goalId);
  });
 
+ ///---Checklist functional code start------------------///
 
-////////---------Checklist functional code start-------------------------------///////
+ ///-------Show checklists -------////
+var showChecklists = function(){
+ $.getJSON("/checklists", function(data){
+  console.log(data);
 
+  var listItem;
+  var checklists = $('#checklist-container');
+
+  checklists.html('');
+ 
+  $.each(data, function(i,checklist){
+
+    listItem = '<button class="btn btn-info btn-xs checklist-button" type="button" data-toggle="collapse" data-target="#checklist'+checklist.id+'" aria-expanded="false" value='+checklist.id+'>'+checklist.name+'</button><hr></hr><div class="collapse" id="checklist'+checklist.id+'"></div>';
+
+      checklists.append(listItem);
+    });
+ });
+}
+
+ ///----Add a checklist----------------------------////
+
+ $(document.body).on('click', '.add_checklist_button', function(){
+
+    ///Validation code
+    console.log("button clicked");
+
+    var path = "/checklists";
+    var method = "POST";
+    var checklist_data = {};
+
+    checklist_data["name"] = $('.add_checklist').val();
+
+    $.ajax({
+      url: path,
+      method: method,
+      data: {checklist: checklist_data}
+
+    }).done(function(){
+      console.log("checklist loaded")
+      showChecklists();
+    }).fail(function(){
+      console.log("there is something wrong with this");
+    })
+ });
+
+showChecklists();
+
+ ///---------checklist functional code end --------------///
+
+
+///---------Checklist Item functional code start-------------------------------///////
+
+
+  $(document.body).on('click', '.checklist-button', function(){
+    $this = $(this);
+
+    var checklistId = $this.val()
+    // console.log(checklistId);
+    if($('#checklist'+checklistId).children().length== 0){
+      console.log("showing the check lists");
+
+    showChecklist(checklistId);
+    }
+  });
 
  var showChecklist = function(checklist){
-    $.getJSON("/checklists/"+checklist+"/checklist_items", function(data){
 
-        // console.log(data);
-
-        var checklist_list = $('#checklist-container');
-
-     
-
+ 
+    $.getJSON("/checklist_items?checklist="+checklist, function(data){
+      
+      var checklist_list = $('#checklist'+checklist);
         checklist_list.html('');
+
+        // console.log(data.length);
 
       $.each(data, function(i, checklist_item){
 
@@ -349,11 +408,14 @@ $(document.body).on('click', '.heat-task', function(e){
      
         // console.log(countOfItems);
       });
-        checklist_list.append('<button class="col-sm-2 btn btn-success add_item_button">Add</button><textarea class="col-sm-10 add_checklist_text" placeholder="Add a new checklist item"></textarea>');
+        checklist_list.append('<button class="col-sm-2 btn btn-success add_item_button" value='+checklist+'>Add</button><textarea class="col-sm-10 add_checklist_text'+checklist+'" placeholder="Add a new checklist item"></textarea>');
     });
+
  };
 
- showChecklist(1);
+ // showChecklist(1);
+
+ //---complete a checklist item-----////
 
  $(document.body).on('click', '.checklist_button', function(){
 
@@ -378,32 +440,40 @@ $(document.body).on('click', '.heat-task', function(e){
     };
  });
 
+/////--------Add a checklist item------------------////////
 
 $(document.body).on('click', '.add_item_button', function(){
-  var checklist_item_text = $('.add_checklist_text').val();
+
+  var $this = $(this);
+  var checklistId = $this.val();
+  var checklist_item_text = $('.add_checklist_text'+checklistId).val();
   // var last_check_item = $('.checklistitem').last();
   // var checklist_list_item = '<div class="checklistitem"><hr></hr><button class="col-sm-2 btn btn-xs btn-info checklist_button" value="12"><span class="glyphicon glyphicon-remove"></span></button><div class="col-sm-10"><p class="form-control-static checklist_text12">'+ checklist_item_text +'</p><hr></hr></div>';
 
     // $('#checklist-container .checklistitem:last').after(checklist_list_item);
 
-    var path = "/checklists/1/checklist_items";
+    var path = "/checklist_items";
     var method = "POST";
     var checklistItemData ={};
 
     checklistItemData["name"] = checklist_item_text;
     checklistItemData["completed"] = false;
-    checklistItemData["checklist_id"] = 1;
+    checklistItemData["checklist_id"] = checklistId;
 
     $.ajax({
       url: path,
       type: method,
       data: {checklist_item:checklistItemData }
       // dataType: "json"
-    });
-    setTimeout(function(){showChecklist(1)}, 500);
-})
+    }).done(function(){
+      console.log("Checklist item added");
+      showChecklist(checklistId);
+    }).fail(function(){
+      console.log("This failed");
+    }); 
+  })
 
-/////------------------Checklist code end--------------------------//////////////
+/////------------------Checklist item code end--------------------------//////////////
   
 
  var showProject = function(project_id, goal_id){
@@ -505,7 +575,7 @@ var resindexColour = function(taskId, resindex){
     };
  });
 
-
+///-----------Validation fo Task form---------------//////////
  var validateTaskForm = function(taskId){
   var foundError = false;
 
@@ -514,7 +584,6 @@ var resindexColour = function(taskId, resindex){
     // console.log("title failed!");
     $('#task_title').addClass("border-red");
     foundError = true;
-
    };
 
 
@@ -532,7 +601,7 @@ var resindexColour = function(taskId, resindex){
     foundError = true;
 
    };
- };
+  };
 
    if($('#estimate-select'+taskId).val()=="none"){
     // console.log("estimate failed");
@@ -576,7 +645,9 @@ var resindexColour = function(taskId, resindex){
     createTask(taskId);
    };
 
- };
+  };
+
+ ////----------------end of validation-----------------/////
 
  $.getJSON("/users/" + gon.user_id, function(data){
   // console.log(data);

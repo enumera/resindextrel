@@ -6,7 +6,7 @@ class ChecklistsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @checklists }
+      format.json { render json: @checklists, root: false }
     end
   end
 
