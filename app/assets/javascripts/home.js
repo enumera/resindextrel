@@ -286,7 +286,7 @@ $(document.body).on('click', '.heat-task', function(e){
               var endDate = new Date(task.end_date).toDateString();
              
 
-              listItem = '<div class="panel panel-default tpanel" value='+ task.id + '><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class="glyphicon glyphicon-pencil" title="Add a note."></span></button><button class="viewNotesButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class ="glyphicon glyphicon-list-alt" title="Show all notes."></span></button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><input type="hidden" value='+ task.id + '><span class ="pull-right resindex badge" value='+task.id +' title="Tool tip to be defined."> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button class="recordButton btn btn-xs btn-warning" value='+task.id+' ><span class="glyphicon glyphicon-time" title="Start a work session."></span></button></span></p><p> The task is set to start on '+ startDate +' and end on '+ endDate +'<span><div class="pull-left"><button class="viewDetails btn btn-xs btn-info" value='+task.id+'><span class="glyphicon glyphicon-chevron-down" title="Show details."></span></button></div><div class="pull-right" value='+ task.id +'><button class=" btn btn-xs completed btn-success" id="completed'+task.id +'" name="completed" value='+ task.id +'><span class="glyphicon glyphicon-ok" title="Mark completed."></span></button></div></span></p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + '><span class="glyphicon glyphicon-edit" title="Edit job."></span></button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div><p id="projectSource'+task.id +'"> Project : <button class="btn btn-info btn-xs link_to_project" name='+task.goal_id+' value='+task.project.id+'>'+task.project.name +' : '+task.goal.name+'</button><span><button class="btn btn-xs saveDescriptionEdit pull-right btn-warning" value='+ task.id +' style="display:none">Save edit</button></span></div></div>';
+              listItem = '<div class="panel panel-default tpanel" value='+ task.id + '><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class="glyphicon glyphicon-pencil" title="Add a note."></span></button><button class="viewNotesButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class ="glyphicon glyphicon-list-alt" title="Show all notes."></span></button><button class="viewChecklistButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class ="glyphicon glyphicon-tasks" title="Go to checklists."></span></button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><input type="hidden" value='+ task.id + '><span class ="pull-right resindex badge" value='+task.id +' title="Tool tip to be defined."> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button class="recordButton btn btn-xs btn-warning" value='+task.id+' ><span class="glyphicon glyphicon-time" title="Start a work session."></span></button></span></p><p> The task is set to start on '+ startDate +' and end on '+ endDate +'<span><div class="pull-left"><button class="viewDetails btn btn-xs btn-info" value='+task.id+'><span class="glyphicon glyphicon-chevron-down" title="Show details."></span></button></div><div class="pull-right" value='+ task.id +'><button class=" btn btn-xs completed btn-success" id="completed'+task.id +'" name="completed" value='+ task.id +'><span class="glyphicon glyphicon-ok" title="Mark completed."></span></button></div></span></p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + '><span class="glyphicon glyphicon-edit" title="Edit job."></span></button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div><p id="projectSource'+task.id +'"> Project : <button class="btn btn-info btn-xs link_to_project" name='+task.goal_id+' value='+task.project.id+'>'+task.project.name +' : '+task.goal.name+'</button><span><button class="btn btn-xs saveDescriptionEdit pull-right btn-warning" value='+ task.id +' style="display:none">Save edit</button></span></div></div>';
               };
 
               listItems.append(listItem);
@@ -403,7 +403,7 @@ showChecklists();
 
       $.each(data, function(i, checklist_item){
 
-        var checklist_list_item = '<div class="checklistitem"><hr></hr><button class="col-sm-2 btn btn-xs btn-info checklist_button" value='+checklist_item.id+'><span class="glyphicon glyphicon-remove"></span></button><div class="col-sm-10"><p class="form-control-static checklist_text'+checklist_item.id+'">'+checklist_item.name+'</p><hr></hr></div>';
+        var checklist_list_item = '<div class="checklistitem"><hr></hr><button class="col-sm-2 btn btn-xs btn-info checklist_button" value='+checklist_item.id+'><span class="glyphicon glyphicon-ok"></span></button><div class="col-sm-10"><p class="form-control-static checklist_text'+checklist_item.id+'">'+checklist_item.name+'</p><hr></hr></div>';
         checklist_list.append(checklist_list_item);
      
         // console.log(countOfItems);
@@ -425,14 +425,14 @@ showChecklists();
   // console.log(id);
 
   if ($this.hasClass('cl-completed')){
-  $this.html('<span class="glyphicon glyphicon-remove"></span>');
+  $this.html('<span class="glyphicon glyphicon-ok"></span>');
   $this.toggleClass('btn-info');
-  $this.toggleClass('btn-success');
+  $this.toggleClass('btn-danger');
   $this.toggleClass('cl-completed');
   $('p.checklist_text'+id).toggleClass('stroke-through');
   }else{
 
-  $this.html('<span class="glyphicon glyphicon-ok"></span>');
+  $this.html('<span class="glyphicon glyphicon-remove"></span>');
   $this.toggleClass('btn-info');
   $this.toggleClass('btn-success');
   $this.toggleClass('cl-completed');
