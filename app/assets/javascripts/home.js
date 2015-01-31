@@ -85,6 +85,7 @@ var main = function(){
  
 
  $('#heat-map-panel').hide();
+ $('#checklist-panel').hide();
 
  $(document.body).on('click', '.to_control', function(){
 
@@ -95,7 +96,7 @@ var main = function(){
   $(document.body).on('click', '.show-heat-map',function(){
     console.log("in heat map");
      $('#control-panel').animate({bottom: "-200px"}, 1000).fadeOut();
-      $('#heat-map-panel').animate({top: "0px"}, 500).fadeIn();
+     $('#heat-map-panel').animate({top: "0px"}, 500).fadeIn();
   
     var noResindex = $('#noResindex');
     var withResindex = $('#withResindex');
@@ -326,9 +327,56 @@ $(document.body).on('click', '.heat-task', function(e){
 
  ///---Checklist functional code start------------------///
 
+
+ var showChecklistPane = function(taskId){
+  $('#control-panel').animate({bottom: "-200px"}, 1000).fadeOut();
+  $('#checklist-panel').animate({top: "0px"}, 500).fadeIn();
+  $('.add_checklist_button').val(taskId);
+
+ };
+
+
+ var hideChecklistPane = function(){
+  $('#checklist-panel').animate({bottom: "-200px"}, 1000).fadeOut();
+  $('#control-panel').animate({top: "0px"}, 500).fadeIn();
+ };
+
+////-------show the checklist pane --------/////
+ $(document.body).on("click", ".viewChecklistButton", function(){
+
+  $this = $(this);
+
+  var taskId = $this.val();
+
+  // console.log(checklist_id);
+
+  showChecklistPane(taskId);
+
+   // $('#control-panel').animate({bottom: "-200px"}, 1000).fadeOut();
+   // $('#checklist-panel').animate({top: "0px"}, 500).fadeIn();
+
+   showChecklists(taskId);
+
+ });
+
+
+ ///-------hide the checklist pane--------////
+
+ $(document.body).on("click", ".to_control_from_checklist", function(){
+   // $('#checklist-panel').animate({bottom: "-200px"}, 1000).fadeOut();
+   // $('#control-panel').animate({top: "0px"}, 500).fadeIn();
+
+   hideChecklistPane();
+
+ });
+
+
+
+
+
  ///-------Show checklists -------////
-var showChecklists = function(){
- $.getJSON("/checklists", function(data){
+var showChecklists = function(taskId){
+ $.getJSON("/checklists?task="+taskId, function(data){
   console.log(data);
 
   var listItem;
@@ -352,11 +400,14 @@ var showChecklists = function(){
     ///Validation code
     console.log("button clicked");
 
+    var $this = $(this);
+    var taskId = $this.val();
     var path = "/checklists";
     var method = "POST";
     var checklist_data = {};
 
     checklist_data["name"] = $('.add_checklist').val();
+    checklist_data["task_id"] = taskId;
 
     $.ajax({
       url: path,
@@ -364,14 +415,16 @@ var showChecklists = function(){
       data: {checklist: checklist_data}
 
     }).done(function(){
-      console.log("checklist loaded")
-      showChecklists();
+      console.log("checklist loaded");
+     
+      showChecklists(taskId);
+      $('.add_checklist').val('');
     }).fail(function(){
       console.log("there is something wrong with this");
     })
  });
 
-showChecklists();
+// showChecklists();
 
  ///---------checklist functional code end --------------///
 
@@ -403,8 +456,19 @@ showChecklists();
 
       $.each(data, function(i, checklist_item){
 
-        var checklist_list_item = '<div class="checklistitem"><hr></hr><button class="col-sm-2 btn btn-xs btn-info checklist_button" value='+checklist_item.id+'><span class="glyphicon glyphicon-ok"></span></button><div class="col-sm-10"><p class="form-control-static checklist_text'+checklist_item.id+'">'+checklist_item.name+'</p><hr></hr></div>';
+        var checklist_list_item = '<div class="checklistitem"><hr></hr><button class="col-sm-2 btn btn-xs btn-success checklist_button" value='+checklist_item.id+'><span class="glyphicon glyphicon-ok"></span></button><div class="col-sm-10"><p class="form-control-static checklist_text'+checklist_item.id+'">'+checklist_item.name+'</p><hr></hr></div>';
         checklist_list.append(checklist_list_item);
+
+        if(checklist_item.completed == true){
+              $('p.checklist_text'+checklist_item.id).addClass('stroke-through');
+              $('.checklist_button[value='+checklist_item.id+']').addClass('cl-completed');
+              $('.checklist_button[value='+checklist_item.id+']').html('<span class="glyphicon glyphicon-remove"></span>');
+
+               $('.checklist_button[value='+checklist_item.id+']').removeClass('btn-success');
+
+                $('.checklist_button[value='+checklist_item.id+']').addClass('btn-danger');
+
+        };
      
         // console.log(countOfItems);
       });
@@ -421,24 +485,59 @@ showChecklists();
 
   var $this = $(this);
   var id = $this.val();
+  var completedValue;
+
+  $this.toggleClass('cl-completed');
 
   // console.log(id);
 
   if ($this.hasClass('cl-completed')){
-  $this.html('<span class="glyphicon glyphicon-ok"></span>');
-  $this.toggleClass('btn-info');
-  $this.toggleClass('btn-danger');
-  $this.toggleClass('cl-completed');
+  $this.html('<span class="glyphicon glyphicon-remove"></span>');
+  $this.removeClass('btn-success');
+  // $this.addClass('btn-info');
+  $this.addClass('btn-danger');
+  // $this.toggleClass('cl-completed');
   $('p.checklist_text'+id).toggleClass('stroke-through');
+  completedValue = true;
   }else{
 
-  $this.html('<span class="glyphicon glyphicon-remove"></span>');
-  $this.toggleClass('btn-info');
-  $this.toggleClass('btn-success');
-  $this.toggleClass('cl-completed');
+  $this.html('<span class="glyphicon glyphicon-ok"></span>');
+  $this.removeClass('btn-danger');
+  $this.addClass('btn-success');
+  // $this.removeClass('cl-completed');
   $('p.checklist_text'+id).toggleClass('stroke-through');
-    };
+  completedValue = false;
+  };
+
+  var path = "/checklist_items/"+ id;
+  var method = "PUT";
+  var completeData = {};
+
+  completeData["completed"] = completedValue;
+
+  $.ajax({
+    url:path,
+    type: method,
+    data: {checklist_item: completeData},
+    dataType: "json"
+  });
  });
+
+
+ // var completeChecklistItem = function(checklistItemId, completeValue){
+
+ //  var path = "/checklist_items/"+ checklistItemId;
+ //  var method = "PUT";
+ //  var completeData = {};
+
+ //  completeData["completed"] = completeValue;
+
+ //  $.ajax({
+ //    url:path,
+ //    method: method,
+ //    data: {checklist_item: completeData}
+ //  });
+ // };
 
 /////--------Add a checklist item------------------////////
 
@@ -1441,6 +1540,8 @@ var validateTaskFormAfterError = function(changeItem){
 
         // addNewComment(taskId, "effort");
         $('#menu-container').removeClass('frozen');
+        ///---hide checklist pane -----////
+        hideChecklistPane();
       
       }else{
 
@@ -1448,9 +1549,7 @@ var validateTaskFormAfterError = function(changeItem){
           console.log($this.val());
           console.log(taskId);
           userId = gon.user_id;
-          // console.log(taskId);
-          // taskId = parseInt($this.siblings().attr('id'));
-          // alert(cardId);
+       
 
           $this.addClass("recording");
 
@@ -1458,9 +1557,6 @@ var validateTaskFormAfterError = function(changeItem){
           var taskPanelToKeep = $('.tpanel[value=' + taskId + ']');
           var editButtonToRemove = $('.editButton[value=' + taskId + ']');
 
-          // console.log(commentButtonToKeep);
-          // console.log(taskPanelToKeep);
-          // console.log(editButtonToRemove);
 
           commentButtonToKeep.addClass("recording");
           taskPanelToKeep.addClass("recording");
@@ -1472,6 +1568,9 @@ var validateTaskFormAfterError = function(changeItem){
 
 
           $this.text("End work session");
+          //-----show checklist pane----////
+          showChecklistPane(taskId);
+          showChecklists(taskId);
           record(userId, taskId, 0, -1);
           console.log($this);
           recordingTimeout($this);

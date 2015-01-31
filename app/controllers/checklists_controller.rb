@@ -2,7 +2,8 @@ class ChecklistsController < ApplicationController
   # GET /checklists
   # GET /checklists.json
   def index
-    @checklists = Checklist.all
+    @task = Task.find(params[:task])
+    @checklists = @task.checklists
 
     respond_to do |format|
       format.html # index.html.erb
@@ -40,10 +41,12 @@ class ChecklistsController < ApplicationController
   # POST /checklists
   # POST /checklists.json
   def create
+    # @task = Task.find(params[:task_id])
     @checklist = Checklist.new(params[:checklist])
 
     respond_to do |format|
       if @checklist.save
+        # @task.checklists << @checklist
         format.html { redirect_to @checklist, notice: 'Checklist was successfully created.' }
         format.json { render json: @checklist, status: :created, location: @checklist }
       else

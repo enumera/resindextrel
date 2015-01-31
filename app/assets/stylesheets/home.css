@@ -93,9 +93,6 @@ width: 88px;
   width: 100px;
 
 }
-
-
-
 li{
   list-style-type: none;
 }
@@ -145,6 +142,10 @@ margin-bottom: 10px;
   margin-left: 5px;
 }
 
+.viewChecklistButton{
+  margin-right: 5px;
+}
+
 /*#heat-map-panel,*/
 #comments-panel{
   /*display: none;*/
@@ -154,6 +155,11 @@ margin-bottom: 10px;
 }
 
 #heat-map-panel{
+  position:relative;
+  top: +100px;
+}
+
+#checklist-panel{
   position:relative;
   top: +100px;
 }

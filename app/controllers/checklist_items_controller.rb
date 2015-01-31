@@ -2,7 +2,7 @@ class ChecklistItemsController < ApplicationController
   # GET /checklist_items
   # GET /checklist_items.json
   def index
-  
+
    @checklist = Checklist.find(params[:checklist])
     @checklist_items = @checklist.checklist_items(params[:id])
 
@@ -65,12 +65,14 @@ class ChecklistItemsController < ApplicationController
   # PUT /checklist_items/1
   # PUT /checklist_items/1.json
   def update
-    @checklist = Checklist.find(params[:checklist_id])
-    @checklist_item = @checklist.checklist_items.find(params[:id])
+    # @checklist = Checklist.find(params[:checklist_id])
+    @checklist_item = ChecklistItem.find(params[:id])
+
+    # binding.pry
 
     respond_to do |format|
       if @checklist_item.update_attributes(params[:checklist_item])
-        format.html { redirect_to checklist_item_url(@checklist, @checklist_item), notice: 'Checklist item was successfully updated.' }
+        format.html { redirect_to @checklist_item, notice: 'Checklist item was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
