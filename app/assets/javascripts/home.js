@@ -548,11 +548,7 @@ var showChecklists = function(taskId){
 
 
 
-  // console.log("Im typing in the title");
-    if($('.add_checklist').hasClass("border-red")){
-      $('.add_checklist').removeClass("border-red");
-    };
- });
+
 
 $(document.body).on('click', '.add_item_button', function(){
   var $this = $(this);
