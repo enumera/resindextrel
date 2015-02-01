@@ -395,9 +395,26 @@ var showChecklists = function(taskId){
 
  ///----Add a checklist----------------------------////
 
+
+
+
+ $('.add_checklist').keypress(function(){
+
+  // console.log("Im typing in the title");
+    if($('.add_checklist').hasClass("border-red")){
+      $('.add_checklist').removeClass("border-red");
+    };
+ });
+
  $(document.body).on('click', '.add_checklist_button', function(){
 
     ///Validation code
+    if($('.add_checklist').val()==""){
+      $('.add_checklist').addClass("border-red");
+
+    }else{
+
+
     console.log("button clicked");
 
     var $this = $(this);
@@ -422,6 +439,7 @@ var showChecklists = function(taskId){
     }).fail(function(){
       console.log("there is something wrong with this");
     })
+  };
  });
 
 // showChecklists();
