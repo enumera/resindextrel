@@ -32,17 +32,6 @@ var main = function(){
   var difficulties;
   var importances;
 
-  // var getImportance = function(){
-
-    //   $.getJSON("/difficulties", function(data){
-    //   difficulties = data;
-    // });
-
-    //   $.getJSON("/importances", function(data){
-    //   importances = data;
-    //   console.log(data)
-    // });
-      // console.log(importances);
 
    var showDifficulties = function(taskId, difficultyOptions){
     console.log("Loading difficulties");
@@ -82,7 +71,7 @@ var main = function(){
       });
     };
 
-      $.getJSON("/difficulties", function(data){
+    $.getJSON("/difficulties", function(data){
       difficulties = data;
       console.log(difficulties);
       showDifficulties(-1, difficulties)
@@ -93,22 +82,22 @@ var main = function(){
       showImportances(-1, importances);
     });
   
-  // showImportances(-1, importances);
+ 
 
-
-  // $('title').text('RESINDEX');
-
-   $('#heat-map-panel').hide();
+ $('#heat-map-panel').hide();
+ $('#checklist-panel').hide();
 
  $(document.body).on('click', '.to_control', function(){
-      $('#control-panel').show();
-    $('#heat-map-panel').hide();
+
+      $('#heat-map-panel').animate({bottom: "-200px"}, 1000).fadeOut();
+      $('#control-panel').animate({top: "0px"}, 500).fadeIn();
  });
 
   $(document.body).on('click', '.show-heat-map',function(){
     console.log("in heat map");
-    $('#control-panel').hide();
-    $('#heat-map-panel').show();
+     $('#control-panel').animate({bottom: "-200px"}, 1000).fadeOut();
+     $('#heat-map-panel').animate({top: "0px"}, 500).fadeIn();
+  
     var noResindex = $('#noResindex');
     var withResindex = $('#withResindex');
     var resindexReset = $('#resindexToBeReset');
@@ -298,7 +287,7 @@ $(document.body).on('click', '.heat-task', function(e){
               var endDate = new Date(task.end_date).toDateString();
              
 
-              listItem = '<div class="panel panel-default tpanel" value='+ task.id + '><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class="glyphicon glyphicon-pencil" title="Add a note."></span></button><button class="viewNotesButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class ="glyphicon glyphicon-list-alt" title="Show all notes."></span></button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><input type="hidden" value='+ task.id + '><span class ="pull-right resindex badge" value='+task.id +' title="Tool tip to be defined."> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button class="recordButton btn btn-xs btn-warning" value='+task.id+' ><span class="glyphicon glyphicon-time" title="Start a work session."></span></button></span></p><p> The task is set to start on '+ startDate +' and end on '+ endDate +'<span><div class="pull-left"><button class="viewDetails btn btn-xs btn-info" value='+task.id+'><span class="glyphicon glyphicon-chevron-down" title="Show details."></span></button></div><div class="pull-right" value='+ task.id +'><button class=" btn btn-xs completed btn-success" id="completed'+task.id +'" name="completed" value='+ task.id +'><span class="glyphicon glyphicon-ok" title="Mark completed."></span></button></div></span></p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + '><span class="glyphicon glyphicon-edit" title="Edit job."></span></button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div><p id="projectSource'+task.id +'"> Project : <button class="btn btn-info btn-xs link_to_project" name='+task.goal_id+' value='+task.project.id+'>'+task.project.name +' : '+task.goal.name+'</button><span><button class="btn btn-xs saveDescriptionEdit pull-right btn-warning" value='+ task.id +' style="display:none">Save edit</button></span></div></div>';
+              listItem = '<div class="panel panel-default tpanel" value='+ task.id + '><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class="glyphicon glyphicon-pencil" title="Add a note."></span></button><button class="viewNotesButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class ="glyphicon glyphicon-list-alt" title="Show all notes."></span></button><button class="viewChecklistButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class ="glyphicon glyphicon-tasks" title="Go to checklists."></span></button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><input type="hidden" value='+ task.id + '><span class ="pull-right resindex badge" value='+task.id +' title="Tool tip to be defined."> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button class="recordButton btn btn-xs btn-warning" value='+task.id+' ><span class="glyphicon glyphicon-time" title="Start a work session."></span></button></span></p><p> The task is set to start on '+ startDate +' and end on '+ endDate +'<span><div class="pull-left"><button class="viewDetails btn btn-xs btn-info" value='+task.id+'><span class="glyphicon glyphicon-chevron-down" title="Show details."></span></button></div><div class="pull-right" value='+ task.id +'><button class=" btn btn-xs completed btn-success" id="completed'+task.id +'" name="completed" value='+ task.id +'><span class="glyphicon glyphicon-ok" title="Mark completed."></span></button></div></span></p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + '><span class="glyphicon glyphicon-edit" title="Edit job."></span></button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div><p id="projectSource'+task.id +'"> Project : <button class="btn btn-info btn-xs link_to_project" name='+task.goal_id+' value='+task.project.id+'>'+task.project.name +' : '+task.goal.name+'</button><span><button class="btn btn-xs saveDescriptionEdit pull-right btn-warning" value='+ task.id +' style="display:none">Save edit</button></span></div></div>';
               };
 
               listItems.append(listItem);
@@ -326,25 +315,276 @@ $(document.body).on('click', '.heat-task', function(e){
            
             $('.tpanel').hide();
             $('.tpanel[value='+taskIdToShow+']').show();
-          };
-
-
-          
+          };   
       });
     };
 
-
-
-
  $(document.body).on('click', '.link_to_project', function(){
-  // alert("this works");
-  // console.log($(this).attr('name'));
-  // console.log($(this).val());
   var goalId = $(this).attr('name');
   var projectId = $(this).val();
   showProject(projectId, goalId);
  });
 
+ ///---Checklist functional code start------------------///
+
+
+ var showChecklistPane = function(taskId){
+  $('#control-panel').animate({bottom: "-200px"}, 1000).fadeOut();
+  $('#checklist-panel').animate({top: "0px"}, 500).fadeIn();
+  $('.add_checklist_button').val(taskId);
+
+ };
+
+
+ var hideChecklistPane = function(){
+  $('#checklist-panel').animate({bottom: "-200px"}, 1000).fadeOut();
+  $('#control-panel').animate({top: "0px"}, 500).fadeIn();
+ };
+
+////-------show the checklist pane --------/////
+ $(document.body).on("click", ".viewChecklistButton", function(){
+
+  $this = $(this);
+
+  var taskId = $this.val();
+
+  // console.log(checklist_id);
+
+  showChecklistPane(taskId);
+
+   // $('#control-panel').animate({bottom: "-200px"}, 1000).fadeOut();
+   // $('#checklist-panel').animate({top: "0px"}, 500).fadeIn();
+
+   showChecklists(taskId);
+
+ });
+
+
+ ///-------hide the checklist pane--------////
+
+ $(document.body).on("click", ".to_control_from_checklist", function(){
+   // $('#checklist-panel').animate({bottom: "-200px"}, 1000).fadeOut();
+   // $('#control-panel').animate({top: "0px"}, 500).fadeIn();
+
+   hideChecklistPane();
+
+ });
+
+
+
+
+
+ ///-------Show checklists -------////
+var showChecklists = function(taskId){
+ $.getJSON("/checklists?task="+taskId, function(data){
+  console.log(data);
+
+  var listItem;
+  var checklists = $('#checklist-container');
+
+  checklists.html('');
+ 
+  $.each(data, function(i,checklist){
+
+    listItem = '<button class="btn btn-info btn-xs checklist-button" type="button" data-toggle="collapse" data-target="#checklist'+checklist.id+'" aria-expanded="false" value='+checklist.id+'>'+checklist.name+'</button><hr></hr><div class="collapse" id="checklist'+checklist.id+'"></div>';
+
+      checklists.append(listItem);
+    });
+ });
+}
+
+ ///----Add a checklist----------------------------////
+
+
+
+
+ $('.add_checklist').keypress(function(){
+
+  // console.log("Im typing in the title");
+    if($('.add_checklist').hasClass("border-red")){
+      $('.add_checklist').removeClass("border-red");
+    };
+ });
+
+ $(document.body).on('click', '.add_checklist_button', function(){
+
+    ///Validation code
+    if($('.add_checklist').val()==""){
+      $('.add_checklist').addClass("border-red");
+
+    }else{
+
+
+    console.log("button clicked");
+
+    var $this = $(this);
+    var taskId = $this.val();
+    var path = "/checklists";
+    var method = "POST";
+    var checklist_data = {};
+
+    checklist_data["name"] = $('.add_checklist').val();
+    checklist_data["task_id"] = taskId;
+
+    $.ajax({
+      url: path,
+      method: method,
+      data: {checklist: checklist_data}
+
+    }).done(function(){
+      console.log("checklist loaded");
+     
+      showChecklists(taskId);
+      $('.add_checklist').val('');
+    }).fail(function(){
+      console.log("there is something wrong with this");
+    })
+  };
+ });
+
+// showChecklists();
+
+ ///---------checklist functional code end --------------///
+
+
+///---------Checklist Item functional code start-------------------------------///////
+
+
+  $(document.body).on('click', '.checklist-button', function(){
+    $this = $(this);
+
+    var checklistId = $this.val()
+    // console.log(checklistId);
+    if($('#checklist'+checklistId).children().length== 0){
+      console.log("showing the check lists");
+
+    showChecklist(checklistId);
+    }
+  });
+
+ var showChecklist = function(checklist){
+
+ 
+    $.getJSON("/checklist_items?checklist="+checklist, function(data){
+      
+      var checklist_list = $('#checklist'+checklist);
+        checklist_list.html('');
+
+        // console.log(data.length);
+
+      $.each(data, function(i, checklist_item){
+
+        var checklist_list_item = '<div class="checklistitem"><hr></hr><button class="col-sm-2 btn btn-xs btn-success checklist_button" value='+checklist_item.id+'><span class="glyphicon glyphicon-ok"></span></button><div class="col-sm-10"><p class="form-control-static checklist_text'+checklist_item.id+'">'+checklist_item.name+'</p><hr></hr></div>';
+        checklist_list.append(checklist_list_item);
+
+        if(checklist_item.completed == true){
+              $('p.checklist_text'+checklist_item.id).addClass('stroke-through');
+              $('.checklist_button[value='+checklist_item.id+']').addClass('cl-completed');
+              $('.checklist_button[value='+checklist_item.id+']').html('<span class="glyphicon glyphicon-remove"></span>');
+
+               $('.checklist_button[value='+checklist_item.id+']').removeClass('btn-success');
+
+                $('.checklist_button[value='+checklist_item.id+']').addClass('btn-danger');
+
+        };
+     
+        // console.log(countOfItems);
+      });
+        checklist_list.append('<button class="col-sm-2 btn btn-success add_item_button" value='+checklist+'>Add</button><textarea class="col-sm-10 add_checklist_text'+checklist+'" placeholder="Add a new checklist item"></textarea>');
+    });
+
+ };
+
+ // showChecklist(1);
+
+ //---complete a checklist item-----////
+
+ $(document.body).on('click', '.checklist_button', function(){
+
+  var $this = $(this);
+  var id = $this.val();
+  var completedValue;
+
+  $this.toggleClass('cl-completed');
+
+  // console.log(id);
+
+  if ($this.hasClass('cl-completed')){
+  $this.html('<span class="glyphicon glyphicon-remove"></span>');
+  $this.removeClass('btn-success');
+  // $this.addClass('btn-info');
+  $this.addClass('btn-danger');
+  // $this.toggleClass('cl-completed');
+  $('p.checklist_text'+id).toggleClass('stroke-through');
+  completedValue = true;
+  }else{
+
+  $this.html('<span class="glyphicon glyphicon-ok"></span>');
+  $this.removeClass('btn-danger');
+  $this.addClass('btn-success');
+  // $this.removeClass('cl-completed');
+  $('p.checklist_text'+id).toggleClass('stroke-through');
+  completedValue = false;
+  };
+
+  var path = "/checklist_items/"+ id;
+  var method = "PUT";
+  var completeData = {};
+
+  completeData["completed"] = completedValue;
+
+  $.ajax({
+    url:path,
+    type: method,
+    data: {checklist_item: completeData},
+    dataType: "json"
+  });
+ });
+
+
+ 
+
+/////--------Add a checklist item------------------////////
+
+
+
+
+
+$(document.body).on('click', '.add_item_button', function(){
+  var $this = $(this);
+  var checklistId = $this.val();
+  var checklist_item_text = $('.add_checklist_text'+checklistId).val();
+
+
+  if(checklist_item_text == ""){
+    $('.add_checklist_text'+checklistId).addClass('border-red');
+
+  }else{
+
+    var path = "/checklist_items";
+    var method = "POST";
+    var checklistItemData ={};
+
+    checklistItemData["name"] = checklist_item_text;
+    checklistItemData["completed"] = false;
+    checklistItemData["checklist_id"] = checklistId;
+
+    $.ajax({
+      url: path,
+      type: method,
+      data: {checklist_item:checklistItemData }
+      // dataType: "json"
+    }).done(function(){
+      console.log("Checklist item added");
+      showChecklist(checklistId);
+    }).fail(function(){
+      console.log("This failed");
+    }); 
+  };
+  })
+
+/////------------------Checklist item code end--------------------------//////////////
+  
 
  var showProject = function(project_id, goal_id){
   // console.log("in showproject");
@@ -445,7 +685,7 @@ var resindexColour = function(taskId, resindex){
     };
  });
 
-
+///-----------Validation fo Task form---------------//////////
  var validateTaskForm = function(taskId){
   var foundError = false;
 
@@ -454,7 +694,6 @@ var resindexColour = function(taskId, resindex){
     // console.log("title failed!");
     $('#task_title').addClass("border-red");
     foundError = true;
-
    };
 
 
@@ -472,7 +711,7 @@ var resindexColour = function(taskId, resindex){
     foundError = true;
 
    };
- };
+  };
 
    if($('#estimate-select'+taskId).val()=="none"){
     // console.log("estimate failed");
@@ -516,7 +755,9 @@ var resindexColour = function(taskId, resindex){
     createTask(taskId);
    };
 
- };
+  };
+
+ ////----------------end of validation-----------------/////
 
  $.getJSON("/users/" + gon.user_id, function(data){
   // console.log(data);
@@ -560,6 +801,9 @@ var resindexColour = function(taskId, resindex){
     $('#input-panel').animate({bottom: "-200px"}, 500).fadeOut();
     $('#comments-panel').animate({top: "0px"}, 500).fadeIn();
     var commentList =  $('#comment-list-group');
+
+      var taskName = $('.task-panel[value='+ taskId+']').text();
+        $('#notes-panel-header').text('Notes for '+taskName);
   
     commentList.html('');
 
@@ -1307,6 +1551,8 @@ var validateTaskFormAfterError = function(changeItem){
 
         // addNewComment(taskId, "effort");
         $('#menu-container').removeClass('frozen');
+        ///---hide checklist pane -----////
+        hideChecklistPane();
       
       }else{
 
@@ -1314,9 +1560,7 @@ var validateTaskFormAfterError = function(changeItem){
           console.log($this.val());
           console.log(taskId);
           userId = gon.user_id;
-          // console.log(taskId);
-          // taskId = parseInt($this.siblings().attr('id'));
-          // alert(cardId);
+       
 
           $this.addClass("recording");
 
@@ -1324,9 +1568,6 @@ var validateTaskFormAfterError = function(changeItem){
           var taskPanelToKeep = $('.tpanel[value=' + taskId + ']');
           var editButtonToRemove = $('.editButton[value=' + taskId + ']');
 
-          // console.log(commentButtonToKeep);
-          // console.log(taskPanelToKeep);
-          // console.log(editButtonToRemove);
 
           commentButtonToKeep.addClass("recording");
           taskPanelToKeep.addClass("recording");
@@ -1338,6 +1579,9 @@ var validateTaskFormAfterError = function(changeItem){
 
 
           $this.text("End work session");
+          //-----show checklist pane----////
+          showChecklistPane(taskId);
+          showChecklists(taskId);
           record(userId, taskId, 0, -1);
           console.log($this);
           recordingTimeout($this);
@@ -1513,6 +1757,9 @@ var clock = function(){
         $('.taskComment_id').attr("value", taskID);
         $('#type-select').html('');
         $('#type-select').append(initialCommentType);
+
+      var taskName = $('.task-panel[value='+ taskID+']').text();
+        $('#ui-id-1').text('Note for '+taskName);
 
         $.getJSON("/comment_types", function(data){
           // console.log("comment types");

@@ -21,10 +21,7 @@
         <div class="panel-body" id="menu-container">
           <div class="well well" id="project-button"><h4>
             Projects
-
-
            </h4>
-
           </div>
         </div>
       </div>
@@ -47,6 +44,38 @@
           </div>
         </div>
       </div> 
+
+      <div class="panel panel-default" id="checklist-panel">
+        <button class="btn btn-primary btn-xs pull-left to_control_from_checklist" data-toggle="tooltip" data-placement="left" title="back to control">
+                     <span class="glyphicon glyphicon-th-list"></span>
+              </button>
+
+        <div class="panel-heading">
+          <h4>Task checkList</h4>
+        </div>
+        <div class="panel-body" >
+          <div class = "list-group">  
+            <button class=" btn btn-xs btn-success add_checklist_button">Add</button>
+               <input type="text" class="add_checklist" placeholder="New checklist name"></input>
+             <hr>
+              
+             <div class="list-group" id="checklist-container">
+
+             <!--  <button class="btn btn-info btn-xs" type="button" data-toggle="collapse" data-target="#checklist1" aria-expanded="false">Resindex not set</button><hr></hr>
+              <div class="collapse" id="checklist1"></div>
+              <button class="btn btn-info btn-xs" type="button" data-toggle="collapse" data-target="#checklist2">With resindex</button><hr></hr>
+            <div class="collapse" id="checklist2"></div>
+            <button class="btn btn-info btn-xs" type="button" data-toggle="collapse" data-target="#checklist3">Resindex to be reset</button><hr></hr>
+            <div class="collapse" id="checklist3"></div> -->
+            
+               <!--  <span class="input-group-addon" id="sizing-addon2"><button class=" btn btn-xs btn-info"><span class="glyphicon glyphicon-remove"></span></button></span> -->
+
+                <!--   <input type="textarea" class="checklist-input form-control" placeholder="Task" aria-describedby="sizing-addon2"> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
 
@@ -200,7 +229,7 @@
 
      
       <div class="panel panel-default col-md-5" id ="comments-panel">
-        <div class="panel-heading"><h4>Notes</h4></div>
+        <div class="panel-heading" id="notes-panel-header"><h4>Notes</h4></div>
         <div class="panel-body">
           <div class="list-group" id="comment-list-group">
             <a href="#" class="list-group-item"><span class="glyphicon glyphicon-collapse-down pull-right"></span></a>
@@ -232,7 +261,7 @@
               </button> -->
 </div>
 
-<div id="new-comment-modal" title="New Comment" class="modal-dialog">
+<div id="new-comment-modal" title="New note for" class="modal-dialog">
   <input type="hidden" class="taskComment_id">  
   <textarea name="name" id="comment-text" class="text ui-widget-content ui-corner-all" placeholder="Add a note"></textarea>
    <div class="control-group comment_type-options">

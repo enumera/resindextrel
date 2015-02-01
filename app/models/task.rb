@@ -5,10 +5,11 @@ class Task < ActiveRecord::Base
     belongs_to :goal
     has_many :comments
     belongs_to :project
+    has_many :checklists
   
 
 
-
+# rewrite this resindex method and apply tests in ruby
 
   def calculate_resindex(task, user_ref)
    
