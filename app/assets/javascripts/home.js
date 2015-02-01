@@ -542,32 +542,28 @@ var showChecklists = function(taskId){
  });
 
 
- // var completeChecklistItem = function(checklistItemId, completeValue){
-
- //  var path = "/checklist_items/"+ checklistItemId;
- //  var method = "PUT";
- //  var completeData = {};
-
- //  completeData["completed"] = completeValue;
-
- //  $.ajax({
- //    url:path,
- //    method: method,
- //    data: {checklist_item: completeData}
- //  });
- // };
+ 
 
 /////--------Add a checklist item------------------////////
 
-$(document.body).on('click', '.add_item_button', function(){
 
+
+  // console.log("Im typing in the title");
+    if($('.add_checklist').hasClass("border-red")){
+      $('.add_checklist').removeClass("border-red");
+    };
+ });
+
+$(document.body).on('click', '.add_item_button', function(){
   var $this = $(this);
   var checklistId = $this.val();
   var checklist_item_text = $('.add_checklist_text'+checklistId).val();
-  // var last_check_item = $('.checklistitem').last();
-  // var checklist_list_item = '<div class="checklistitem"><hr></hr><button class="col-sm-2 btn btn-xs btn-info checklist_button" value="12"><span class="glyphicon glyphicon-remove"></span></button><div class="col-sm-10"><p class="form-control-static checklist_text12">'+ checklist_item_text +'</p><hr></hr></div>';
 
-    // $('#checklist-container .checklistitem:last').after(checklist_list_item);
+
+  if(checklist_item_text == ""){
+    $('.add_checklist_text'+checklistId).addClass('border-red');
+
+  }else{
 
     var path = "/checklist_items";
     var method = "POST";
@@ -588,6 +584,7 @@ $(document.body).on('click', '.add_item_button', function(){
     }).fail(function(){
       console.log("This failed");
     }); 
+  };
   })
 
 /////------------------Checklist item code end--------------------------//////////////
