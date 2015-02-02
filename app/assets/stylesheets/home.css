@@ -10,6 +10,7 @@ color: rgb(119, 119, 119);
 color: rgb(135, 145, 145);
 }
 
+#checklist-panel .panel-body,
 #task-panel .panel-body,
 #comments-panel .panel-body{
   height: 500px;
