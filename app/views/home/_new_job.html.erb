@@ -1,0 +1,115 @@
+<% if !mobile? || ipad? %>
+<div class="panel panel-default col-md-5" id="input-panel">
+        <div class="panel-heading">
+          <div class="panel-title">
+            <i class="glyphicon glyphicon-wrench pull-right"></i>
+              <h4 id="" class="task-form-header" >New Job</h4>
+          </div>
+        </div>
+
+        <div class="panel-body">
+          <div class="control-group">
+              <div class="controls">
+                <input type="text" class="form-control" placeholder="Thing name" id="task_title">
+              </div>
+          </div>      
+                        
+          <div class="control-group">
+            <div class="controls">
+              <textarea class="form-control" placeholder="Add some details" id="task_description" value="-1"></textarea>
+            </div>
+          </div> 
+                             
+          <div class="control-group project-options">
+            <!-- <label>Prize</label> -->
+            <div class="controls">
+              <select class="form-control project-sel" id="project-select" name="-1" ><option>options</option>
+                <option>options2</option>
+              </select>
+            </div>
+          </div>   
+
+           <div class="control-group" id="goal-options">
+            <label>Select from project goals...</label>
+            <div class="controls">
+              <select class="form-control goal-sel" id="goal-select" name="-1"><option>Goal1</option>
+                <option>Goal2</option>
+              </select>
+            </div>
+          </div>
+          <hr>
+          <div id = "resindex-wrapper2">
+            <div id="hours-wrapper">
+              <div class="control-group project-options">
+                <div class="controls">
+                  <select class="form-control estimate-sel" id="estimate-select-1" name="-1">
+                      <option value="none">Completion time</option>
+                      <option value="1">One hour</option>
+                      <option value="2">Two hours</option>
+                      <option value="3">Three hours</option>
+                      <option value="4">Four hours</option>
+                      <option value="5">Five hours</option>
+                      <option value="6">Six hours</option>
+                      <option value="7">Seven hours</option>
+                      <option value="8">Eight hours</option>
+                      <option value="9">Nine hours</option>
+                      <option value="10">Ten hours</option>
+                  </select>
+                </div>
+              </div>
+            </div>     
+
+            <div id="difficulty-wrapper">
+              <div class="control-group">
+                <div class="controls">
+                  <select class="form-control difficulty-sel" id="difficulty-select-1" name="-1">
+                  </select>
+                </div>
+              </div>  
+            </div> 
+             
+            <div id="importance-wrapper">
+              <div class="control-group">
+                <div class="controls">
+                  <select class="form-control importance-sel" id="importance-select-1" name="-1">
+                  </select>
+                </div>
+              </div> 
+            </div> 
+            </div> 
+                    
+            <hr>
+            <div id="dates-wrapper">
+              <p>To be done...</p>
+              <button class="btn btn-danger today" value="-1" title="Set to get this job today">Today</button>
+              <button class="btn btn-warning tomorrow" value="-1" title="Set this job to be done by tomorrow.">Tomorrow</button>
+              <button class="btn btn-info set_dates" title="Select your own dates." data-toggle="collapse" href="#dates-to-set">I want to set dates</button>
+              <div id="dates-to-set" class="collapse">
+              <hr>
+
+              <div class="dates">
+                <label for="start_date">Start Date</label>
+                <input type="text" id="start_date-1" class="start_date_sel"  name="start_date">
+              </div>
+                
+              <div class="dates">
+                <label for="end_date">End Date</label>
+                <input type="text" id="end_date-1" class="end_date_sel" name="end_date">
+              </div>
+            </div>
+            </div>
+          </div>           
+          
+          <div class="control-group" id="submit-button-group">
+        
+            <div class="controls">
+              <button class="btn btn-primary new-task" id="new-task" value="-1">
+                    Post
+              </button>
+               <button class="btn btn-warning" id="refresh">
+                    Clear
+              </button>
+            </div>
+          </div>   
+        </div>
+<% end %>
