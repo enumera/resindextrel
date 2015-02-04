@@ -1,0 +1,24 @@
+<% if !mobile? || ipad? %>     
+<div class="panel panel-default" id="checklist-panel">
+  <button class="btn btn-primary btn-xs pull-left to_control_from_checklist" data-toggle="tooltip" data-placement="left" title="back to control">
+               <span class="glyphicon glyphicon-th-list"></span>
+        </button>
+
+  <div class="panel-heading">
+    <h4>Task checkList</h4>
+  </div>
+  <div class="panel-body" >
+    <div class = "list-group">  
+      <button class=" btn btn-xs btn-success add_checklist_button">Add</button>
+         <input type="text" class="add_checklist" placeholder="New checklist name"></input>
+       <hr>
+        
+       <div class="list-group" id="checklist-container">
+
+    
+      </div>
+    </div>
+  </div>
+</div>
+
+      <% end %>

@@ -1,6 +1,33 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   helper_method :current_user
+  helper_method :mobile?
+  helper_method :ipad?
+
+  private 
+
+  def mobile?
+    if request.user_agent =~ /Mobile/
+      if request.user_agent =~ /iPad/
+        false
+      else
+        true
+      end
+    end
+  end
+
+  def ipad?
+    if request.user_agent =~ /iPad/ && request.user_agent =~ /Mobile/
+      true
+    end
+    
+  end
+
+
+
+
+
+
   private
 
   def current_user

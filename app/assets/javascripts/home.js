@@ -594,7 +594,7 @@ $(document.body).on('click', '.add_item_button', function(){
 
   menuItems.html('');
   
-  menuItems.append('<div class="well" id="project-button"><h4>Projects</h4></div>');
+  menuItems.append('<div class="well well-lg" id="project-button"><h4>Projects</h4></div>');
 
   var projectPath = "users/"+gon.user_id+"/projects/"+ project_id;
 
@@ -1022,7 +1022,7 @@ var validateTaskFormAfterError = function(changeItem){
             goalOptions.html('');
 
             projectInitialOption = '<option value="none">Select prize</option>';
-            menuItems.append('<div class="well" id="project-button"><h4>Projects</h4></div>');
+            menuItems.append('<div class="well well-sm" id="project-button"><h4>Projects</h4></div>');
 
             goalInitialOption = '<option value="none">Select a project first</option>';
 

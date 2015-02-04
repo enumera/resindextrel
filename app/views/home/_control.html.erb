@@ -1,0 +1,21 @@
+<% if !mobile? || ipad? %>
+  
+<div class="panel panel-default" id="control-panel">
+         <button class="btn btn-primary btn-xs pull-right" id="new-project" data-toggle="tooltip" title="create a new project"> 
+                    New project
+              </button>
+        <button class="show-heat-map btn btn-primary btn-xs pull-left" id="show-heat-map" data-toggle="tooltip" data-placement="right" title="show the heat map">
+                  <span class="glyphicon glyphicon-th-list"></span>
+          </button>
+
+        <div class="panel-heading">
+          <h4>Control</h4>
+        </div>
+        <div class="panel-body" id="menu-container">
+          <div class="well well-sm" id="project-button"><h4>
+            Projects
+           </h4>
+          </div>
+        </div>
+      </div>
+<% end %>

@@ -1,264 +1,44 @@
 <% if current_user %>
-
+<% if !mobile? || ipad? %> 
 <div class="container-fluid">
   <input type="hidden" class="projectSel"></input>
   <input type="hidden" class="goalSel"></input>
 
  <div class="row">
     <div class="col-sm-3">
+      <%= render "control" %>
 
-      <div class="panel panel-default" id="control-panel">
-         <button class="btn btn-primary btn-xs pull-right" id="new-project" data-toggle="tooltip" data-placement="right" title="create a new project">
-                    New project
-              </button>
-        <button class="show-heat-map btn btn-primary btn-xs pull-left" id="show-heat-map" data-toggle="tooltip" data-placement="right" title="show the heat map">
-                  <span class="glyphicon glyphicon-th-list"></span>
-          </button>
+      <%= render "heat_map" %>
 
-        <div class="panel-heading">
-          <h4>Control</h4>
-        </div>
-        <div class="panel-body" id="menu-container">
-          <div class="well well" id="project-button"><h4>
-            Projects
-           </h4>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel panel-default" id="heat-map-panel">
-         <button class="btn btn-primary btn-xs pull-left to_control" data-toggle="tooltip" data-placement="left" title="back to control">
-                     <span class="glyphicon glyphicon-th-list"></span>
-              </button>
-        <div class="panel-heading">
-          <h4>Heat Map</h4>
-        </div>
-        <div class="panel-body" >
-          <div class = "list-group" id="heat-map-container">
-          <button class="btn btn-info btn-xs" type="button" data-toggle="collapse" data-target="#noResindex" aria-expanded="false">Resindex not set</button><hr></hr>
-          <div class="collapse" id="noResindex"></div>
-          <button class="btn btn-info btn-xs" type="button" data-toggle="collapse" data-target="#withResindex">With resindex</button><hr></hr>
-          <div class="collapse" id="withResindex"></div>
-           <button class="btn btn-info btn-xs" type="button" data-toggle="collapse" data-target="#resindexToBeReset">Resindex to be reset</button><hr></hr>
-          <div class="collapse" id="resindexToBeReset"></div>
-          </div>
-        </div>
-      </div> 
-
-      <div class="panel panel-default" id="checklist-panel">
-        <button class="btn btn-primary btn-xs pull-left to_control_from_checklist" data-toggle="tooltip" data-placement="left" title="back to control">
-                     <span class="glyphicon glyphicon-th-list"></span>
-              </button>
-
-        <div class="panel-heading">
-          <h4>Task checkList</h4>
-        </div>
-        <div class="panel-body" >
-          <div class = "list-group">  
-            <button class=" btn btn-xs btn-success add_checklist_button">Add</button>
-               <input type="text" class="add_checklist" placeholder="New checklist name"></input>
-             <hr>
-              
-             <div class="list-group" id="checklist-container">
-
-             <!--  <button class="btn btn-info btn-xs" type="button" data-toggle="collapse" data-target="#checklist1" aria-expanded="false">Resindex not set</button><hr></hr>
-              <div class="collapse" id="checklist1"></div>
-              <button class="btn btn-info btn-xs" type="button" data-toggle="collapse" data-target="#checklist2">With resindex</button><hr></hr>
-            <div class="collapse" id="checklist2"></div>
-            <button class="btn btn-info btn-xs" type="button" data-toggle="collapse" data-target="#checklist3">Resindex to be reset</button><hr></hr>
-            <div class="collapse" id="checklist3"></div> -->
-            
-               <!--  <span class="input-group-addon" id="sizing-addon2"><button class=" btn btn-xs btn-info"><span class="glyphicon glyphicon-remove"></span></button></span> -->
-
-                <!--   <input type="textarea" class="checklist-input form-control" placeholder="Task" aria-describedby="sizing-addon2"> -->
-            </div>
-          </div>
-        </div>
-      </div>
+      <%= render "checklist" %>
 
     </div>
 
+      <%= render "tasks" %>
 
+      <%= render "new_job" %>
 
-    <div class="col-sm-9">
-      <div class="panel panel-default col-md-6" id ="task-panel">
-        <div class="panel-heading" id="things"><h4>Jobs to do...</h4><span><button class= "btn btn-xs btn-info" id= "top10" title="Find the top 10 jobs sorted by resindex across all projects.">Top 10</span><span><button class= "btn btn-xs btn-info" id= "trello_search" title="Only display trello jobs sorted by resindex.">Trello jobs only</span><span><button class= "btn btn-xs btn-info" id= "non_trello_search" title="Show only non-trello jobs sorted by resindex.">Non-Trello jobs only</span></div>
-        <div class="panel-body" >
-          <div class="list-group" id="task-list-group">
-          </div>
-        </div>
-      </div>
+      <%= render "comments" %>
 
-      <div class="panel panel-default col-md-5" id="input-panel">
-        <div class="panel-heading">
-          <div class="panel-title">
-            <i class="glyphicon glyphicon-wrench pull-right"></i>
-              <h4 id="" class="task-form-header" >New Job</h4>
-          </div>
-        </div>
-
-        <div class="panel-body">
-          <div class="control-group">
-         <!--    <label>Thing Title</label> -->
-              <div class="controls">
-                <input type="text" class="form-control" placeholder="Thing name" id="task_title">
-              </div>
-          </div>      
-                        
-          <div class="control-group">
-            <!-- <label>How to get that thing done</label> -->
-            <div class="controls">
-              <textarea class="form-control" placeholder="Add some details" id="task_description" value="-1"></textarea>
-            </div>
-          </div> 
-                             
-          <div class="control-group project-options">
-            <!-- <label>Prize</label> -->
-            <div class="controls">
-              <select class="form-control project-sel" id="project-select" name="-1" ><option>options</option>
-                <option>options2</option>
-              </select>
-            </div>
-          </div>   
-
-           <div class="control-group" id="goal-options">
-            <label>Select from project goals...</label>
-            <div class="controls">
-              <select class="form-control goal-sel" id="goal-select" name="-1"><option>Goal1</option>
-                <option>Goal2</option>
-              </select>
-            </div>
-          </div>
-          <hr>
-          <div id = "resindex-wrapper2">
-            <div id="hours-wrapper">
-              <div class="control-group project-options">
-            <!-- <label>Estimated time</label> -->
-                <div class="controls">
-                  <select class="form-control estimate-sel" id="estimate-select-1" name="-1">
-                      <option value="none">Completion time</option>
-                      <option value="1">One hour</option>
-                      <option value="2">Two hours</option>
-                      <option value="3">Three hours</option>
-                      <option value="4">Four hours</option>
-                      <option value="5">Five hours</option>
-                      <option value="6">Six hours</option>
-                      <option value="7">Seven hours</option>
-                      <option value="8">Eight hours</option>
-                      <option value="9">Nine hours</option>
-                      <option value="10">Ten hours</option>
-                  </select>
-                </div>
-              </div>
-            </div>   
-            
-
-
-                    
-            <div id="difficulty-wrapper">
-              <div class="control-group">
-            <!-- <label>Prize</label> -->
-                <div class="controls">
-                  <select class="form-control difficulty-sel" id="difficulty-select-1" name="-1">
-               <!--        <option value="none">Difficulty</option>
-                      <option value="1">Easy-done it before</option>
-                      <option value="2">Something slightly different</option>
-                      <option value="3">Tricky</option>
-                      <option value="4">Really difficult</option>
-                      <option value="5">Mission Impossible!</option> -->
-                  </select>
-                </div>
-              </div>  
-            </div> 
-             
-                  
-
-            <div id="importance-wrapper">
-              <div class="control-group">
-                <!-- <label>Prize</label> -->
-                <div class="controls">
-                  <select class="form-control importance-sel" id="importance-select-1" name="-1">
-            <!--         <option value="none">Importance</option>
-                    <option value="5">Would do</option>
-                    <option value="4">Could do soon</option>
-                    <option value="3">Should do this asap</option>
-                    <option value="2">Someone/I needs this</option>
-                    <option value="1">Someone/I REALLY needs this!</option> -->
-                  </select>
-                </div>
-              </div> 
-            </div> 
-            </div> 
-                    
-            <hr>
-            <div id="dates-wrapper">
-              <p>To be done...</p>
-              <button class="btn btn-danger today" value="-1" title="Set to get this job today">Today</button>
-              <button class="btn btn-warning tomorrow" value="-1" title="Set this job to be done by tomorrow.">Tomorrow</button>
-              <!-- <p>Or</p> -->
-              <button class="btn btn-info set_dates" title="Select your own dates." data-toggle="collapse" href="#dates-to-set">I want to set dates</button>
-              <div id="dates-to-set" class="collapse">
-              <hr>
-
-              <div class="dates">
-                <label for="start_date">Start Date</label>
-                <input type="text" id="start_date-1" class="start_date_sel"  name="start_date">
-              </div>
-                
-              <div class="dates">
-                <label for="end_date">End Date</label>
-                <input type="text" id="end_date-1" class="end_date_sel" name="end_date">
-              </div>
-            </div>
-            </div>
-          </div>           
-          
-          <div class="control-group" id="submit-button-group">
-        
-            <div class="controls">
-              <button class="btn btn-primary new-task" id="new-task" value="-1">
-                    Post
-              </button>
-               <button class="btn btn-warning" id="refresh">
-                    Clear
-              </button>
-            </div>
-          </div>   
-        </div>
-      
-
-     
-      <div class="panel panel-default col-md-5" id ="comments-panel">
-        <div class="panel-heading" id="notes-panel-header"><h4>Notes</h4></div>
-        <div class="panel-body">
-          <div class="list-group" id="comment-list-group">
-            <a href="#" class="list-group-item"><span class="glyphicon glyphicon-collapse-down pull-right"></span></a>
-            <a href="#" class="list-group-item">Dedicated server doesn't..</a>
-            <a href="#" class="list-group-item">RHEL 6 install on new..</a>
-          </div>
-        </div>
-      </div>
   </div>
                   
+<% else %>
 
+ <%= render "tasks" %>
+
+<% end %>
 <div id="new-project-modal" title="New Project" class="modal-dialog">
   <label for="name">Project Name</label></br>
   <input type="text" name="name" id="project-name" class="text ui-widget-content ui-corner-all" placeholder="Project name">
 <br/>
    <label for="name">First Goal Name</label></br>
   <input type="text" name="name" id="first-goal-name" class="text ui-widget-content ui-corner-all" placeholder="First goal name">
- <!--    <button class="btn btn-primary pull-right" id="create-new-project">
-                    Create New Project
-              </button> -->
 </div>
 
 <div id="new-goal-modal" title="New Goal" class="modal-dialog">
   <input type="hidden" class="goalproject_id">
   <label for="name">Goal Name</label>
   <input type="text" name="name" id="goal-name" class="text ui-widget-content ui-corner-all">
- <!--    <button class="btn btn-primary pull-right" id="create-new-project">
-                    Create New Project
-              </button> -->
 </div>
 
 <div id="new-comment-modal" title="New note for" class="modal-dialog">
@@ -272,9 +52,6 @@
               </select>
             </div>
           </div>  
- <!--    <button class="btn btn-primary pull-right" id="create-new-project">
-                    Create New Project
-              </button> -->
 </div>
 
 
