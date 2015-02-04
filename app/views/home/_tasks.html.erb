@@ -1,5 +1,4 @@
-<% if !mobile? || ipad? %>
-
+ <% if !mobile? || ipad? %>
 <div class="col-sm-9">
       <div class="panel panel-default col-md-6" id ="task-panel">
         <div class="panel-heading" id="things"><h4>Jobs to do...</h4><span><button class= "btn btn-xs btn-info" id= "top10" title="Find the top 10 jobs sorted by resindex across all projects.">Top 10</span><span><button class= "btn btn-xs btn-info" id= "trello_search" title="Only display trello jobs sorted by resindex.">Trello jobs only</span><span><button class= "btn btn-xs btn-info" id= "non_trello_search" title="Show only non-trello jobs sorted by resindex.">Non-Trello jobs only</span></div>
@@ -8,4 +7,18 @@
           </div>
         </div>
       </div>
-<% end %>
+
+
+<% else %>
+  <div class="col-sm-12">
+      <div class="panel panel-default col-md-12" id ="task-panel">
+        <div class="panel-heading" id="things"><h4>Search</h4></div>
+          <div class="panel-body" >
+          <button class= "btn btn-lg btn-info" id= "top10" title="Find the top 10 jobs sorted by resindex across all projects.">Top 10</button>
+            <div class="list-group" id="task-list-group">
+          </div>
+        </div>
+      </div>
+
+
+ <% end %>

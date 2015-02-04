@@ -1,5 +1,5 @@
 <% if current_user %>
-
+<% if !mobile? || ipad? %> 
 <div class="container-fluid">
   <input type="hidden" class="projectSel"></input>
   <input type="hidden" class="goalSel"></input>
@@ -14,15 +14,19 @@
 
     </div>
 
-    <%= render "tasks" %>
+      <%= render "tasks" %>
 
-    <%= render "new_job" %>
+      <%= render "new_job" %>
 
-    <%= render "comments" %>
+      <%= render "comments" %>
 
   </div>
                   
+<% else %>
 
+ <%= render "tasks" %>
+
+<% end %>
 <div id="new-project-modal" title="New Project" class="modal-dialog">
   <label for="name">Project Name</label></br>
   <input type="text" name="name" id="project-name" class="text ui-widget-content ui-corner-all" placeholder="Project name">
