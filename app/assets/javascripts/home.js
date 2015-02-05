@@ -2326,10 +2326,33 @@ $('#comments-panel').hide();
       });
     };
 
-  // showImportances(-1, importances);
+//////--------------------mobile function------------------//////
+
+$(document).on("click", ".mobile-jobs", function(){
+
+$.getJSON("/users/"+gon.user_id+"/tasks", function(data){
+
+    var taskItem;
+    var mobileList = $('#mobile-list');
+
+    $.each(data, function(i, task){
+
+      taskItem = '<div class= "well well-sm mobile-thing">' + task.card_name + '</div>';
+
+      mobileList.append(taskItem);
 
 
-// $(document).tooltip();
+    });
+  });
+});
+
+
+
+
+
+
+
+
 $(document).ready(function(){main();
     // showImportances(-1, importances);
 });
