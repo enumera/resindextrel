@@ -197,6 +197,9 @@ $(document.body).on('click', '.heat-task', function(e){
 
 
 
+
+///just checking to see if git diff works
+
       var createTaskRecord = function(goal, search_type, taskIdToShow){
         var listItem;
         var search_url;
