@@ -2337,7 +2337,7 @@ $.getJSON("/users/"+gon.user_id+"/tasks", function(data){
 
     $.each(data, function(i, task){
 
-      taskItem = '<div class= "well well-sm mobile-thing">' + task.card_name + '</div>';
+      taskItem = '<div class= "well well-sm mobile-thing" value='+task.id+'>' + task.card_name + '<button class="btn btn-xs pull-right recordButton"><span class="glyphicon glyphicon-time"></span></button><button class="btn btn-xs pull-right"><span class="glyphicon glyphicon-ok"></span></button></div>';
 
       mobileList.append(taskItem);
 
