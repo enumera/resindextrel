@@ -50,6 +50,7 @@ class TimeRecordsController < ApplicationController
       if @time_record.save
         format.html { redirect_to @time_record, notice: 'Time record was successfully created.' }
         format.json { render json: @time_record, status: :created, location: @time_record }
+        format.mobile { render json: @time_record, status: :created, location: @time_record }
       else
         format.html { render action: "new" }
         format.json { render json: @time_record.errors, status: :unprocessable_entity }
@@ -91,6 +92,7 @@ class TimeRecordsController < ApplicationController
     
         format.html { redirect_to @time_record, notice: 'Time record was successfully updated.' }
         format.json { head :no_content}
+        format.mobile {head :no_content}
       else
         format.html { render action: "edit" }
         format.json { render json: @time_record.errors, status: :unprocessable_entity }

@@ -82,7 +82,8 @@ class TasksController < ApplicationController
           comment_text = "New task created with Resindex set from to #{@task.resindex}. <p><sub>By #{@user.first_name} on #{Time.now}.</sub></p>"
 
       Comment.create(task_id: @task.id, comment_type_id: 6, user_id: @user.id, ctext: comment_text, before_res: @task.resindex, after_res: 0.0)
-        format.json { render json: user_task_path(@user, @task), status: :created, location: user_task_path(@user, @task) }
+        format.json { render json: user_task_path(@user, @task), status: :created, location: user_task_path(@user, @task) } 
+        format.mobile { render json: user_task_path(@user, @task), status: :created, location: user_task_path(@user, @task) }
       else
         format.html { render action: "new" }
         format.json { render json: @task.errors, status: :unprocessable_entity }
@@ -122,6 +123,14 @@ class TasksController < ApplicationController
 
         @task.effort += hours + (minutes.to_f/60).round(2)
 
+      end
+
+      update_tr = {}
+      update_tr["time_record"] = {}
+      update_tr["time_record"]["state"] = "closed"
+
+      @timerecords.each do |tr|
+        tr.update_attributes(update_tr[:state])
       end
 
       @task.resindex = @task.calculate_resindex(@task, @user)
@@ -193,6 +202,7 @@ class TasksController < ApplicationController
 
         format.html { redirect_to user_task_path(@user, @task), notice: 'Task was successfully updated.' }
         format.json { head :no_content }
+        format.mobile {head :no_content }
       else
         format.html { render action: "edit" }
         format.json { render json: @task.errors, status: :unprocessable_entity }

@@ -2332,7 +2332,7 @@ $('#comments-panel').hide();
     //////--------------------mobile function------------------//////
 
     $(document.body).on("click", ".mobile-jobs", function(){
-      alert("woooow!")
+      // alert("woooow!")
 
       $.ajax({
 
@@ -2351,7 +2351,7 @@ $('#comments-panel').hide();
 
         $.each(data, function(i, task){
 
-          taskItem = '<div class= "well well-sm mobile-thing" value='+task.id+'>' + task.card_name + '<button class="btn btn-xs pull-right recordButton"><span class="glyphicon glyphicon-time"></span></button><button class="btn btn-xs pull-right"><span class="glyphicon glyphicon-ok"></span></button></div>';
+          taskItem = '<div class= "well well-sm mobile-task mobile-thing'+task.id+'">' + task.card_name + '<button class="btn btn-xs pull-right recordButton" value='+task.id+'><span class="glyphicon glyphicon-time"></span></button><button class="btn btn-xs pull-right" value='+task.id+'><span class="glyphicon glyphicon-ok"></span></button></div>';
 
           mobileList.append(taskItem);
         });
@@ -2363,58 +2363,41 @@ $('#comments-panel').hide();
 
   $(document.body).on('click', '.recordButton', function(e){
       e.preventDefault();
-      var goalId;
+     
       $this = $(this);
       console.log($this.val());
-      var taskId = parseInt($this.parent().parent().parent().attr('id'));
+     
       var taskId2 = $this.val();
-       console.log(taskId);
+   
        console.log(taskId2);
 
       if($this.hasClass("recording")){
 
         endRecording($this);
 
-        goalId = $('.goalSel').val();
-
-        createTaskRecord(goalId, 0, -1)
-
-        // addNewComment(taskId, "effort");
-        $('#menu-container').removeClass('frozen');
-        ///---hide checklist pane -----////
-        hideChecklistPane();
       
       }else{
 
-          taskId = parseInt($this.parent().parent().parent().attr('id'));
-          console.log($this.val());
+        
+          taskId = $this.val();
           console.log(taskId);
           userId = gon.user_id;
        
 
-          $this.addClass("recording");
+          $('.mobile-thing'+taskId).addClass("recording");
 
-          var commentButtonToKeep = $('.commentButton[value=' + taskId +']');
-          var taskPanelToKeep = $('.tpanel[value=' + taskId + ']');
-          var editButtonToRemove = $('.editButton[value=' + taskId + ']');
-
-
-          commentButtonToKeep.addClass("recording");
-          taskPanelToKeep.addClass("recording");
-          editButtonToRemove.addClass("recording");
-          $('#menu-container').addClass('frozen');
-          $('.task_description_on_task[value='+ taskId + ']').show();
-          $this.parent().parent().parent().addClass("active");
           $this.parent().parent().prepend('<span id="hours"></span><span id="minutes"></span><span id="seconds"></span></p><p>');
 
+          $('.mobile-task')
 
-          $this.text("End work session");
+
+          // $this.text("End work session");
           //-----show checklist pane----////
-          showChecklistPane(taskId);
-          showChecklists(taskId);
+          // showChecklistPane(taskId);
+          // showChecklists(taskId);
           record(userId, taskId, 0, -1);
           console.log($this);
-          recordingTimeout($this);
+          // recordingTimeout($this);
           clock();
       };
     });
@@ -2426,11 +2409,11 @@ $('#comments-panel').hide();
 
       clearInterval(recordingTimeout);
 
-      taskId = parseInt(item.parent().parent().parent().attr('id'));
+      taskId = parseInt(item.val());
       // taskId = parseInt(item.siblings().attr('id'));
       // alert(cardId);
 
-      recordId = parseInt(item.val());
+      recordId = parseInt($('.mobile-thing'+taskId).val());
 
       // $('#minutes').text(0);
       // $('#hours').text(0);
@@ -2438,17 +2421,43 @@ $('#comments-panel').hide();
 
       item.removeClass("recording")
 
-      item.parent().parent().parent().removeClass("active");
+      // item.parent().parent().parent().removeClass("active");
 
-      item.text("Start work session");
+      // item.text("Start work session");
       record(userId, taskId, recordId, -2 );
-      toggleNewTaskMenuItem(1);
+      // toggleNewTaskMenuItem(1);
 
       stopClock();
 
     };
 
     ////-----------Time record control function ----------------/////
+
+
+    function updateTask(user_id, task_id){
+      var data_y = {};
+      path = "users/" + gon.user_id + "/tasks/" + task_id;
+      method = "PUT"
+
+      data_y["id"] = task_id;
+      // data_y["card_description"] = $('.task_description_on_task[value=' + task_id +']').val();
+
+
+      $.ajax({
+        url: path,
+        method: method,
+        data: {task: data_y},
+        dataType: "json"
+
+      }).success(function(data){
+
+        record(user_id, task_id, recordId, 0)
+        // console.log("completed!!");
+         // resindexCards();
+
+      });
+    };
+
 
     function record(userId, taskId, recordId, action){
 
@@ -2486,12 +2495,13 @@ $('#comments-panel').hide();
       // console.log(data)
       if(action === -1){
         console.log(data);
-        $('.recording').val(data.id);
-        // $('.recordButton:not(.recording)').fadeOut();
-        $('.tpanel:not(.recording)').fadeOut();
-        $('.editButton.recording').fadeOut();
-        toggleNewTaskMenuItem(0);
-        showCommentPanel(taskId);
+        $('.mobile-thing'+taskId).val(data.id);
+        // console.log("time record "+ data.id)
+        $('.mobile-task:not(.recording)').fadeOut();
+        // $('.tpanel:not(.recording)').fadeOut();
+        // $('.editButton.recording').fadeOut();
+        // toggleNewTaskMenuItem(0);
+        // showCommentPanel(taskId);
         // $('.projects').click(function(){return false;});
         // $('#project-button').off('click');
         // $('.goals').off('click');
@@ -2500,10 +2510,10 @@ $('#comments-panel').hide();
         $('.recordButton').fadeIn();
         updateTask(data_x.user_id, data_x.task_id);
       }else{
-        // console.log("closed and updated")
-        refreshTasks();
-        showComments(taskId);
-        searchButtonCombinations("reset_afer_update");
+        console.log("closed and updated")
+        // refreshTasks();
+        // showComments(taskId);
+        // searchButtonCombinations("reset_afer_update");
         stopClock();
       };
     });
