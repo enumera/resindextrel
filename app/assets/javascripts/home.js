@@ -2354,12 +2354,205 @@ $('#comments-panel').hide();
           taskItem = '<div class= "well well-sm mobile-thing" value='+task.id+'>' + task.card_name + '<button class="btn btn-xs pull-right recordButton"><span class="glyphicon glyphicon-time"></span></button><button class="btn btn-xs pull-right"><span class="glyphicon glyphicon-ok"></span></button></div>';
 
           mobileList.append(taskItem);
-
-
         });
       });
     });
   };
+
+///-----create mobile versions of recordButton start and end process-----////
+
+  $(document.body).on('click', '.recordButton', function(e){
+      e.preventDefault();
+      var goalId;
+      $this = $(this);
+      console.log($this.val());
+      var taskId = parseInt($this.parent().parent().parent().attr('id'));
+      var taskId2 = $this.val();
+       console.log(taskId);
+       console.log(taskId2);
+
+      if($this.hasClass("recording")){
+
+        endRecording($this);
+
+        goalId = $('.goalSel').val();
+
+        createTaskRecord(goalId, 0, -1)
+
+        // addNewComment(taskId, "effort");
+        $('#menu-container').removeClass('frozen');
+        ///---hide checklist pane -----////
+        hideChecklistPane();
+      
+      }else{
+
+          taskId = parseInt($this.parent().parent().parent().attr('id'));
+          console.log($this.val());
+          console.log(taskId);
+          userId = gon.user_id;
+       
+
+          $this.addClass("recording");
+
+          var commentButtonToKeep = $('.commentButton[value=' + taskId +']');
+          var taskPanelToKeep = $('.tpanel[value=' + taskId + ']');
+          var editButtonToRemove = $('.editButton[value=' + taskId + ']');
+
+
+          commentButtonToKeep.addClass("recording");
+          taskPanelToKeep.addClass("recording");
+          editButtonToRemove.addClass("recording");
+          $('#menu-container').addClass('frozen');
+          $('.task_description_on_task[value='+ taskId + ']').show();
+          $this.parent().parent().parent().addClass("active");
+          $this.parent().parent().prepend('<span id="hours"></span><span id="minutes"></span><span id="seconds"></span></p><p>');
+
+
+          $this.text("End work session");
+          //-----show checklist pane----////
+          showChecklistPane(taskId);
+          showChecklists(taskId);
+          record(userId, taskId, 0, -1);
+          console.log($this);
+          recordingTimeout($this);
+          clock();
+      };
+    });
+
+    
+
+
+    endRecording = function(item){
+
+      clearInterval(recordingTimeout);
+
+      taskId = parseInt(item.parent().parent().parent().attr('id'));
+      // taskId = parseInt(item.siblings().attr('id'));
+      // alert(cardId);
+
+      recordId = parseInt(item.val());
+
+      // $('#minutes').text(0);
+      // $('#hours').text(0);
+      // $('#seconds').text(0);
+
+      item.removeClass("recording")
+
+      item.parent().parent().parent().removeClass("active");
+
+      item.text("Start work session");
+      record(userId, taskId, recordId, -2 );
+      toggleNewTaskMenuItem(1);
+
+      stopClock();
+
+    };
+
+    ////-----------Time record control function ----------------/////
+
+    function record(userId, taskId, recordId, action){
+
+    var data_x = {};
+
+    if(action === -1 ){
+      path = "/time_records";
+      method = "POST";
+      data_x["state"] = "open";
+
+    } else if (action === -2) {
+
+      path = "/time_records/" + recordId;
+      method = "PUT";
+      data_x["state"]   = "toallocate";
+
+    }else{
+      path = "/time_records/" + recordId;
+      method = "PUT";
+      data_x["state"]   = "closed";
+    };
+
+    data_x["user_id"] = userId;
+    data_x["task_id"] = taskId
+
+
+    // console.log(data_x);
+    $.ajax({
+      url: path,
+      method: method,
+      data: {time_record: data_x},
+      dataType: "json"
+    }).success(function(data){
+      // console.log("put data")
+      // console.log(data)
+      if(action === -1){
+        console.log(data);
+        $('.recording').val(data.id);
+        // $('.recordButton:not(.recording)').fadeOut();
+        $('.tpanel:not(.recording)').fadeOut();
+        $('.editButton.recording').fadeOut();
+        toggleNewTaskMenuItem(0);
+        showCommentPanel(taskId);
+        // $('.projects').click(function(){return false;});
+        // $('#project-button').off('click');
+        // $('.goals').off('click');
+
+      }else if(action === -2){
+        $('.recordButton').fadeIn();
+        updateTask(data_x.user_id, data_x.task_id);
+      }else{
+        // console.log("closed and updated")
+        refreshTasks();
+        showComments(taskId);
+        searchButtonCombinations("reset_afer_update");
+        stopClock();
+      };
+    });
+  };
+
+    ////--------------------end of time recording--------///////
+
+ ///////////---------------mobile clock start and stop------------------//////////
+
+  var clock = function(){
+      var d = new Date;
+      var timeStart = d.getTime();
+      // console.log(timeStart);
+      $('#hours').text('');
+      $('#minutes').text('');
+      $('#seconds').text('');
+
+      sessionClock = setInterval(function() {
+          var x = new Date();
+          var timeNow = x.getTime();
+          var timeDiff = timeNow - timeStart;
+
+          var days = Math.floor(timeDiff / (1000 * 3600 * 24)); 
+          timeDiff = timeDiff - days * (1000 * 3600 * 24)
+          var hours = Math.floor(timeDiff / (1000 * 3600 ));
+          timeDiff = timeDiff - hours * (1000 * 3600 );
+          var minutes = Math.floor(timeDiff / (1000 * 60 ));
+          timeDiff = timeDiff - minutes * (1000 * 60 )
+          var seconds = timeDiff / (1000 );
+
+          minutes = ' : ' + minutes;
+          seconds = ' : ' + parseInt(seconds);
+          // console.log("hours : " + hours + "minutes : " + minutes + "seconds : "+ seconds)
+          
+          $('#hours').text(hours);
+          $('#minutes').text(minutes);
+          $('#seconds').text(seconds);
+
+    }, 33)
+  }
+
+  var stopClock = function(){
+    clearInterval(sessionClock);
+
+  }
+
+
+//////-------------------end of clock functionality--------------------//////////
+  /////-------------------end of main--------------//////////////////
 };
 $(document).ready(function(){main();
     // showImportances(-1, importances);
