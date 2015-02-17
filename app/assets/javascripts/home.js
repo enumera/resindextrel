@@ -32,6 +32,9 @@ var main = function(){
   var difficulties;
   var importances;
 
+  if(gon.mobile == 0){
+    alert("Not a mobile")
+  
 
    var showDifficulties = function(taskId, difficultyOptions){
     console.log("Loading difficulties");
@@ -180,19 +183,19 @@ var main = function(){
     });
   });
 
-$(document.body).on('click', '.heat-task', function(e){
-  console.log("in heat task click");
-  $this = $(this);
-  console.log($this);
-  var taskId = $this.attr("value");
-  console.log(taskId);
+  $(document.body).on('click', '.heat-task', function(e){
+    console.log("in heat task click");
+    $this = $(this);
+    console.log($this);
+    var taskId = $this.attr("value");
+    console.log(taskId);
 
-  var goalId = $('.heat-map-goal'+taskId).val();
-  console.log(goalId);
+    var goalId = $('.heat-map-goal'+taskId).val();
+    console.log(goalId);
 
-  createTaskRecord(goalId,0, taskId );
+    createTaskRecord(goalId,0, taskId );
 
-});
+  });
 
 
 
@@ -2183,10 +2186,10 @@ $('#comments-panel').hide();
       };
     };
 
-     var searchButtonCombinations = function(searchString){
+    var searchButtonCombinations = function(searchString){
        console.log("checking combinations....");
       if(searchString != "reset_afer_update"){
-      $("#" + searchString).toggleClass("btn-danger");
+        $("#" + searchString).toggleClass("btn-danger");
       };
 
       console.log("checking combinations....");
@@ -2306,7 +2309,7 @@ $('#comments-panel').hide();
             break;
           };
         };
-      };
+      // };
 
 
     if($(".trello_message").text() == "Get your Trello boards"){
@@ -2325,34 +2328,39 @@ $('#comments-panel').hide();
         console.log(data);
       });
     };
+  }else{
+    //////--------------------mobile function------------------//////
 
-//////--------------------mobile function------------------//////
+    $(document.body).on("click", ".mobile-jobs", function(){
+      alert("woooow!")
 
-$(document).on("click", ".mobile-jobs", function(){
+      $.ajax({
 
-$.getJSON("/users/"+gon.user_id+"/tasks", function(data){
+      url: "/users/"+gon.user_id +"/tasks",
+      method: "GET",
+      dataType: "json"
 
-    var taskItem;
-    var mobileList = $('#mobile-list');
-
-    $.each(data, function(i, task){
-
-      taskItem = '<div class= "well well-sm mobile-thing" value='+task.id+'>' + task.card_name + '<button class="btn btn-xs pull-right recordButton"><span class="glyphicon glyphicon-time"></span></button><button class="btn btn-xs pull-right"><span class="glyphicon glyphicon-ok"></span></button></div>';
-
-      mobileList.append(taskItem);
+      }).done(function(data){
 
 
+    // $.getJSON("/users/"+gon.user_id+"/tasks", function(data){
+    //   console.log(data);
+
+        var taskItem;
+        var mobileList = $('#mobile-list');
+
+        $.each(data, function(i, task){
+
+          taskItem = '<div class= "well well-sm mobile-thing" value='+task.id+'>' + task.card_name + '<button class="btn btn-xs pull-right recordButton"><span class="glyphicon glyphicon-time"></span></button><button class="btn btn-xs pull-right"><span class="glyphicon glyphicon-ok"></span></button></div>';
+
+          mobileList.append(taskItem);
+
+
+        });
+      });
     });
-  });
-});
-
-
-
-
-
-
-
-
+  };
+};
 $(document).ready(function(){main();
     // showImportances(-1, importances);
 });

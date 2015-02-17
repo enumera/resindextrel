@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <!-- <title>RESINDEX</title> -->
+
+
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+   <!--  <title>Bootstrap 3 Admin</title> -->
+    <meta name="generator" content="Bootply" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <META name="description" content="Resindex is a website will prioritise your workload for you, incorporates Trello and RescueTime.">
+
+<meta name="keywords" content="Trello, Resindex, RescueTime, prioritise, task, manager, motivation, procrastination, work, life">
+    <!-- The client library requires jQuery  -->
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+  <!-- // <script src="https://api.trello.com/1/client.js?key=8e474beb4e008617593dab5c21cd61ea"></script> -->
+
+  <!-- ...  -->
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- <link href="css/styles.css" rel="stylesheet"> -->
+  
+    <%= include_gon %>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+  <!-- <link href="bootstrap.min.css" rel="stylesheet"> -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  <!-- <link href="styles.css" rel="stylesheet"> -->
+
+
+
+  <title>RESINDEX | organise your work</title>
+
+</head>
+<body>
+   <div id="top-nav" class="navbar navbar-inverse navbar-static-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">RESINDEX</a>
+      <a class="navbar-brand" href="#">About</a>
+    <% if !mobile? || ipad? %>
+      <a class="navbar-brand" href="#">Configuration</a>
+    <% end %>
+    </div>
+    <div class="navbar-collapse collapse">
+       <% if current_user %> 
+          <ul class="nav navbar-nav navbar-right">
+             <li id="personal-header"><span id="user_projects" class="btn btn-xs btn-warning"></span><span id="user_goals" class="btn btn-xs btn-info"></span><span id="user_tasks" class="btn btn-xs btn-success"></span><span id="gravatar">  <%=image_tag avatar_url(current_user)%></span><span><%=current_user.first_name%></span></li>
+    
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Do stuff <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="" id="menu-new-project">New Project</a></li>
+                  <li><a href="#" id="blank_task">New Job</a></li>
+
+                
+                  <li class="divider"></li>
+                  <li><a href="/log_out">Log out</a></li>
+              
+                </ul>
+              </li>
+      <% if current_user.oauth_tables.length == 0 %>
+         <li><a href="/trello/oauth" class="trello_message"><img id="trello-logo" src="http://c93fea60bb98e121740fc38ff31162a8.s3.amazonaws.com/wp-content/uploads/2014/07/trello.png" style="height:20px;width:20px">Get your Trello boards</a></li>
+        <% else %>
+        <li><a href="/trello/access" class="trello_message"><img src="http://c93fea60bb98e121740fc38ff31162a8.s3.amazonaws.com/wp-content/uploads/2014/07/trello.png" style="height:20px;width:20px"> Refresh trello</a></li>
+        <% end %>
+
+         
+      </ul>
+      <% else %>
+       <ul class="nav navbar-nav navbar-right">
+         <li><a href="/sign_up" id="sign-up">Sign up</a></li>
+        <li><a href="log_in"></i> Log in</a></li>
+      </ul>
+      <% end %>
+    </div>
+  </div><!-- /container -->
+</div>
+
+
+<% flash.each do |name, msg| %>
+  <%= content_tag :div, msg, :id => "flash_#{name}" %>
+<% end %>
+
+<% if mobile? %>
+
+<p> hello  Mobile !</p>
+
+<% end %>
+
+
+<% if ipad? %>
+
+<p> Hello Ipad ! </p>
+  
+<% end %>
+  <%= yield %>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-55641305-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

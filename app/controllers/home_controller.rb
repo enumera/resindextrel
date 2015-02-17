@@ -8,6 +8,12 @@ class HomeController < ApplicationController
      gon.user_projects = current_user.projects.count
      gon.user_goals = current_user.projects.map{|project| project.no_of_goals}.reduce(:+)
 
+     if mobile?
+      gon.mobile = 1
+    else
+      gon.mobile = 0
+    end
+
      if gon.user_goals.nil?
         gon.user_goals = 0
       end
@@ -47,3 +53,13 @@ class HomeController < ApplicationController
   end
 
 end
+
+def mobile?
+    if request.user_agent =~ /Mobile/
+      if request.user_agent =~ /iPad/
+        false
+      else
+        true
+      end
+    end
+  end
