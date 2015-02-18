@@ -2331,8 +2331,31 @@ $('#comments-panel').hide();
   }else{
     //////--------------------mobile function------------------//////
 
-    $(document.body).on("click", ".mobile-jobs", function(){
-      // alert("woooow!")
+    ////////----------------Add new task on Mobile------------/////
+
+    $(document.body).on('click', '.mobile-add', function(){
+
+      var data_mt;
+
+      data_mt = {};
+      data_mt["card_name"] = $('.mobile-task-name').val();
+
+      $.ajax({
+        url: "/users/" + gon.user_id +"/tasks",
+        method: "POST",
+        data: {task: data_mt}
+
+      }).success(function(){
+        $('.mobile-task-name').val("");
+      });
+
+    });
+
+/////----------------show tasks--------------------/////
+
+  var showMobileTasks = function(){
+    $('#mobile-list').html("");
+
 
       $.ajax({
 
@@ -2351,13 +2374,40 @@ $('#comments-panel').hide();
 
         $.each(data, function(i, task){
 
-          taskItem = '<div class= "well well-sm mobile-task mobile-thing'+task.id+'">' + task.card_name + '<button class="btn btn-xs pull-right recordButton" value='+task.id+'><span class="glyphicon glyphicon-time"></span></button><button class="btn btn-xs pull-right" value='+task.id+'><span class="glyphicon glyphicon-ok"></span></button></div>';
+          if (task.effort !=0 ){
+              effortMins = parseInt(task.effort * 60);
+                if(effortMins > 1){
+                effortHours = parseInt(effortMins / 60);
+                newEffortMins = effortMins - (effortHours * 60);
+                }else{
+                  effortHours = 0;
+                  newEffortMins = effortMins;
+                }
+            }else{
+              effortHours = 0;
+              newEffortMins = 0;
+            };
+
+            if (newEffortMins < 10){
+              newEffortMins.toString();
+              newEffortMins = "0" + newEffortMins;
+              // console.log(newEffortMins);
+            }
+
+          taskItem = '<div class= "well well-lg mobile-task mobile-thing'+task.id+'">' + task.card_name + '<span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span><button class="btn btn-sm pull-right recordButton" value='+task.id+'><span class="glyphicon glyphicon-time"></span></button><button class="btn btn-sm pull-right" value='+task.id+'><span class="glyphicon glyphicon-ok"></span></button></div>';
 
           mobileList.append(taskItem);
         });
       });
+    }
+  
+
+
+    $(document.body).on("click", ".mobile-jobs", function(){
+      // alert("woooow!")
+      showMobileTasks();
     });
-  };
+  
 
 ///-----create mobile versions of recordButton start and end process-----////
 
@@ -2371,7 +2421,7 @@ $('#comments-panel').hide();
    
        console.log(taskId2);
 
-      if($this.hasClass("recording")){
+      if($('.mobile-thing'+taskId2).hasClass("recording")){
 
         endRecording($this);
 
@@ -2386,7 +2436,8 @@ $('#comments-panel').hide();
 
           $('.mobile-thing'+taskId).addClass("recording");
 
-          $this.parent().parent().prepend('<span id="hours"></span><span id="minutes"></span><span id="seconds"></span></p><p>');
+
+          $('.clock').show();
 
           $('.mobile-task')
 
@@ -2419,7 +2470,7 @@ $('#comments-panel').hide();
       // $('#hours').text(0);
       // $('#seconds').text(0);
 
-      item.removeClass("recording")
+      $('.mobile-thing'+taskId).removeClass("recording")
 
       // item.parent().parent().parent().removeClass("active");
 
@@ -2557,12 +2608,15 @@ $('#comments-panel').hide();
 
   var stopClock = function(){
     clearInterval(sessionClock);
-
+    $('.clock').hide();
+    showMobileTasks();
   }
 
 
 //////-------------------end of clock functionality--------------------//////////
+}////--------------end of mobile----------------//////////
   /////-------------------end of main--------------//////////////////
+
 };
 $(document).ready(function(){main();
     // showImportances(-1, importances);

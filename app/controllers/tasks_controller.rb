@@ -65,20 +65,26 @@ class TasksController < ApplicationController
     @user = current_user
     @task = Task.new(params[:task])
         # binding.pry
-    @goal = Goal.find(params[:task][:goal_id])
-    @project = Project.find(params[:task][:project_id])
+    if !mobile?
+      @goal = Goal.find(params[:task][:goal_id])
+      @project = Project.find(params[:task][:project_id])
+
+    end
     @task.resindex = @task.calculate_resindex(@task, @user)
   
     
     respond_to do |format|
       if @task.save
+       
+          @user.tasks << @task
+        if !mobile?
+          @goal.tasks << @task
+          @project.tasks << @task
+          goal_tasks = @goal.tasks.length
+          @goal.update_attributes(no_of_tasks: goal_tasks)
+          # format.html { redirect_to user_task_path(@user, @task), notice: 'Task was successfully created.' }
+        end
 
-        @user.tasks << @task
-        @goal.tasks << @task
-        @project.tasks << @task
-        goal_tasks = @goal.tasks.length
-        @goal.update_attributes(no_of_tasks: goal_tasks)
-        # format.html { redirect_to user_task_path(@user, @task), notice: 'Task was successfully created.' }
           comment_text = "New task created with Resindex set from to #{@task.resindex}. <p><sub>By #{@user.first_name} on #{Time.now}.</sub></p>"
 
       Comment.create(task_id: @task.id, comment_type_id: 6, user_id: @user.id, ctext: comment_text, before_res: @task.resindex, after_res: 0.0)
