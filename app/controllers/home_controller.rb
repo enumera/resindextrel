@@ -2,21 +2,22 @@ class HomeController < ApplicationController
   # before_filter :authenticate
   
   def index
+       if mobile?
+        gon.mobile = 1
+      else
+        gon.mobile = 0
+      end
     if !current_user.nil? 
      gon.user_id = current_user.id
      gon.user_tasks = current_user.tasks.where(completed: false).count
      gon.user_projects = current_user.projects.count
      gon.user_goals = current_user.projects.map{|project| project.no_of_goals}.reduce(:+)
 
-     if mobile?
-      gon.mobile = 1
-    else
-      gon.mobile = 0
-    end
+     
 
-     if gon.user_goals.nil?
-        gon.user_goals = 0
-      end
+       if gon.user_goals.nil?
+          gon.user_goals = 0
+        end
       
         projects_to_load = current_user.projects
           projects_to_load.each do |project_id|
@@ -43,7 +44,10 @@ class HomeController < ApplicationController
 
       # @user = User.find(current_user.id)
       # @tasks = @user.tasks.all
+
     end
+
+
     
   end
 

@@ -1,3 +1,4 @@
+<% if current_user %>
 
 <div class="row">
   <div class ="col-xs-8">
@@ -23,3 +24,9 @@
 <div>
   <div id="mobile-list"></div>
 </div>
+
+<% else %>
+
+  <%= render "landing" %>
+
+<% end %>

@@ -52,6 +52,7 @@ class UsersController < ApplicationController
 
         format.html { redirect_to root_path, notice: 'Signed up' }
         format.json { render json: @user, status: :created, location: @user }
+        format.mobile { render json: @user, status: :created, location: @user }
       else
         format.html { render action: "new" }
         format.json { render json: @user.errors, status: :unprocessable_entity }
