@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   helper_method :mobile?
   helper_method :ipad?
 
+  before_filter :prepare_for_mobile
+
   private 
 
   def mobile?
@@ -12,6 +14,7 @@ class ApplicationController < ActionController::Base
         false
       else
         true
+        request.format = :mobile
       end
     end
   end
@@ -23,6 +26,12 @@ class ApplicationController < ActionController::Base
     
   end
 
+def prepare_for_mobile
+
+  request.format = :mobile if mobile?
+
+  
+end
 
 
 

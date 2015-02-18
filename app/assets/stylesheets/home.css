@@ -2,6 +2,15 @@
      border-color: 2px solid blue;
      display: inline-block;
 }
+.clock{
+  background-color: red;
+
+}
+
+.mobile-task{
+  background-color: green;
+  color: white;
+}
 #project-button h4{
 color: rgb(119, 119, 119);
 }

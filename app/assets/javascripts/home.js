@@ -32,6 +32,9 @@ var main = function(){
   var difficulties;
   var importances;
 
+  if(gon.mobile == 0){
+    alert("Not a mobile")
+  
 
    var showDifficulties = function(taskId, difficultyOptions){
     console.log("Loading difficulties");
@@ -180,22 +183,25 @@ var main = function(){
     });
   });
 
-$(document.body).on('click', '.heat-task', function(e){
-  console.log("in heat task click");
-  $this = $(this);
-  console.log($this);
-  var taskId = $this.attr("value");
-  console.log(taskId);
+  $(document.body).on('click', '.heat-task', function(e){
+    console.log("in heat task click");
+    $this = $(this);
+    console.log($this);
+    var taskId = $this.attr("value");
+    console.log(taskId);
 
-  var goalId = $('.heat-map-goal'+taskId).val();
-  console.log(goalId);
+    var goalId = $('.heat-map-goal'+taskId).val();
+    console.log(goalId);
 
-  createTaskRecord(goalId,0, taskId );
+    createTaskRecord(goalId,0, taskId );
 
-});
+  });
 
 
 
+
+
+///just checking to see if git diff works
 
       var createTaskRecord = function(goal, search_type, taskIdToShow){
         var listItem;
@@ -2183,10 +2189,10 @@ $('#comments-panel').hide();
       };
     };
 
-     var searchButtonCombinations = function(searchString){
+    var searchButtonCombinations = function(searchString){
        console.log("checking combinations....");
       if(searchString != "reset_afer_update"){
-      $("#" + searchString).toggleClass("btn-danger");
+        $("#" + searchString).toggleClass("btn-danger");
       };
 
       console.log("checking combinations....");
@@ -2306,7 +2312,7 @@ $('#comments-panel').hide();
             break;
           };
         };
-      };
+      // };
 
 
     if($(".trello_message").text() == "Get your Trello boards"){
@@ -2325,34 +2331,296 @@ $('#comments-panel').hide();
         console.log(data);
       });
     };
+  }else{
+    //////--------------------mobile function------------------//////
 
-//////--------------------mobile function------------------//////
+    ////////----------------Add new task on Mobile------------/////
 
-$(document).on("click", ".mobile-jobs", function(){
+    $(document.body).on('click', '.mobile-add', function(){
 
-$.getJSON("/users/"+gon.user_id+"/tasks", function(data){
+      var data_mt;
 
-    var taskItem;
-    var mobileList = $('#mobile-list');
+      data_mt = {};
+      data_mt["card_name"] = $('.mobile-task-name').val();
 
-    $.each(data, function(i, task){
+      $.ajax({
+        url: "/users/" + gon.user_id +"/tasks",
+        method: "POST",
+        data: {task: data_mt}
 
-      taskItem = '<div class= "well well-sm mobile-thing">' + task.card_name + '</div>';
-
-      mobileList.append(taskItem);
-
+      }).success(function(){
+        $('.mobile-task-name').val("");
+      });
 
     });
-  });
-});
+
+/////----------------show tasks--------------------/////
+
+  var showMobileTasks = function(){
+    $('#mobile-list').html("");
 
 
+      $.ajax({
+
+      url: "/users/"+gon.user_id +"/tasks",
+      method: "GET",
+      dataType: "json"
+
+      }).done(function(data){
 
 
+    // $.getJSON("/users/"+gon.user_id+"/tasks", function(data){
+    //   console.log(data);
+
+        var taskItem;
+        var mobileList = $('#mobile-list');
+
+        $.each(data, function(i, task){
+
+          if (task.effort !=0 ){
+              effortMins = parseInt(task.effort * 60);
+                if(effortMins > 1){
+                effortHours = parseInt(effortMins / 60);
+                newEffortMins = effortMins - (effortHours * 60);
+                }else{
+                  effortHours = 0;
+                  newEffortMins = effortMins;
+                }
+            }else{
+              effortHours = 0;
+              newEffortMins = 0;
+            };
+
+            if (newEffortMins < 10){
+              newEffortMins.toString();
+              newEffortMins = "0" + newEffortMins;
+              // console.log(newEffortMins);
+            }
+
+          taskItem = '<div class= "well well-lg mobile-task mobile-thing'+task.id+'">' + task.card_name + '<span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span><button class="btn btn-sm pull-right recordButton" value='+task.id+'><span class="glyphicon glyphicon-time"></span></button><button class="btn btn-sm pull-right" value='+task.id+'><span class="glyphicon glyphicon-ok"></span></button></div>';
+
+          mobileList.append(taskItem);
+        });
+      });
+    }
+  
 
 
+    $(document.body).on("click", ".mobile-jobs", function(){
+      // alert("woooow!")
+      showMobileTasks();
+    });
+  
+
+///-----create mobile versions of recordButton start and end process-----////
+
+  $(document.body).on('click', '.recordButton', function(e){
+      e.preventDefault();
+     
+      $this = $(this);
+      console.log($this.val());
+     
+      var taskId2 = $this.val();
+   
+       console.log(taskId2);
+
+      if($('.mobile-thing'+taskId2).hasClass("recording")){
+
+        endRecording($this);
+
+      
+      }else{
+
+        
+          taskId = $this.val();
+          console.log(taskId);
+          userId = gon.user_id;
+       
+
+          $('.mobile-thing'+taskId).addClass("recording");
 
 
+          $('.clock').show();
+
+          $('.mobile-task')
+
+
+          // $this.text("End work session");
+          //-----show checklist pane----////
+          // showChecklistPane(taskId);
+          // showChecklists(taskId);
+          record(userId, taskId, 0, -1);
+          console.log($this);
+          // recordingTimeout($this);
+          clock();
+      };
+    });
+
+    
+
+
+    endRecording = function(item){
+
+      clearInterval(recordingTimeout);
+
+      taskId = parseInt(item.val());
+      // taskId = parseInt(item.siblings().attr('id'));
+      // alert(cardId);
+
+      recordId = parseInt($('.mobile-thing'+taskId).val());
+
+      // $('#minutes').text(0);
+      // $('#hours').text(0);
+      // $('#seconds').text(0);
+
+      $('.mobile-thing'+taskId).removeClass("recording")
+
+      // item.parent().parent().parent().removeClass("active");
+
+      // item.text("Start work session");
+      record(userId, taskId, recordId, -2 );
+      // toggleNewTaskMenuItem(1);
+
+      stopClock();
+
+    };
+
+    ////-----------Time record control function ----------------/////
+
+
+    function updateTask(user_id, task_id){
+      var data_y = {};
+      path = "users/" + gon.user_id + "/tasks/" + task_id;
+      method = "PUT"
+
+      data_y["id"] = task_id;
+      // data_y["card_description"] = $('.task_description_on_task[value=' + task_id +']').val();
+
+
+      $.ajax({
+        url: path,
+        method: method,
+        data: {task: data_y},
+        dataType: "json"
+
+      }).success(function(data){
+
+        record(user_id, task_id, recordId, 0)
+        // console.log("completed!!");
+         // resindexCards();
+
+      });
+    };
+
+
+    function record(userId, taskId, recordId, action){
+
+    var data_x = {};
+
+    if(action === -1 ){
+      path = "/time_records";
+      method = "POST";
+      data_x["state"] = "open";
+
+    } else if (action === -2) {
+
+      path = "/time_records/" + recordId;
+      method = "PUT";
+      data_x["state"]   = "toallocate";
+
+    }else{
+      path = "/time_records/" + recordId;
+      method = "PUT";
+      data_x["state"]   = "closed";
+    };
+
+    data_x["user_id"] = userId;
+    data_x["task_id"] = taskId
+
+
+    // console.log(data_x);
+    $.ajax({
+      url: path,
+      method: method,
+      data: {time_record: data_x},
+      dataType: "json"
+    }).success(function(data){
+      // console.log("put data")
+      // console.log(data)
+      if(action === -1){
+        console.log(data);
+        $('.mobile-thing'+taskId).val(data.id);
+        // console.log("time record "+ data.id)
+        $('.mobile-task:not(.recording)').fadeOut();
+        // $('.tpanel:not(.recording)').fadeOut();
+        // $('.editButton.recording').fadeOut();
+        // toggleNewTaskMenuItem(0);
+        // showCommentPanel(taskId);
+        // $('.projects').click(function(){return false;});
+        // $('#project-button').off('click');
+        // $('.goals').off('click');
+
+      }else if(action === -2){
+        $('.recordButton').fadeIn();
+        updateTask(data_x.user_id, data_x.task_id);
+      }else{
+        console.log("closed and updated")
+        // refreshTasks();
+        // showComments(taskId);
+        // searchButtonCombinations("reset_afer_update");
+        stopClock();
+      };
+    });
+  };
+
+    ////--------------------end of time recording--------///////
+
+ ///////////---------------mobile clock start and stop------------------//////////
+
+  var clock = function(){
+      var d = new Date;
+      var timeStart = d.getTime();
+      // console.log(timeStart);
+      $('#hours').text('');
+      $('#minutes').text('');
+      $('#seconds').text('');
+
+      sessionClock = setInterval(function() {
+          var x = new Date();
+          var timeNow = x.getTime();
+          var timeDiff = timeNow - timeStart;
+
+          var days = Math.floor(timeDiff / (1000 * 3600 * 24)); 
+          timeDiff = timeDiff - days * (1000 * 3600 * 24)
+          var hours = Math.floor(timeDiff / (1000 * 3600 ));
+          timeDiff = timeDiff - hours * (1000 * 3600 );
+          var minutes = Math.floor(timeDiff / (1000 * 60 ));
+          timeDiff = timeDiff - minutes * (1000 * 60 )
+          var seconds = timeDiff / (1000 );
+
+          minutes = ' : ' + minutes;
+          seconds = ' : ' + parseInt(seconds);
+          // console.log("hours : " + hours + "minutes : " + minutes + "seconds : "+ seconds)
+          
+          $('#hours').text(hours);
+          $('#minutes').text(minutes);
+          $('#seconds').text(seconds);
+
+    }, 33)
+  }
+
+  var stopClock = function(){
+    clearInterval(sessionClock);
+    $('.clock').hide();
+    showMobileTasks();
+  }
+
+
+//////-------------------end of clock functionality--------------------//////////
+}////--------------end of mobile----------------//////////
+  /////-------------------end of main--------------//////////////////
+
+};
 $(document).ready(function(){main();
     // showImportances(-1, importances);
 });
