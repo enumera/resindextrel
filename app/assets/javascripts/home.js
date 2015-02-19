@@ -2336,6 +2336,8 @@ $('#comments-panel').hide();
 
     ////////----------------Add new task on Mobile------------/////
 
+    $('.clock').hide();
+
     $(document.body).on('click', '.mobile-add', function(){
 
       var data_mt;
@@ -2404,6 +2406,10 @@ $('#comments-panel').hide();
       });
     }
   
+    $(document.body).on('click', '.mobile-task', function(){
+      alert("this works");
+
+    })
 
 
     $(document.body).on("click", ".mobile-jobs", function(){

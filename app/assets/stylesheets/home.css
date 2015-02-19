@@ -4,6 +4,9 @@
 }
 .clock{
   background-color: red;
+  font-size: 400%;
+  height: 200px;
+  display:hidden;
 
 }
 
