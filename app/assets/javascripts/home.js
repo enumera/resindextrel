@@ -2685,6 +2685,10 @@ $(document.body).on('click', '.mobile-projects', function(){
 
   var projectItem;
 
+  var mobileListCompleted = $('#mobile-list-completed');
+
+  mobileListCompleted.html("");
+
   $.ajax({
 
     url: "/projects",
