@@ -2337,6 +2337,7 @@ $('#comments-panel').hide();
     ////////----------------Add new task on Mobile------------/////
 
     $('.clock').hide();
+    var tasksUrl;
 
     $(document.body).on('click', '.mobile-add', function(){
 
@@ -2408,7 +2409,7 @@ $('#comments-panel').hide();
   
     $(document.body).on("click", ".mobile-jobs", function(){
       // alert("woooow!")
-      var tasksUrl = "/users/"+gon.user_id +"/tasks";
+      tasksUrl = "/users/"+gon.user_id +"/tasks";
       showMobileTasks(tasksUrl);
     });
   
@@ -2613,7 +2614,7 @@ $('#comments-panel').hide();
   var stopClock = function(){
     clearInterval(sessionClock);
     $('.clock').hide();
-    showMobileTasks();
+    showMobileTasks(tasksUrl);
   }
 
 
@@ -2646,13 +2647,10 @@ $(document.body).on('click', '.mobile-project-link', function(){
   // console.log($(this).attr("value"));
   var projectId = $(this).attr("value");
 
-  var tasksUrl = "/mobile_projects?projectId="+projectId;
+  tasksUrl = "/mobile_projects?projectId="+projectId;
 
   showMobileTasks(tasksUrl);
-})
-
-
-
+});
 
 
 }////--------------end of mobile----------------//////////
