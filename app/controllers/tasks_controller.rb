@@ -207,7 +207,7 @@ class TasksController < ApplicationController
 
         format.html { redirect_to user_task_path(@user, @task), notice: 'Task was successfully updated.' }
         format.json { head :no_content }
-        format.mobile {head :no_content }
+        format.mobile {render json: @task, root: false}
       else
         format.html { render action: "edit" }
         format.json { render json: @task.errors, status: :unprocessable_entity }

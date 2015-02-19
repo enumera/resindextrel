@@ -5,9 +5,13 @@
 .clock{
   background-color: red;
   font-size: 400%;
-  height: 200px;
+  height: 100px;
   display:hidden;
 
+}
+a.mobile-link:visited,
+a.mobile-link{
+  color: white;
 }
 
 .mobile-project{
