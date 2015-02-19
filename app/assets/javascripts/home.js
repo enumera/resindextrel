@@ -2399,15 +2399,15 @@ $('#comments-panel').hide();
               // console.log(newEffortMins);
             }
 
-          taskItem = '<div class= "well well-lg mobile-task mobile-thing'+task.id+'">' + task.card_name + '<span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span><button class="btn btn-sm pull-right recordButton" value='+task.id+'><span class="glyphicon glyphicon-time"></span></button><button class="btn btn-sm pull-right" value='+task.id+'><span class="glyphicon glyphicon-ok"></span></button></div>';
+          taskItem = '<a href="#" class="mobile-link"><div class= "well well-lg mobile-task mobile-thing'+task.id+'">' + task.card_name + '<span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span><button class="btn btn-sm pull-right recordButton" value='+task.id+'><span class="glyphicon glyphicon-time"></span></button><button class="btn btn-sm pull-right" value='+task.id+'><span class="glyphicon glyphicon-ok"></span></button></div></a>';
 
           mobileList.append(taskItem);
         });
       });
     }
   
-    $(document.body).on('click', '.mobile-task', function(){
-      alert("this works");
+    $(document.body).on('click', '.mobile-link', function(){
+      $('.mobile-link').hide();
 
     })
 
