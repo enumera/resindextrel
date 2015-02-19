@@ -2362,7 +2362,7 @@ $('#comments-panel').hide();
 /////----------------show tasks--------------------/////
 
   var showMobileTasks = function(tasksUrl){
-    $('#mobile-list').html("");
+    // $('#mobile-list').html("");
 
       $.ajax({
 
@@ -2379,7 +2379,8 @@ $('#comments-panel').hide();
         var taskItem;
         var mobileList = $('#mobile-list');
         var mobileListCompleted = $('#mobile-list-completed');
-
+        mobileList.html("");
+        mobileListCompleted.html("");
         mobileListCompleted.append('<p>Completed</p>')
 
         $.each(data, function(i, task){
