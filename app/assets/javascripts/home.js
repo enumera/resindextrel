@@ -2406,12 +2406,7 @@ $('#comments-panel').hide();
       });
     }
   
-    $(document.body).on('click', '.mobile-link', function(){
-      $('.mobile-link').hide();
-
-    })
-
-
+  
     $(document.body).on("click", ".mobile-jobs", function(){
       // alert("woooow!")
       showMobileTasks();
@@ -2623,6 +2618,25 @@ $('#comments-panel').hide();
 
 
 //////-------------------end of clock functionality--------------------//////////
+
+/////-------projects--------------/////
+
+$(document.body).on('click', '.mobile-projects', function(){
+
+  $.ajax({
+
+    url: "/projects",
+    method: "GET",
+    dataType: "json"
+  }).success(function(data){
+    console.log(data);
+
+  });
+})
+
+
+
+
 }////--------------end of mobile----------------//////////
   /////-------------------end of main--------------//////////////////
 
