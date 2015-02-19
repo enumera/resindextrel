@@ -4,7 +4,6 @@ class TasksController < ApplicationController
 
 
   before_filter :authenticate
-
   before_filter :can_access_route
 
   def index
@@ -328,6 +327,19 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @tasks, root: false }
+    end
+  end
+
+
+  def mobile_projects
+        @user = current_user
+        @tasks = @user.tasks.where(project_id: params[:projectId])
+
+    # binding.pry
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @tasks, root: false }
+      format.mobile { render json: @tasks, root: false }
     end
   end
 end

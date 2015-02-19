@@ -68,6 +68,7 @@ end
      get "tasks_with_resindex" => "tasks#tasks_with_resindex", :as => "resindex_tasks"
 
      get "tasks_resindex_to_be_reset" => "tasks#tasks_resindex_to_be_reset", :as => "resindex_reset"
+    get "mobile_projects" => "tasks#mobile_projects", :as => "project_tasks"
 
     # root :to => "users#new"
     resources :users

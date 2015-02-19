@@ -2358,13 +2358,12 @@ $('#comments-panel').hide();
 
 /////----------------show tasks--------------------/////
 
-  var showMobileTasks = function(){
+  var showMobileTasks = function(tasksUrl){
     $('#mobile-list').html("");
-
 
       $.ajax({
 
-      url: "/users/"+gon.user_id +"/tasks",
+      url: tasksUrl,
       method: "GET",
       dataType: "json"
 
@@ -2409,7 +2408,8 @@ $('#comments-panel').hide();
   
     $(document.body).on("click", ".mobile-jobs", function(){
       // alert("woooow!")
-      showMobileTasks();
+      var tasksUrl = "/users/"+gon.user_id +"/tasks";
+      showMobileTasks(tasksUrl);
     });
   
 
@@ -2623,6 +2623,8 @@ $('#comments-panel').hide();
 
 $(document.body).on('click', '.mobile-projects', function(){
 
+  var projectItem;
+
   $.ajax({
 
     url: "/projects",
@@ -2630,9 +2632,25 @@ $(document.body).on('click', '.mobile-projects', function(){
     dataType: "json"
   }).success(function(data){
     console.log(data);
+     $('#mobile-list').html('');
+    $.each(data, function(i, project){
+      
+      projectItem = '<a href="#" class="mobile-project-link" value='+project.id+'><div class="well well-lg mobile-project" >'+project.name+'</div></a>';
 
+      $('#mobile-list').append(projectItem);
+    });
   });
+});
+
+$(document.body).on('click', '.mobile-project-link', function(){
+  // console.log($(this).attr("value"));
+  var projectId = $(this).attr("value");
+
+  var tasksUrl = "/mobile_projects?projectId="+projectId;
+
+  showMobileTasks(tasksUrl);
 })
+
 
 
 
