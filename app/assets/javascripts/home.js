@@ -2335,6 +2335,8 @@ $('#comments-panel').hide();
     //////--------------------mobile function------------------//////
 
     ////////----------------Add new task on Mobile------------/////
+    var tasksUrl;
+
 
     $('.clock').hide();
 
@@ -2375,6 +2377,9 @@ $('#comments-panel').hide();
 
         var taskItem;
         var mobileList = $('#mobile-list');
+        var mobileListCompleted = $('#mobile-list-completed');
+
+        mobileListCompleted.append('<p>Completed</p>')
 
         $.each(data, function(i, task){
 
@@ -2398,17 +2403,70 @@ $('#comments-panel').hide();
               // console.log(newEffortMins);
             }
 
-          taskItem = '<a href="#" class="mobile-link"><div class= "well well-lg mobile-task mobile-thing'+task.id+'">' + task.card_name + '<span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span><button class="btn btn-sm pull-right recordButton" value='+task.id+'><span class="glyphicon glyphicon-time"></span></button><button class="btn btn-sm pull-right" value='+task.id+'><span class="glyphicon glyphicon-ok"></span></button></div></a>';
+            if(task.completed ==true){
+
+              taskItem = '<div class= "well well-lg mobile-task mobile-thing'+task.id+'"><a href="#" class="mobile-link">' + task.card_name + '</a><span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span><button class="btn btn-sm pull-right mobile-complete" value='+task.id+'><span class="glyphicon glyphicon-remove"></span></button></div>';
+
+              mobileListCompleted.append(taskItem);
+
+            }else{
+
+          taskItem = '<div class= "well well-lg mobile-task mobile-thing'+task.id+'"><a href="#" class="mobile-link">' + task.card_name + '</a><span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span><button class="btn btn-sm pull-right recordButton" value='+task.id+'><span class="glyphicon glyphicon-time"></span></button><button class="btn btn-sm pull-right mobile-completed" value='+task.id+'><span class="glyphicon glyphicon-ok"></span></button></div>';
 
           mobileList.append(taskItem);
+        };
         });
       });
-    }
+    };
+
+
+
+    $(document.body).on('click', '.mobile-completed', function(){
+      var $this = $(this);
+      var taskId = $this.attr("value");
+      var data_comp = {};
+
+      $this.html('<span class="glyphicon glyphicon-remove"></span>');
+      $('.mobile-thing'+taskId).fadeOut();
+
+      data_comp["completed"] = true;
+
+      $.ajax({
+        url: "/users/" + gon.user_id + "/tasks/"+taskId,
+        method: "PUT",
+        data: {task: data_comp}
+      }).success(function(data){
+
+      showMobileTasks(tasksUrl);
+    });
+      ///---more complex need to DRY up the code.
+    });
+
+    $(document.body).on('click', '.mobile-complete', function(){
+      var $this = $(this);
+      var taskId = $this.attr("value");
+      var data_comp = {};
+
+      $this.html('<span class="glyphicon glyphicon-ok"></span>');
+      $('.mobile-thing'+taskId).fadeOut();
+
+      data_comp["completed"] = false;
+
+      $.ajax({
+        url: "/users/" + gon.user_id + "/tasks/"+taskId,
+        method: "PUT",
+        data: {task: data_comp}
+      }).success(function(data){
+          showMobileTasks(tasksUrl);
+      });
+    });
+
+
   
   
     $(document.body).on("click", ".mobile-jobs", function(){
       // alert("woooow!")
-      var tasksUrl = "/users/"+gon.user_id +"/tasks";
+      tasksUrl = "/users/"+gon.user_id +"/tasks";
       showMobileTasks(tasksUrl);
     });
   
@@ -2613,7 +2671,7 @@ $('#comments-panel').hide();
   var stopClock = function(){
     clearInterval(sessionClock);
     $('.clock').hide();
-    showMobileTasks();
+    showMobileTasks(tasksUrl);
   }
 
 
@@ -2646,7 +2704,7 @@ $(document.body).on('click', '.mobile-project-link', function(){
   // console.log($(this).attr("value"));
   var projectId = $(this).attr("value");
 
-  var tasksUrl = "/mobile_projects?projectId="+projectId;
+   tasksUrl = "/mobile_projects?projectId="+projectId;
 
   showMobileTasks(tasksUrl);
 })
