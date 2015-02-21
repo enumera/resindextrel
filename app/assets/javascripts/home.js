@@ -2494,6 +2494,7 @@ $('#comments-panel').hide();
       tasksUrl = "/users/"+gon.user_id +"/tasks";
       showMobileTasks(tasksUrl);
       hideMobileNewTask();
+      $('#add-project').fadeOut();
     });
   
 /////-------show task----------------/////
@@ -2764,9 +2765,9 @@ var showComments = function(commentsToShow){
 
 /////-------projects--------------/////
 
-$(document.body).on('click', '.mobile-projects', function(){
 
-  var projectItem;
+////---------create project----------/////
+
 
 
   var mobileListCompleted = $('#mobile-list-completed');
@@ -2775,6 +2776,42 @@ $(document.body).on('click', '.mobile-projects', function(){
 
   $('#mobile-task-details').html('');
 
+$(document.body).on("click", ".mobile-add-project", function(){
+
+  var project_data ={};
+
+  project_data["name"] = $(".mobile-project-name").val();
+
+  $.ajax({
+    url: "users/"+gon.user_id+"/projects",
+    method: "POST",
+    data: {project: project_data}
+   
+  }).success(function(){
+    console.log("success");
+    showProjects();
+    $('.mobile-project-name').val('');
+  });
+
+});
+
+
+$(document.body).on('click', '.mobile-projects', function(){
+
+  showProjects();
+});
+
+
+
+var showProjects = function(){
+var projectItem;
+var mobileListCompleted = $('#mobile-list-completed');
+
+$('#add-project').fadeIn();
+
+  mobileListCompleted.html("");
+
+  $('#mobile-task-details').html('');
 
 
   $.ajax({
@@ -2793,7 +2830,9 @@ $(document.body).on('click', '.mobile-projects', function(){
       $('#mobile-list').append(projectItem);
     });
   });
-});
+
+
+};
 
 $(document.body).on('click', '.mobile-project-link', function(){
   // console.log($(this).attr("value"));
@@ -2802,9 +2841,16 @@ $(document.body).on('click', '.mobile-project-link', function(){
     $('#projectShown').attr("value", projectId)
 
 
+<<<<<<< HEAD
 
   tasksUrl = "/mobile_projects?projectId="+projectId;
 
+=======
+  tasksUrl = "/mobile_projects?projectId="+projectId;
+
+  $("#add-project").fadeOut();
+
+>>>>>>> development
 
   showMobileTasks(tasksUrl);
 });
