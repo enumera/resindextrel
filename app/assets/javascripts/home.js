@@ -2372,6 +2372,8 @@ $('#comments-panel').hide();
     $('#add-task').fadeIn();
   };
 
+
+
   var showMobileTasks = function(tasksUrl){
     $('#mobile-list').html("");
     $('#mobile-task-details').html('');
@@ -2421,7 +2423,7 @@ $('#comments-panel').hide();
 
             if(task.completed ==true){
 
-              taskItem = '<div class= "well well-lg mobile-task mobile-thing'+task.id+'"><a href="#" class="mobile-link" style="text-decoration:line-through">' + task.card_name + '</a><span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span><button class="btn btn-sm pull-right mobile-complete" value='+task.id+'><span class="glyphicon glyphicon-remove"></span></button></div>';
+              taskItem = '<div class= "well well-lg mobile-task mobile-thing'+task.id+'"><a href="#" class="mobile-link" style="text-decoration:line-through" value='+task.id+'>' + task.card_name + '</a><span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span><button class="btn btn-sm pull-right mobile-complete" value='+task.id+'><span class="glyphicon glyphicon-remove"></span></button></div>';
 
               mobileListCompleted.append(taskItem);
 
@@ -2758,6 +2760,9 @@ $(document.body).on('click', '.mobile-projects', function(){
 
   var projectItem;
 
+  $('#mobile-task-details').html('');
+
+
   $.ajax({
 
     url: "/projects",
@@ -2766,6 +2771,7 @@ $(document.body).on('click', '.mobile-projects', function(){
   }).success(function(data){
     console.log(data);
      $('#mobile-list').html('');
+     $('#mobile-list-completed').html('');
     $.each(data, function(i, project){
       
       projectItem = '<a href="#" class="mobile-project-link" value='+project.id+'><div class="well well-lg mobile-project" >'+project.name+'<p><sm><span>Completed Tasks : Tasks Left </sm></span></p></div></a>';

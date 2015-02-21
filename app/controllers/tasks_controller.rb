@@ -74,6 +74,7 @@ class TasksController < ApplicationController
     end
     @project = Project.find(params[:task][:project_id])
     @task.resindex = @task.calculate_resindex(@task, @user)
+    @task.effort = 0.0
   
     
     respond_to do |format|
@@ -81,6 +82,7 @@ class TasksController < ApplicationController
        
           @user.tasks << @task
           @project.tasks << @task
+
         if !mobile?
           @goal.tasks << @task
           # @project.tasks << @task
@@ -117,7 +119,7 @@ class TasksController < ApplicationController
 
     if !mobile?
         @goal = Goal.find(@task.goal_id)
-      end
+    end
 
 
     puts "--------------------------------------"
@@ -143,9 +145,9 @@ class TasksController < ApplicationController
       update_tr = {}
       update_tr["time_record"] = {}
       update_tr["time_record"]["state"] = "closed"
-
+      binding.pry
       @timerecords.each do |tr|
-        tr.update_attributes(update_tr[:state])
+        tr.update_attributes(state: "closed")
       end
 
       @task.resindex = @task.calculate_resindex(@task, @user)
