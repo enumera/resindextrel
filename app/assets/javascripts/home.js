@@ -2841,16 +2841,12 @@ $(document.body).on('click', '.mobile-project-link', function(){
     $('#projectShown').attr("value", projectId)
 
 
-<<<<<<< HEAD
 
-  tasksUrl = "/mobile_projects?projectId="+projectId;
-
-=======
   tasksUrl = "/mobile_projects?projectId="+projectId;
 
   $("#add-project").fadeOut();
 
->>>>>>> development
+
 
   showMobileTasks(tasksUrl);
 });
