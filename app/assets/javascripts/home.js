@@ -2810,12 +2810,8 @@ $(document.body).on('click', '.mobile-project-link', function(){
 });
 
 
-   tasksUrl = "/mobile_projects?projectId="+projectId;
-
-  showMobileTasks(tasksUrl);
-});
     // hideMobileNewTask();
->>>>>>> development
+
 
 }////--------------end of mobile----------------//////////
   /////-------------------end of main--------------//////////////////
