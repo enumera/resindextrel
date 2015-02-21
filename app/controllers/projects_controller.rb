@@ -58,6 +58,7 @@ class ProjectsController < ApplicationController
         @user.projects << @project
         format.html { redirect_to user_project_path(@user, @project), notice: 'Project was successfully created.' }
         format.json { render json: user_project_path(@user, @project), status: :created, location: user_project_path(@user, @project) }
+        format.mobile { render json: user_project_path(@user, @project), status: :created, location: user_project_path(@user, @project) }
       else
         format.html { render action: "new" }
         format.json { render json: @project.errors, status: :unprocessable_entity }
