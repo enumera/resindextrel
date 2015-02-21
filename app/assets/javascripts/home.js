@@ -1598,7 +1598,7 @@ var validateTaskFormAfterError = function(changeItem){
     
 
 
-    endRecording = function(item){
+   var endRecording = function(item){
 
       clearInterval(recordingTimeout);
 
@@ -2360,8 +2360,20 @@ $('#comments-panel').hide();
 
 /////----------------show tasks--------------------/////
 
+  var hideMobileNewTask = function(){
+    $('#add-task').fadeOut();
+
+  };
+
+  var showMobileNewTask = function(){
+    $('#add-task').fadeIn();
+
+  };
+
   var showMobileTasks = function(tasksUrl){
     $('#mobile-list').html("");
+    $('#mobile-task-details').html('');
+    showMobileNewTask();
 
       $.ajax({
 
@@ -2411,7 +2423,7 @@ $('#comments-panel').hide();
 
             }else{
 
-          taskItem = '<div class= "well well-lg mobile-task mobile-thing'+task.id+'"><a href="#" class="mobile-link">' + task.card_name + '</a><span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span><button class="btn btn-sm pull-right recordButton" value='+task.id+'><span class="glyphicon glyphicon-time"></span></button><button class="btn btn-sm pull-right mobile-completed" value='+task.id+'><span class="glyphicon glyphicon-ok"></span></button></div>';
+          taskItem = '<div class= "well well-lg mobile-task mobile-thing'+task.id+'"><a href="#" class="mobile-link" value='+task.id+'>' + task.card_name + '</a><span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span><button class="btn btn-sm pull-right recordButton" value='+task.id+'><span class="glyphicon glyphicon-time"></span></button><button class="btn btn-sm pull-right mobile-completed" value='+task.id+'><span class="glyphicon glyphicon-ok"></span></button></div>';
 
           mobileList.append(taskItem);
         };
@@ -2463,13 +2475,70 @@ $('#comments-panel').hide();
 
 
   
-  
     $(document.body).on("click", ".mobile-jobs", function(){
       // alert("woooow!")
       tasksUrl = "/users/"+gon.user_id +"/tasks";
       showMobileTasks(tasksUrl);
     });
   
+/////-------show task----------------/////
+
+$(document.body).on('click', '.mobile-link',function(){
+  $this = $(this);
+  var taskId = $this.attr("value");
+  var mobileList = $('#mobile-list');
+  var mobileTaskDetails = $('#mobile-task-details');
+  hideMobileNewTask();
+
+  mobileTaskDetails.html('');
+
+  console.log(taskId);
+
+  $('.mobile-thing'+taskId).addClass("selected");
+  $('.mobile-task:not(.selected)').fadeOut();
+  $('#mobile-list-completed').hide();
+
+  var commentsList = '<a href="#" id="task-comments" value='+taskId+'><div class="well well-lg">Comments</div></a>';
+  var timeRecords = '<a href= "#" id="taskTimeRecords" value='+taskId+'><div class="well well-lg">Time Records</div></a>';
+
+  mobileTaskDetails.append(commentsList);
+  mobileTaskDetails.append(timeRecords);
+
+});
+
+$(document.body).on('click', '#task-comments',function(){
+  $this = $(this);
+  var taskId = $this.attr("value");
+
+
+  console.log(taskId)
+
+  $.ajax({
+    url: "/users/"+gon.user_id+"/tasks/"+taskId,
+    method: "GET",
+    dataType: "json"
+
+  }).success(function(data){
+    $('#taskTimeRecords').fadeOut();
+    console.log(data["comments"])
+    var commentsToShow = data["comments"];
+
+    // console.log(commentsToShow);
+    showComments(commentsToShow);
+
+  });
+})
+
+
+var showComments = function(commentsToShow){
+  $("#taskTimeRecords").fadeOut();
+  console.log(commentsToShow)
+
+  $.each(commentsToShow, function(i, comment){
+  var commentItem = '<div class="well well-lg">'+comment.ctext+'</div>';
+  $('#mobile-task-details').append(commentItem);
+  });
+};
 
 ///-----create mobile versions of recordButton start and end process-----////
 
@@ -2518,7 +2587,7 @@ $('#comments-panel').hide();
     
 
 
-    endRecording = function(item){
+    var endRecording = function(item){
 
       clearInterval(recordingTimeout);
 
@@ -2693,7 +2762,7 @@ $(document.body).on('click', '.mobile-projects', function(){
      $('#mobile-list').html('');
     $.each(data, function(i, project){
       
-      projectItem = '<a href="#" class="mobile-project-link" value='+project.id+'><div class="well well-lg mobile-project" >'+project.name+'</div></a>';
+      projectItem = '<a href="#" class="mobile-project-link" value='+project.id+'><div class="well well-lg mobile-project" >'+project.name+'<p><sm><span>Completed Tasks : Tasks Left </sm></span></p></div></a>';
 
       $('#mobile-list').append(projectItem);
     });
@@ -2704,13 +2773,11 @@ $(document.body).on('click', '.mobile-project-link', function(){
   // console.log($(this).attr("value"));
   var projectId = $(this).attr("value");
 
+
    tasksUrl = "/mobile_projects?projectId="+projectId;
 
   showMobileTasks(tasksUrl);
-})
-
-
-
+});
 
 
 }////--------------end of mobile----------------//////////

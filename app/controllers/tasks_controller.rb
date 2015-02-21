@@ -39,6 +39,9 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @task, root: false }
+      format.mobile { render json: @task, root: false }
+
+
     end
   end
 

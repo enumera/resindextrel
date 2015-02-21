@@ -8,15 +8,7 @@ class ProjectsController < ApplicationController
   def index
     @user = current_user
     user_projects = @user.projects
-    @projects = user_projects.order("no_of_goals DESC")
-    # binding.pry
-
-    # @projects.each do |project|
-    #   goals = project.goals.length
-    #   project.no_of_goals = goals
-    #   project.save
-    # end
-
+    @projects = user_projects
 
     respond_to do |format|
       format.html # index.html.erb
