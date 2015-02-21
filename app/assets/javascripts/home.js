@@ -2816,7 +2816,7 @@ $('#add-project').fadeIn();
 
   $.ajax({
 
-    url: "/projects",
+    url: "users/"+gon.user_id+"/projects",
     method: "GET",
     dataType: "json"
   }).success(function(data){

@@ -346,6 +346,7 @@ class TasksController < ApplicationController
 
 
   def mobile_projects
+
         @user = current_user
         @tasks = @user.tasks.where(project_id: params[:projectId])
 

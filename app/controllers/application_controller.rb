@@ -86,6 +86,10 @@ end
               when "non_trello" then true
               when "top10_trello" then true
               when "top10_non_trello" then true
+              when "mobile_projects" then true
+              when "tasks_resindex_to_be_reset" then true
+              when "tasks_with_resindex" then true
+              when "tasks_with_no_resindex" then true
               else
 
               if current_user == User.find(params[:user_id])
