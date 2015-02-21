@@ -1,8 +1,9 @@
 <% if current_user %>
 
-<div class="row" id="add-task">
+<div class="row" id="add-task" style="display:none;">
   <div class ="col-xs-8">
     <div class="input-group">
+      <input type="hidden" id="projectShown">
         <input type="text" class="form-control mobile-task-name" placeholder="New Job">
         <span class="input-group-btn">
           <button class="btn btn-default mobile-add" type="button">Add</button>
@@ -17,7 +18,7 @@
 
 <hr></hr>
 <button class="btn btn-success mobile-projects">Projects</button>
-<button class="btn btn-success mobile-jobs">Jobs</button>
+<button class="btn btn-success mobile-jobs">All Jobs</button>
 <hr></hr>
 
 <div>
@@ -28,7 +29,7 @@
 <!-- <div class="clock" style="display:hidden"><span id="hours"></span><span id="minutes"></span><span id="seconds"></span></div>
  -->
 
- <div class="clock  well well-lg"><span id="hours"></span><span id="minutes"></span><span id="seconds"></span></div>
+ <div class="clock  well well-lg" style="display:none;"><span id="hours"></span><span id="minutes"></span><span id="seconds"></span></div>
 
 <% else %>
 

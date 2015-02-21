@@ -69,9 +69,10 @@ class TasksController < ApplicationController
         # binding.pry
     if !mobile?
       @goal = Goal.find(params[:task][:goal_id])
-      @project = Project.find(params[:task][:project_id])
+      # @project = Project.find(params[:task][:project_id])
 
     end
+    @project = Project.find(params[:task][:project_id])
     @task.resindex = @task.calculate_resindex(@task, @user)
   
     
@@ -79,9 +80,10 @@ class TasksController < ApplicationController
       if @task.save
        
           @user.tasks << @task
+          @project.tasks << @task
         if !mobile?
           @goal.tasks << @task
-          @project.tasks << @task
+          # @project.tasks << @task
           goal_tasks = @goal.tasks.length
           @goal.update_attributes(no_of_tasks: goal_tasks)
           # format.html { redirect_to user_task_path(@user, @task), notice: 'Task was successfully created.' }
@@ -108,10 +110,15 @@ class TasksController < ApplicationController
     initial_task = @task
     @timerecords = TimeRecord.where(task_id: params[:id], state: "toallocate")
     before_change_res = @task.resindex
-    @goal = Goal.find(@task.goal_id)
+    # @goal = Goal.find(@task.goal_id)
     @project = Project.find(@task.project_id)
     before_res = 0.0
     after_res = 0.0
+
+    if !mobile?
+        @goal = Goal.find(@task.goal_id)
+      end
+
 
     puts "--------------------------------------"
     puts @timerecords
@@ -185,6 +192,7 @@ class TasksController < ApplicationController
             end
 
           end
+          if !mobile?
             if @goal.id != initial_task.goal_id
 
             first_goal_tasks_to_change = Goal.find(initial_task.goal_id)
@@ -205,6 +213,7 @@ class TasksController < ApplicationController
           Comment.create(task_id: @task.id, comment_type_id: 7, user_id: @user.id, ctext: comment_text, before_res: before_res, after_res: after_res)
 
           end
+        end
         
 
 
