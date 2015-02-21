@@ -2777,6 +2777,7 @@ $(document.body).on("click", ".mobile-add-project", function(){
   }).success(function(){
     console.log("success");
     showProjects();
+    $('.mobile-project-name').val('');
   });
 
 });
@@ -2798,7 +2799,7 @@ $('#add-project').fadeIn();
   mobileListCompleted.html("");
 
   $('#mobile-task-details').html('');
->>>>>>> Stashed changes
+
   $.ajax({
 
     url: "/projects",
