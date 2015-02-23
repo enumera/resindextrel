@@ -145,7 +145,7 @@ class TasksController < ApplicationController
       update_tr = {}
       update_tr["time_record"] = {}
       update_tr["time_record"]["state"] = "closed"
-      binding.pry
+      # binding.pry
       @timerecords.each do |tr|
         tr.update_attributes(state: "closed")
       end

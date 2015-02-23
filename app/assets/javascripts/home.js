@@ -2551,10 +2551,9 @@ var showComments = function(commentsToShow){
 
 ///-----create mobile versions of recordButton start and end process-----////
 
-  $(document.body).on('click', '.recordButton', function(e){
-      e.preventDefault();
-     
-      $this = $(this);
+var recordingControl = function(buttonPressed){
+  $this = buttonPressed;
+   
       console.log($this.val());
      
       var taskId2 = $this.val();
@@ -2564,9 +2563,9 @@ var showComments = function(commentsToShow){
       if($('.mobile-thing'+taskId2).hasClass("recording")){
 
         endRecording($this);
+        showMobileNewTask();
 
-      
-      }else{
+    }else{
 
         
           taskId = $this.val();
@@ -2582,15 +2581,35 @@ var showComments = function(commentsToShow){
           $('.mobile-task')
 
 
-          // $this.text("End work session");
-          //-----show checklist pane----////
-          // showChecklistPane(taskId);
-          // showChecklists(taskId);
+      
           record(userId, taskId, 0, -1);
           console.log($this);
-          // recordingTimeout($this);
-          clock();
-      };
+          hideMobileNewTask();
+      
+          $('.stop-clock-button').attr("value", taskId);
+          clock();        
+    };
+  };
+
+
+$(document.body).on('click', '.stop-clock-button', function(e){
+  e.preventDefault();
+
+  var buttonPressed = $(this);
+
+  recordingControl(buttonPressed);
+
+});
+
+  
+
+  $(document.body).on('click', '.recordButton', function(e){
+      e.preventDefault();
+     
+    var buttonPressed = $(this);
+     
+
+      recordingControl(buttonPressed);
     });
 
     
