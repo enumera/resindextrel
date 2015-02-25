@@ -18,6 +18,8 @@
 <% @tasks.each do |task| %>
   <tr>
     <td><%= task.id %></td>
+    <td><%= task.card_name %></td>
+
     <td><%= task.trello_type %></td>
     <td><%= task.resindex %></td>
     <td><%= task.completed %></td>
