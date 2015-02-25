@@ -33,7 +33,7 @@ var main = function(){
   var importances;
 
   if(gon.mobile == 0){
-    alert("Not a mobile")
+    // alert("Not a mobile")
   
 
    var showDifficulties = function(taskId, difficultyOptions){
