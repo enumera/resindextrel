@@ -2,6 +2,10 @@
 
 <table>
   <tr>
+    <th>Id</th>
+    <th>Name</th>
+      <th>goal id</th>
+        <th>project id</th>
     <th>Trello type</th>
     <th>Resindex</th>
     <th>Completed</th>
@@ -19,7 +23,8 @@
   <tr>
     <td><%= task.id %></td>
     <td><%= task.card_name %></td>
-
+     <td><%= task.goal_id %></td>
+     <td><%= task.project_id %></td>
     <td><%= task.trello_type %></td>
     <td><%= task.resindex %></td>
     <td><%= task.completed %></td>
