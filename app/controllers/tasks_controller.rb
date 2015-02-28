@@ -66,13 +66,17 @@ class TasksController < ApplicationController
   def create
     @user = current_user
     @task = Task.new(params[:task])
+    @project = Project.find(params[:task][:project_id])
+
         # binding.pry
     if !mobile?
       @goal = Goal.find(params[:task][:goal_id])
       # @project = Project.find(params[:task][:project_id])
+    else
+        @goal = Project.goals.where(name: "unassigned")
 
     end
-    @project = Project.find(params[:task][:project_id])
+    # @project = Project.find(params[:task][:project_id])
     @task.resindex = @task.calculate_resindex(@task, @user)
     @task.effort = 0.0
   
