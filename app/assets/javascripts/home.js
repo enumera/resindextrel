@@ -1916,14 +1916,24 @@ var addProject = function(){
     $.ajax({ 
           url: path, 
           method: method,
-          data: {project: data_project},
-          dataType: "json"
-    })
-      setTimeout(function(){createFirstGoal(goalName)},1000);
+          data: {project: data_project}
+          // dataType: "json"
+    }).success(function(){
+       // createFirstGoal(goalName);
+       createGoals(goalName);
+
+    });
+      // setTimeout(function(){createFirstGoal(goalName)},1000);
   };
 };
 
-  var createFirstGoal = function(goalName){
+  var createGoals = function(goalName){
+    createFirstGoal(goalName, 0);
+    createFirstGoal("Unassigned", 1);
+  };
+
+
+  var createFirstGoal = function(goalName, firstGoal){
     var data_goal = {};
     var project_id;
 
@@ -1949,18 +1959,19 @@ var addProject = function(){
   
 
     // console.log(data);
-    $.ajax({ 
-          url: path, 
-          method: method,
-          data: {goal: data_goal},
-          dataType: "json"
+      $.ajax({ 
+            url: path, 
+            method: method,
+            data: {goal: data_goal},
+            dataType: "json"
+      }).done(function(){
+        if(firstGoal == 0){
+          dialog.dialog("close");
+          $('#project-name').val('');
+          $('#first-goal-name').val('');
+        };
+      });
     });
-  });
-
-
-    dialog.dialog("close");
-    $('#project-name').val('');
-    $('#first-goal-name').val('');
   };
 
 
