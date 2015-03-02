@@ -32,7 +32,7 @@ var main = function(){
   var difficulties;
   var importances;
 
-  if(gon.mobile == 0){
+  if(gon.mobile === 0){
     // alert("Not a mobile")
   
 
@@ -1685,6 +1685,7 @@ var validateTaskFormAfterError = function(changeItem){
     }).success(function(data){
       // console.log("put data")
       // console.log(data)
+      console.log("in success for new time record");
       if(action === -1){
         console.log(data);
         $('.recording').val(data.id);
@@ -2601,7 +2602,7 @@ var recordingControl = function(buttonPressed){
 
 
       
-          record(userId, taskId, 0, -1);
+          mobileRecord(userId, taskId, 0, -1);
           console.log($this);
           hideMobileNewTask();
       
@@ -2653,7 +2654,7 @@ $(document.body).on('click', '.stop-clock-button', function(e){
       // item.parent().parent().parent().removeClass("active");
 
       // item.text("Start work session");
-      record(userId, taskId, recordId, -2 );
+      mobileRecord(userId, taskId, recordId, -2 );
       // toggleNewTaskMenuItem(1);
 
       stopClock();
@@ -2680,7 +2681,7 @@ $(document.body).on('click', '.stop-clock-button', function(e){
 
       }).success(function(data){
 
-        record(user_id, task_id, recordId, 0)
+        mobileRecord(user_id, task_id, recordId, 0)
         // console.log("completed!!");
          // resindexCards();
 
@@ -2688,7 +2689,7 @@ $(document.body).on('click', '.stop-clock-button', function(e){
     };
 
 
-    function record(userId, taskId, recordId, action){
+    function mobileRecord(userId, taskId, recordId, action){
 
     var data_x = {};
 
