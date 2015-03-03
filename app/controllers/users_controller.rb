@@ -46,6 +46,8 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        # binding.pry
+        UserMailer.registration_confirmation(@user).deliver
         # if @user.id != 1 then
         #   @user.update_attributes(role: "user")
         # end

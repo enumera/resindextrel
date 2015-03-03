@@ -64,4 +64,20 @@ Trelloindex::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+  config.action_mailer.default_url_options = { :host => 'resindex.co.uk' }
+    # ActionMailer Config
+    # Setup for production - deliveries, no errors raised
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.perform_deliveries = true
+    config.action_mailer.raise_delivery_errors = false
+    config.action_mailer.default :charset => "utf-8"
+
+    config.action_mailer.smtp_settings = {
+      :address   => "smtp.mandrillapp.com",
+      :port      => 25,
+      :user_name => "enumera2000@yahoo.co.uk",
+      :password  => "AAGAzj-v9NXIYG5itoij2A"
+    }
+
+
 end

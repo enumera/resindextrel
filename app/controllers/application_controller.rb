@@ -30,7 +30,6 @@ def prepare_for_mobile
 
   request.format = :mobile if mobile?
 
-  
 end
 
 
@@ -57,7 +56,7 @@ end
       case params[:actions]
       when "index" "show" "destroy" "update"
        flash[:error] = "Please log in."
-      redirect_to log_in_path
+        redirect_to log_in_path
       end
 
     end
@@ -68,7 +67,9 @@ end
   def can_access_route
     if logged_in?
     raise 'Permissions rejected' unless authorized?(current_user, params[:controller], params[:action])
-  end
+    else
+      redirect_to log_in_path
+    end
   end
 
   private
