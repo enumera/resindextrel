@@ -67,8 +67,8 @@ end
   def can_access_route
     if logged_in?
     raise 'Permissions rejected' unless authorized?(current_user, params[:controller], params[:action])
-    else
-      redirect_to log_in_path
+    # else
+    #   redirect_to log_in_path
     end
   end
 
