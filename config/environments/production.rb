@@ -75,8 +75,9 @@ Trelloindex::Application.configure do
     config.action_mailer.smtp_settings = {
       :address   => "smtp.mandrillapp.com",
       :port      => 25,
-      :user_name => "enumera2000@yahoo.co.uk",
-      :password  => "AAGAzj-v9NXIYG5itoij2A"
+      :user_name => "MANDRILL_USERNAME",
+      :password  => "MANDRILL_API_KEY"
+
     }
 
 
