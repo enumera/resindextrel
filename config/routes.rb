@@ -1,5 +1,7 @@
 Trelloindex::Application.routes.draw do
   
+
+
   # resources :checklist_items
 
   resources :checklists
@@ -75,6 +77,7 @@ end
     resources :sessions
 
     get "get_last_project" => "projects#get_last_project", :as => "lastProject"
+    resources :password_resets
 
   # root :to => 'home#index'
 

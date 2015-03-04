@@ -18,12 +18,26 @@ class User < ActiveRecord::Base
   has_many :importances
   has_many :difficulties
 
+
+  def generate_token(column)
+    begin
+      self[column] = SecureRandom.urlsafe_base64
+    end while User.exists?(column => self[column])
+  end
+
+    def send_password_reset
+      generate_token(:password_reset_token)
+      self.password_reset_sent_at = Time.zone.now
+      save!
+      UserMailer.password_reset(self).deliver
+    end
+
+
   def update_after_create
 
     if self.id != 1 then
             self.update_attributes(role: "user")
     end
-
 
     Difficulty.create(name:"Easy-done it before", difficulty_ref: 1, difficulty_value: 1, user_id: self.id, name_status: "active" )
     Difficulty.create(name:"Something slightly different", difficulty_ref: 2, difficulty_value: 2, user_id: self.id, name_status: "active" )
