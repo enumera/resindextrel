@@ -14,6 +14,8 @@ a.mobile-link{
   color: white;
 }
 
+
+
 .mobile-project{
   background-color: yellow;
   color: blue;
@@ -189,6 +191,7 @@ margin-bottom: 10px;
 
 #control-panel{
   position:relative;
+
 }
 .projects{
   background-color: #5cb85c;
