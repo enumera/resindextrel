@@ -2,6 +2,8 @@ Trelloindex::Application.routes.draw do
   
 
 
+  get "landing/index"
+
   # resources :checklist_items
 
   resources :checklists
