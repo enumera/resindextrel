@@ -620,7 +620,7 @@ $(document.body).on('click', '.add_item_button', function(){
       if(goal.id == goal_id){
         goalItem = '<div class="well well-lg goals project' + goal.project_id + ' selectedGoal" id=' + goal.id + '> ' + goal.name + '<span class ="pull-right badge tasks-left"> Jobs open: ' + goal.no_of_tasks + '</span></div>';
       }else{
-          goalItem = '<div class="well well-sm goals project' + goal.project_id + ' " id=' + goal.id + ' style="display:none"> ' + goal.name + '<span class ="pull-right badge tasks-left"> Jobs open: ' + goal.no_of_tasks + '</span></div>';
+          goalItem = '<div class="well well-lg goals project' + goal.project_id + ' " id=' + goal.id + ' style="display:none"> ' + goal.name + '<span class ="pull-right badge tasks-left"> Jobs open: ' + goal.no_of_tasks + '</span></div>';
       };
           menuItems.append(goalItem);
     });
@@ -821,7 +821,7 @@ var resindexColour = function(taskId, resindex){
         //commented out so that all comments are visible
         // if(comment.comment_type.comment_switch === "user"){
 
-        listItem = '<button type="button" class="btn btn-info btn-xs pull-right">'+ comment.comment_type.name + '</button><div class="well well-sm comments" id=' + comment.id + '><h4>' + comment.ctext + '</h4></div></div>';
+        listItem = '<button type="button" class="btn btn-info btn-xs pull-right">'+ comment.comment_type.name + '</button><div class="well well-lg comments" id=' + comment.id + '><h4>' + comment.ctext + '</h4></div></div>';
         commentList.append(listItem);
       // };
       });
@@ -1028,7 +1028,7 @@ var validateTaskFormAfterError = function(changeItem){
             goalOptions.html('');
 
             projectInitialOption = '<option value="none">Select prize</option>';
-            menuItems.append('<div class="well well-sm" id="project-button"><h4>Projects</h4></div>');
+            menuItems.append('<div class="well well-lg" id="project-button"><h4>Projects</h4></div>');
 
             goalInitialOption = '<option value="none">Select a project first</option>';
 
@@ -1045,7 +1045,7 @@ var validateTaskFormAfterError = function(changeItem){
                   x = project.no_of_goals;
                 };
 
-              projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Goal</button><div class="well well-sm projects" id=' + project.id + '>' + project.name + '<span class ="pull-right badge goals-left"> Goals :' + x + '</span></div></div>';
+              projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Goal</button><div class="well well-lg projects" id=' + project.id + '>' + project.name + '<span class ="pull-right badge goals-left"> Goals :' + x + '</span></div></div>';
               
               projectOption = '<option value='+project.id+ '>'+ project.name +'</option>'
               menuItems.append(projectItem);
@@ -1133,7 +1133,7 @@ var validateTaskFormAfterError = function(changeItem){
                 }else{
                   x = goal.no_of_tasks;
                 };
-              var goalItem = '<div class="well well-sm goals project' + projectID + ' " id=' + goal.id + '> ' + goal.name + '<span class ="pull-right badge tasks-left" value='+goal.id+'"> Jobs open: ' + x + '</span></div>';
+              var goalItem = '<div class="well well-lg goals project' + projectID + ' " id=' + goal.id + '> ' + goal.name + '<span class ="pull-right badge tasks-left" value='+goal.id+'"> Jobs open: ' + x + '</span></div>';
               menuItems.append(goalItem);
             }); 
           });
@@ -1313,7 +1313,7 @@ var validateTaskFormAfterError = function(changeItem){
           $('button.new-goal[value='+ projectID + ']').addClass("selectedProject");
 
           $this.addClass("selectedProject");
-          $this.removeClass("well-sm");
+          $this.removeClass("well-lg");
           $this.addClass("well-lg");
           $('.projectSel').val(projectID);
 
@@ -1328,7 +1328,7 @@ var validateTaskFormAfterError = function(changeItem){
           if($('.goals').length){
             $('.goals:not(selectedGoal)').fadeIn(1000);
              $('.selectedGoal').removeClass("well-lg");
-            $('.selectedGoal').addClass("well-sm");
+            $('.selectedGoal').addClass("well-lg");
             $('.goals.selectedGoal').removeClass('selectedGoal');
           }else{
 
@@ -1364,7 +1364,7 @@ var validateTaskFormAfterError = function(changeItem){
 
       $this.addClass("selectedGoal");
 
-      $this.removeClass("well-sm");
+      $this.removeClass("well-lg");
 
       $this.addClass("well-lg");
 
@@ -2890,6 +2890,11 @@ $(document.body).on('click', '.mobile-project-link', function(){
   /////-------------------end of main--------------//////////////////
 
 };
-$(document).ready(function(){main();
+$(document).ready(function(){
+ debugger; 
+if(gon.user_id >= 1){
+
+  main();
+}
     // showImportances(-1, importances);
 });
