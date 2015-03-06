@@ -12,5 +12,13 @@
 
       end
 
+      def invitation(invitation, invite_url)
+        @invite_url = invite_url
+        @invitation = invitation
+        mail(:to => invitation.recipient_email, :subject => "Invite to redindex", :body => @invite_url) 
+          # invitation.update_attribute(:sent_at, Time.now)
+
+      end
+
 
     end

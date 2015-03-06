@@ -89,4 +89,11 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def invite
+     @user = User.new(:invitation_token => params[:format])
+     @user.email = @user.invitation.recipient_email if @user.invitation
+
+  end
+
 end

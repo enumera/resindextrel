@@ -110,8 +110,12 @@ end
               false
             end
           end
-          when "users" then false
-          
+          when "users" then
+            case action
+            when "invite" then true
+            else
+              false
+            end
           when "sessions" then false
           else
             true

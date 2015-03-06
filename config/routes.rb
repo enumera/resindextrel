@@ -2,6 +2,9 @@ Trelloindex::Application.routes.draw do
   
 
 
+  resources :invitations
+
+
   get "landing/index"
 
   # resources :checklist_items
@@ -58,6 +61,8 @@ end
     get "log_out" => "sessions#destroy", :as => "log_out"
     get "log_in" => "sessions#new", :as => "log_in"
     get "sign_up" => "users#new", :as => "sign_up"
+
+    get '/invite/:invitation_token' => "users#invite", :as => "invite"
 
     get "top_10" => "tasks#top_10", :as => "top10"
 

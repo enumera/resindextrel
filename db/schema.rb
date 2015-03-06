@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150126120307) do
+ActiveRecord::Schema.define(:version => 20150305200250) do
 
   create_table "checklist_items", :force => true do |t|
     t.string   "name"
@@ -73,6 +73,15 @@ ActiveRecord::Schema.define(:version => 20150126120307) do
     t.datetime "updated_at",       :null => false
     t.string   "name"
     t.string   "name_status"
+  end
+
+  create_table "invitations", :force => true do |t|
+    t.integer  "sender_id"
+    t.string   "recipient_email"
+    t.string   "token"
+    t.datetime "sent_at"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "oauth_tables", :force => true do |t|
@@ -149,12 +158,16 @@ ActiveRecord::Schema.define(:version => 20150126120307) do
     t.string   "family_name"
     t.string   "trello"
     t.string   "rescue"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
     t.integer  "work_session"
     t.string   "email"
     t.string   "password_digest"
     t.string   "role"
+    t.string   "password_reset_token"
+    t.datetime "password_reset_sent_at"
+    t.integer  "invitation_id"
+    t.integer  "invitation_limit"
   end
 
 end

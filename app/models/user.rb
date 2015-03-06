@@ -1,8 +1,9 @@
 class User < ActiveRecord::Base
   has_secure_password
   after_create :update_after_create
+  before_create :set_invitation_limit
   
-  attr_accessible :family_name, :first_name, :rescue, :trello, :task_ids, :work_session, :password, :email, :password_confirmation, :project_ids, :role, :difficulty_ids, :importance_ids
+  attr_accessible :family_name, :first_name, :rescue, :trello, :task_ids, :work_session, :password, :email, :password_confirmation, :project_ids, :role, :difficulty_ids, :importance_ids, :invitation_limit, :invitation_token
 
   validates_presence_of :first_name, :on => :create
   validates_presence_of :family_name, :on => :create
@@ -17,6 +18,9 @@ class User < ActiveRecord::Base
   has_many :oauth_tables
   has_many :importances
   has_many :difficulties
+
+  has_many :sent_invitations, :class_name => 'Invitation', :foreign_key => 'sender_id'
+  belongs_to :invitation
 
 
   def generate_token(column)
@@ -37,7 +41,10 @@ class User < ActiveRecord::Base
 
     if self.id != 1 then
             self.update_attributes(role: "user")
+    else
+       self.update_attributes(role: "admin")
     end
+
 
     Difficulty.create(name:"Easy-done it before", difficulty_ref: 1, difficulty_value: 1, user_id: self.id, name_status: "active" )
     Difficulty.create(name:"Something slightly different", difficulty_ref: 2, difficulty_value: 2, user_id: self.id, name_status: "active" )
@@ -51,5 +58,19 @@ class User < ActiveRecord::Base
     Importance.create(name:"Someone/I really needs this", importance_ref: 4, importance_value: 2, user_id: self.id, name_status: "active" )
     Importance.create(name:"Someone/I REALLY needs this", importance_ref: 5, importance_value: 1, user_id: self.id, name_status: "active" )
   end
+  def invitation_token
+    invitation.token if invitation
+  end
+
+  def invitation_token=(token)
+    self.invitation = Invitation.find_by_token(token)
+  end
+
+
+
+def set_invitation_limit
+  self.invitation_limit = 5
+end
+
 
 end
