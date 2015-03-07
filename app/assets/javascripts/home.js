@@ -2462,13 +2462,13 @@ $('#comments-panel').hide();
 
             if(task.completed ==true){
 
-              taskItem = '<div class= "well well-lg mobile-task mobile-thing'+task.id+'"><a href="#" class="mobile-link" style="text-decoration:line-through" value='+task.id+'>' + task.card_name + '</a><span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span></div><div><button class="btn btn-sm pull-right mobile-complete" value='+task.id+'><span class="glyphicon glyphicon-remove"></span></button></div>';
+              taskItem = '<div class="well well-lg well-task-container well-task'+task.id+'"><div class= "well well-lg mobile-task mobile-thing'+task.id+'"><a href="#" class="mobile-link" style="text-decoration:line-through" value='+task.id+'>' + task.card_name + '</a><span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span></div><div><button class="btn btn-sm pull-right mobile-complete" value='+task.id+'><span class="glyphicon glyphicon-remove"></span></button></div></div>';
 
               mobileListCompleted.append(taskItem);
 
             }else{
 
-          taskItem = '<div><div class= "well well-lg mobile-task mobile-thing'+task.id+'"><a href="#" class="mobile-link" value='+task.id+'>' + task.card_name + '</a><span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span></div><div><button class="btn btn-sm pull-right recordButton" value='+task.id+'><span class="glyphicon glyphicon-time"></span></div><div></button><button class="btn btn-sm pull-right mobile-completed" value='+task.id+'><span class="glyphicon glyphicon-ok"></span></button></div></div>';
+          taskItem = '<div class="well well-lg well-task-container well-task'+task.id+'"><div class= "well well-lg mobile-task mobile-thing'+task.id+'"><a href="#" class="mobile-link" value='+task.id+'>' + task.card_name + '</a><span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span></div><div><button class="btn btn-sm pull-right recordButton" value='+task.id+'><span class="glyphicon glyphicon-time"></span></div><div></button><button class="btn btn-sm pull-right mobile-completed" value='+task.id+'><span class="glyphicon glyphicon-ok"></span></button></div></div>';
 
           mobileList.append(taskItem);
         };
@@ -2484,7 +2484,7 @@ $('#comments-panel').hide();
       var data_comp = {};
 
       $this.html('<span class="glyphicon glyphicon-remove"></span>');
-      $('.mobile-thing'+taskId).fadeOut();
+      $('.well-task'+taskId).fadeOut();
 
       data_comp["completed"] = true;
 
@@ -2505,7 +2505,7 @@ $('#comments-panel').hide();
       var data_comp = {};
 
       $this.html('<span class="glyphicon glyphicon-ok"></span>');
-      $('.mobile-thing'+taskId).fadeOut();
+      $('.well-task'+taskId).fadeOut();
 
       data_comp["completed"] = false;
 
@@ -2544,8 +2544,8 @@ $(document.body).on('click', '.mobile-link',function(){
 
   console.log(taskId);
 
-  $('.mobile-thing'+taskId).addClass("selected");
-  $('.mobile-task:not(.selected)').fadeOut();
+  $('.well-task'+taskId).addClass("selected");
+  $('.well-task-container:not(.selected)').fadeOut();
   $('#mobile-list-completed').hide();
 
   var commentsList = '<a href="#" id="task-comments" value='+taskId+'><div class="well well-lg">Comments</div></a>';
@@ -2602,7 +2602,7 @@ var recordingControl = function(buttonPressed){
    
        console.log(taskId2);
 
-      if($('.mobile-thing'+taskId2).hasClass("recording")){
+      if($('.well-task'+taskId2).hasClass("recording")){
 
         endRecording($this);
         showMobileNewTask();
@@ -2615,7 +2615,7 @@ var recordingControl = function(buttonPressed){
           userId = gon.user_id;
        
 
-          $('.mobile-thing'+taskId).addClass("recording");
+          $('.well-task'+taskId).addClass("recording");
 
 
           $('.clock').show();
@@ -2671,7 +2671,7 @@ $(document.body).on('click', '.stop-clock-button', function(e){
       // $('#hours').text(0);
       // $('#seconds').text(0);
 
-      $('.mobile-thing'+taskId).removeClass("recording")
+      $('.well-task'+taskId).removeClass("recording")
 
       // item.parent().parent().parent().removeClass("active");
 
@@ -2749,7 +2749,7 @@ $(document.body).on('click', '.stop-clock-button', function(e){
         console.log(data);
         $('.mobile-thing'+taskId).val(data.id);
         // console.log("time record "+ data.id)
-        $('.mobile-task:not(.recording)').fadeOut();
+        $('.well-task-container:not(.recording)').fadeOut();
         // $('.tpanel:not(.recording)').fadeOut();
         // $('.editButton.recording').fadeOut();
         // toggleNewTaskMenuItem(0);
