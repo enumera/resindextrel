@@ -17,6 +17,8 @@ class GoalsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @goals, root: false }
+      format.mobile { render json: @goals, root: false }
+
     end
   end
 

@@ -1,9 +1,10 @@
-<% if current_user %>
+
 
 <div class="row" id="add-task" style="display:none;">
   <div class ="col-xs-8">
     <div class="input-group">
       <input type="hidden" id="projectShown">
+       <input type="hidden" id="goalShown">
         <input type="text" class="form-control mobile-task-name" placeholder="New Job">
         <span class="input-group-btn">
           <button class="btn btn-default mobile-add" type="button">Add</button>
@@ -31,13 +32,9 @@
   </div>
 </div>
 
-
-
-
-
 <hr></hr>
 <button class="btn btn-success mobile-projects">Projects</button>
-<button class="btn btn-success mobile-jobs">All Jobs</button>
+<button class="btn btn-success mobile-goals" style="display:none;">Goals</button>
 <hr></hr>
 
 <div>
@@ -54,8 +51,3 @@
   </div>
  </div>
 
-<% else %>
-
-  <%= render "landing" %>
-
-<% end %>

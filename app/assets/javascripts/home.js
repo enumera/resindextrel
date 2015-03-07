@@ -1940,7 +1940,7 @@ var addProject = function(){
 
   var createGoals = function(goalName){
     createFirstGoal(goalName, 0);
-    createFirstGoal("Unassigned", 1);
+    createFirstGoal("unassigned", 1);
   };
 
 
@@ -2379,6 +2379,8 @@ $('#comments-panel').hide();
       data_mt = {};
       data_mt["card_name"] = $('.mobile-task-name').val();
       data_mt["project_id"] = $('#projectShown').val();
+      data_mt["goal_id"] = $('#goalShown').val();
+
 
       console.log(data_mt);
 
@@ -2460,13 +2462,13 @@ $('#comments-panel').hide();
 
             if(task.completed ==true){
 
-              taskItem = '<div class= "well well-lg mobile-task mobile-thing'+task.id+'"><a href="#" class="mobile-link" style="text-decoration:line-through" value='+task.id+'>' + task.card_name + '</a><span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span><button class="btn btn-sm pull-right mobile-complete" value='+task.id+'><span class="glyphicon glyphicon-remove"></span></button></div>';
+              taskItem = '<div class= "well well-lg mobile-task mobile-thing'+task.id+'"><a href="#" class="mobile-link" style="text-decoration:line-through" value='+task.id+'>' + task.card_name + '</a><span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span></div><div><button class="btn btn-sm pull-right mobile-complete" value='+task.id+'><span class="glyphicon glyphicon-remove"></span></button></div>';
 
               mobileListCompleted.append(taskItem);
 
             }else{
 
-          taskItem = '<div class= "well well-lg mobile-task mobile-thing'+task.id+'"><a href="#" class="mobile-link" value='+task.id+'>' + task.card_name + '</a><span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span><button class="btn btn-sm pull-right recordButton" value='+task.id+'><span class="glyphicon glyphicon-time"></span></button><button class="btn btn-sm pull-right mobile-completed" value='+task.id+'><span class="glyphicon glyphicon-ok"></span></button></div>';
+          taskItem = '<div><div class= "well well-lg mobile-task mobile-thing'+task.id+'"><a href="#" class="mobile-link" value='+task.id+'>' + task.card_name + '</a><span class="pull-right">Hours : '+effortHours+' Minutes : '+newEffortMins+' </span></div><div><button class="btn btn-sm pull-right recordButton" value='+task.id+'><span class="glyphicon glyphicon-time"></span></div><div></button><button class="btn btn-sm pull-right mobile-completed" value='+task.id+'><span class="glyphicon glyphicon-ok"></span></button></div></div>';
 
           mobileList.append(taskItem);
         };
@@ -2518,11 +2520,14 @@ $('#comments-panel').hide();
 
 
   
-    $(document.body).on("click", ".mobile-jobs", function(){
+    $(document.body).on("click", ".mobile-goals", function(){
       // alert("woooow!")
-      tasksUrl = "/users/"+gon.user_id +"/tasks";
-      showMobileTasks(tasksUrl);
+     var  projectId = $('#projectShown').val();
+     var goalsUrl = "/projects/"+projectId +"/goals";
+      showMobileGoals(goalsUrl);
+      // showMobileTasks(tasksUrl);
       hideMobileNewTask();
+      $('.mobile-goal').fadeOut();
       $('#add-project').fadeOut();
     });
   
@@ -2816,7 +2821,7 @@ $(document.body).on('click', '.stop-clock-button', function(e){
 
 ////---------create project----------/////
 
-
+$(document.body).on("click", ".mobile-add-project", function(){
 
   var mobileListCompleted = $('#mobile-list-completed');
 
@@ -2824,7 +2829,7 @@ $(document.body).on('click', '.stop-clock-button', function(e){
 
   $('#mobile-task-details').html('');
 
-$(document.body).on("click", ".mobile-add-project", function(){
+// $(document.body).on("click", ".mobile-add-project", function(){
 
   var project_data ={};
 
@@ -2843,13 +2848,11 @@ $(document.body).on("click", ".mobile-add-project", function(){
 
 });
 
+//----------Show the list of projects--------////
 
 $(document.body).on('click', '.mobile-projects', function(){
-
   showProjects();
 });
-
-
 
 var showProjects = function(){
 var projectItem;
@@ -2860,7 +2863,6 @@ $('#add-project').fadeIn();
   mobileListCompleted.html("");
 
   $('#mobile-task-details').html('');
-
 
   $.ajax({
 
@@ -2878,30 +2880,88 @@ $('#add-project').fadeIn();
       $('#mobile-list').append(projectItem);
     });
   });
-
-
 };
+///---------end of show projects--------///
+
+////------show goals ----////
+var showMobileGoals = function(goalsUrl){
+var goalItem;
+var mobileListCompleted = $('#mobile-list-completed');
+
+// $('#add-project').fadeIn();
+
+  mobileListCompleted.html("");
+
+  $('#mobile-task-details').html('');
+
+  $.ajax({
+
+    url: goalsUrl,
+    method: "GET",
+    dataType: "json"
+  }).success(function(data){
+    console.log(data);
+     $('#mobile-list').html('');
+     $('#mobile-list-completed').html('');
+    $.each(data, function(i, goal){
+      
+      goalItem = '<a href="#" class="mobile-goal-link" value='+goal.id+'><div class="well well-lg mobile-goal" >'+goal.name+'</div></a>';
+
+      $('#mobile-list').append(goalItem);
+    });
+  });
+};
+
+//Listener to show the task associated with this project.
+
 
 $(document.body).on('click', '.mobile-project-link', function(){
   // console.log($(this).attr("value"));
   var projectId = $(this).attr("value");
+    $("#add-project").fadeOut();
     showMobileNewTask();
     $('#projectShown').attr("value", projectId)
 
-
-
-  tasksUrl = "/mobile_projects?projectId="+projectId;
+  // tasksUrl = "/mobile_projects?projectId="+projectId;
+  var goalsUrl = "/projects/"+ projectId + "/goals"
 
   $("#add-project").fadeOut();
 
+  showMobileGoals(goalsUrl);
 
-
-  showMobileTasks(tasksUrl);
+  // showMobileTasks(tasksUrl);
 });
 
 
-    // hideMobileNewTask();
+$(document.body).on('click', '.mobile-goal-link', function(){
+  
+  var goalId = $(this).attr("value");
+  // var goalname = $(this).children().text();
+  // console.log(goalname);
+    showMobileNewTask();
+    $('#goalShown').attr("value", goalId);
+    $('.mobile-goals').attr("value", goalId);
+    // $('.mobile-goals').text()
+    $('.mobile-goals').fadeIn();
 
+   tasksUrl = "/mobile_projects?goalId="+goalId;
+  // var goalsUrl = "/projects/"+ projectId + "/goals"
+
+  $("#add-project").fadeOut();
+
+  showMobileTasks(tasksUrl);
+
+  // showMobileTasks(tasksUrl);
+});
+
+
+var mobileInitialize = function(){
+
+  showProjects();
+}
+
+    // hideMobileNewTask();
+mobileInitialize();
 
 }////--------------end of mobile----------------//////////
   /////-------------------end of main--------------//////////////////

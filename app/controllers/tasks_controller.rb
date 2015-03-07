@@ -69,12 +69,12 @@ class TasksController < ApplicationController
     @project = Project.find(params[:task][:project_id])
 
         # binding.pry
-    if !mobile?
+    # if !mobile?
       @goal = Goal.find(params[:task][:goal_id])
       # @project = Project.find(params[:task][:project_id])
-    else
-        @goal = @project.goals.where(name: "unassigned")
-    end
+    # else
+    #     @goal = @project.goals.where(name: "unassigned")
+    # end
     # @project = Project.find(params[:task][:project_id])
     @task.resindex = @task.calculate_resindex(@task, @user)
     @task.effort = 0.0
@@ -90,17 +90,17 @@ class TasksController < ApplicationController
           @user.tasks << @task
           @project.tasks << @task
 
-        if mobile?
-          @goal[0].tasks << @task
-          # @project.tasks << @task
-          goal_tasks = @goal[0].tasks.length
-          @goal[0].update_attributes(no_of_tasks: goal_tasks)
-          # format.html { redirect_to user_task_path(@user, @task), notice: 'Task was successfully created.' }
-        else
+        # if mobile?
+        #   @goal[0].tasks << @task
+        #   # @project.tasks << @task
+        #   goal_tasks = @goal[0].tasks.length
+        #   @goal[0].update_attributes(no_of_tasks: goal_tasks)
+        #   # format.html { redirect_to user_task_path(@user, @task), notice: 'Task was successfully created.' }
+        # else
           @goal.tasks << @task
           goal_tasks = @goal.tasks.length
           @goal.update_attributes(no_of_tasks: goal_tasks)
-        end
+        # end
 
           comment_text = "New task created with Resindex set from to #{@task.resindex}. <p><sub>By #{@user.first_name} on #{Time.now}.</sub></p>"
 
@@ -358,8 +358,8 @@ class TasksController < ApplicationController
 
   def mobile_projects
 
-        @user = current_user
-        @tasks = @user.tasks.where(project_id: params[:projectId])
+    @user = current_user
+    @tasks = @user.tasks.where(goal_id: params[:goalId])
 
     # binding.pry
     respond_to do |format|
