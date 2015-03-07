@@ -594,13 +594,16 @@ $(document.body).on('click', '.add_item_button', function(){
 
  var showProject = function(project_id, goal_id){
   // console.log("in showproject");
-  var menuItems = $("#menu-container");
+  // var menuItems = $("#menu-container");
+  var projectMenuItems = $("#project-list-container");
+  var goalMenuItems = $("#goals-list-container");
   var projectItem;
   var goalItem;
 
-  menuItems.html('');
+  projectMenuItems.html('');
+  goalMenuItems.html('');
   
-  menuItems.append('<div class="well well-lg" id="project-button"><h4>Projects</h4></div>');
+  projectMenuItems.append('<p>Projects</p><hr></hr>');
 
   var projectPath = "users/"+gon.user_id+"/projects/"+ project_id;
 
@@ -611,8 +614,8 @@ $(document.body).on('click', '.add_item_button', function(){
    var project = data.project;
 
     projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Goal</button><div class="well well-lg projects selectedProject" id=' + project.id + '>' + project.name + '<span class ="pull-right badge goals-left"> Goals : ' + project.no_of_goals + '</span></div></div>';
-      menuItems.append(projectItem);
-      menuItems.append('<p>Goals</p><hr></hr>');
+      projectMenuItems.append(projectItem);
+      goalMenuItems.append('<p>Goals</p><hr></hr>');
     var goals = data.project.goals;
     // console.log(goals);
 
@@ -622,7 +625,7 @@ $(document.body).on('click', '.add_item_button', function(){
       }else{
           goalItem = '<div class="well well-lg goals project' + goal.project_id + ' " id=' + goal.id + ' style="display:none"> ' + goal.name + '<span class ="pull-right badge tasks-left"> Jobs open: ' + goal.no_of_tasks + '</span></div>';
       };
-          menuItems.append(goalItem);
+          goalMenuItems.append(goalItem);
     });
 
       // menuItems.append(projectItem);
@@ -1005,6 +1008,7 @@ var validateTaskFormAfterError = function(changeItem){
           $('.projectSel').val('');
           $('.goalSel').val('');
           createProjectList(0);
+          $('#goals-list-container').html('')
           taskInputReset();
         };
       });
@@ -1017,7 +1021,7 @@ var validateTaskFormAfterError = function(changeItem){
 
           // $('#project-button').fadeOut(500);
 
-            var menuItems = $("#menu-container");
+            var menuItems = $("#project-list-container");
             var projectOptions = $("#project-select");
             var goalOptions = $("#goal-select");
             var projectOption;
@@ -1027,8 +1031,10 @@ var validateTaskFormAfterError = function(changeItem){
             projectOptions.html('');
             goalOptions.html('');
 
+              menuItems.append('<p>Projects</p><hr></hr>');
+
             projectInitialOption = '<option value="none">Select prize</option>';
-            menuItems.append('<div class="well well-lg" id="project-button"><h4>Projects</h4></div>');
+            // menuItems.append('<div class="well well-lg" id="project-button"><h4>Projects</h4></div>');
 
             goalInitialOption = '<option value="none">Select a project first</option>';
 
@@ -1115,10 +1121,14 @@ var validateTaskFormAfterError = function(changeItem){
 //this function creates the goal list in the Control frame.
 
       var createGoalsList = function(projectID){
+        console.log("In goalslist")
+        console.log(projectID)
         var x;
         // console.log("in createGoalsList")
 
-        var menuItems = $('#menu-container');
+        var menuItems = $('#goals-list-container');
+        menuItems.html('');
+
 
         if($('.goals').length==0){
 
@@ -2007,12 +2017,19 @@ var addGoal = function(){
 
           dialogGoal.dialog("close");
           $('#goal-name').val('');
+          // $('#menu-container').html('');
+        if($('.project'+project_id).length==0){
+          console.log("in here");
+          console.log(project_id);
           var project_ids = [];
+          
           project_ids.push(project_id);
+      
           showProjects(project_ids);
           createGoalsList(project_id);
-
-
+        }else{
+          createGoalsList(project_id);
+        };
       });
     };
   };
@@ -2161,7 +2178,7 @@ $('#menu-new-project').click(function(e){
 
 // createTaskRecord();
 // clock();
-createProjectList(1);
+// createProjectList(1);
 $('#comments-panel').hide();
 
     $('#trello_search').click(function(e){
@@ -2344,7 +2361,7 @@ $('#comments-panel').hide();
       });
     };
   }else{
-    //////--------------------mobile function------------------//////
+    //////--------------------mobile functionality------------------//////
 
     ////////----------------Add new task on Mobile------------/////
  
@@ -2891,7 +2908,7 @@ $(document.body).on('click', '.mobile-project-link', function(){
 
 };
 $(document).ready(function(){
- debugger; 
+ // debugger; 
 if(gon.user_id >= 1){
 
   main();
