@@ -10,14 +10,14 @@ User.create(first_name: "Andrew", family_name: "Fyfe", trello:"AndrewFyfe1", pas
 
 # # Goal.create(name: "First")
 
-# CommentType.create(name: "comment", comment_switch: "user")
-# CommentType.create(name: "action", comment_switch: "user")
-# CommentType.create(name: "issue", comment_switch: "user")
-# CommentType.create(name: "risk", comment_switch: "user")
-# CommentType.create(name: "decision", comment_switch: "user")
-# CommentType.create(name: "effort", comment_switch: "system")
-# CommentType.create(name: "edit", comment_switch: "user")
-# CommentType.create(name: "resindex_change", comment_switch: "system")
+CommentType.create(name: "comment", comment_switch: "user")
+CommentType.create(name: "action", comment_switch: "user")
+CommentType.create(name: "issue", comment_switch: "user")
+CommentType.create(name: "risk", comment_switch: "user")
+CommentType.create(name: "decision", comment_switch: "user")
+CommentType.create(name: "effort", comment_switch: "system")
+CommentType.create(name: "edit", comment_switch: "user")
+CommentType.create(name: "resindex_change", comment_switch: "system")
 
 # Importance.destroy_all
 # Difficulty.destroy_all
