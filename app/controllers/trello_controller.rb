@@ -20,9 +20,18 @@ class TrelloController < ApplicationController
   # This will be make a request to the request_token_path passed into
   # the consumer. The application ID and secret will be passed in as
   # parameters and  the response will ba a request token object with a secret key.
-    request_token = consumer.get_request_token(oauth_callback: "http://resindex.herokuapp.com/trello/callback")
+    # request_token = consumer.get_request_token(oauth_callback: "http://resindex.herokuapp.com/trello/callback")
+
+    request_token = consumer.get_request_token(oauth_callback: "http://localhost:3000/trello/callback")
+
+    #include for production
 
   # request_token = consumer.get_request_token(oauth_callback: "https://resindex.herokuapp.com/trello/callback")
+
+  # request_token = consumer.get_request_token(oauth_callback: "https://resindex.herokuapp.com/trello/callback")
+
+
+
 
   # Store the request_token in the session, you'll need this during
   # the callback.
@@ -33,12 +42,16 @@ class TrelloController < ApplicationController
   # Redirect the user to the authorization url provided
   # by the request token.
 
-   read_write_url = make_read_write_authorize_url(request_token)
+  #include for production
 
-  binding.pry
+   # read_write_url = make_read_write_authorize_url(request_token)
 
-  # redirect_to request_token.authorize_url
-  redirect_to read_write_url
+  # binding.pry
+
+  redirect_to request_token.authorize_url
+
+  #include for production
+  # redirect_to read_write_url
 
   end
 
@@ -102,14 +115,22 @@ class TrelloController < ApplicationController
     # url_lists = "#{trello_api_uri}/lists?key=#{app_key}&token=#{trello_token}"
     # binding.pry
     # html = HTTParty.get(url)
-    
+      list_url = "https://api.trello.com/1/lists/"    
 
     html2 = HTTParty.get(url2)
     cards = HTTParty.get(url_cards)
     projects = HTTParty.get(url_projects)
     organisations = HTTParty.get(url_organisations)
+
+ 
+
+
   
   # binding.pry
+
+  doing_goal = "doing"
+
+  trello_goal_name = []
 
   new_project = ""
     # (0..cards.length-1).each do |x|
@@ -120,7 +141,22 @@ class TrelloController < ApplicationController
       list_id = cards[x]["idList"]
       board_id = cards[x]["idBoard"]
 
+#this needs to be DRYed up significantly to make the process faster
+
+# binding.pry
       found_project = false
+
+        list_to_find = "#{list_url}#{list_id}/name?key=#{app_key}&token=#{trello_token}"
+          list_return = HTTParty.get(list_to_find)
+          goal_name = list_return["_value"]
+# binding.pry
+      if goal_name.upcase == doing_goal.upcase
+          goal_is_doing = true
+      else
+          goal_is_false = false
+      end
+    if goal_is_doing
+      # search for the goal first and assess whether it exists or not
 
       if Goal.where(project_list_id: list_id).exists? 
           
@@ -132,6 +168,9 @@ class TrelloController < ApplicationController
 
       else
           
+# Search through each project until and check if the project exists if
+# it does then the project is found otherwise create it.
+
           (0..projects.length-1).each do |x|
             if found_project == true
               break
@@ -147,6 +186,7 @@ class TrelloController < ApplicationController
             end
           end
 
+# Once the project is created or found then use it to store the a newly created goal.
 
           project = Project.where(trello_project_id: board_id)
           list_to_find = "#{list_url}#{list_id}/name?key=#{app_key}&token=#{trello_token}"
@@ -157,9 +197,12 @@ class TrelloController < ApplicationController
           project[0].goals << new_goal
           # binding.pry
       end
-
+    end
       # binding.pry
 
+      # If the task is not found then create the task allocate it to the user, project and goal.
+
+      if goal_is_doing
         if !Task.where(card_id: cards[x]["id"]).exists?
           user = current_user
           goal = Goal.where(project_list_id: list_id)
@@ -170,6 +213,8 @@ class TrelloController < ApplicationController
           goal[0].tasks << new_task
 
         else
+
+        #if tasks exists allocate it to the usrr.
 
           user = current_user
 
@@ -201,8 +246,8 @@ class TrelloController < ApplicationController
           end
         end
       end
-
-      
+    end
+    #update the counts on prjects, goals and tasks
   projects_to_load = current_user.projects
 
   projects_to_load.each do |project_id|
