@@ -146,16 +146,21 @@ class TrelloController < ApplicationController
 # binding.pry
       found_project = false
 
-        list_to_find = "#{list_url}#{list_id}/name?key=#{app_key}&token=#{trello_token}"
-          list_return = HTTParty.get(list_to_find)
-          goal_name = list_return["_value"]
-# binding.pry
-      if goal_name.upcase == doing_goal.upcase
-          goal_is_doing = true
-      else
-          goal_is_false = false
-      end
-    if goal_is_doing
+#this is the start of the goal name code
+
+#         list_to_find = "#{list_url}#{list_id}/name?key=#{app_key}&token=#{trello_token}"
+#           list_return = HTTParty.get(list_to_find)
+#           goal_name = list_return["_value"]
+# # binding.pry
+#       if goal_name.upcase == doing_goal.upcase
+#           goal_is_doing = true
+#       else
+#           goal_is_false = false
+#       end
+
+#end of the goal name code
+
+    # if goal_is_doing
       # search for the goal first and assess whether it exists or not
 
       if Goal.where(project_list_id: list_id).exists? 
@@ -196,13 +201,13 @@ class TrelloController < ApplicationController
           # binding.pry
           project[0].goals << new_goal
           # binding.pry
-      end
+      # end - end of the goal_name_doing conditional
     end
       # binding.pry
 
       # If the task is not found then create the task allocate it to the user, project and goal.
 
-      if goal_is_doing
+      # if goal_is_doing - start of new goal_is_doing
         if !Task.where(card_id: cards[x]["id"]).exists?
           user = current_user
           goal = Goal.where(project_list_id: list_id)
@@ -246,7 +251,7 @@ class TrelloController < ApplicationController
           end
         end
       end
-    end
+    # end - end of goal_is_doing 
     #update the counts on prjects, goals and tasks
   projects_to_load = current_user.projects
 
