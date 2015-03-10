@@ -58,7 +58,8 @@
        <% if current_user %> 
           <ul class="nav navbar-nav navbar-right">
              <li id="personal-header">
-         
+          
+          
               <span id="user_projects" class="btn btn-xs btn-warning"></span><span id="user_goals" class="btn btn-xs btn-info"></span><span id="user_tasks" class="btn btn-xs btn-success"></span><span id="gravatar">  <%=image_tag avatar_url(current_user)%></span><span><%=current_user.first_name%></span></li>
     
               <li class="dropdown">
