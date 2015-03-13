@@ -103,7 +103,7 @@ var main = function(){
     // alert("Not a mobile")
 
     var moveNewTaskPanelOut = function(){
-         $('#input-panel').animate({top: "-1200px", left: "600px"}, 500); 
+         $('#input-panel').animate({top: "-1300px", left: "600px"}, 500); 
     };
 
 

@@ -2,6 +2,14 @@ body{
   overflow: hidden;
 }
 
+#control-panel{
+  height: 550px;
+}
+
+#goal-list-container,
+#project-list-container{
+  overflow: scroll;
+}
 
 #resindex-wrapper2{
      border-color: 2px solid blue;
@@ -160,7 +168,8 @@ hr{
 
 #input-panel{
 position: relative;
-top: -1200px;
+overflow: scroll;
+top: -1300px;
 left: 600px;
 
 
