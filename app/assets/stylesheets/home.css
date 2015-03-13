@@ -1,3 +1,8 @@
+body{
+  overflow: hidden;
+}
+
+
 #resindex-wrapper2{
      border-color: 2px solid blue;
      display: inline-block;
@@ -40,6 +45,8 @@ color: rgb(135, 145, 145);
   height: 500px;
   overflow: auto;
 }
+
+
 
 #heat-map-container{
    height: 500px;
@@ -152,7 +159,9 @@ hr{
 }
 
 #input-panel{
-  margin-left: 10px;
+position: relative;
+top: -1200px;
+left: 600px;
 
 
 }

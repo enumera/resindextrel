@@ -1,5 +1,5 @@
 <% if !mobile? || ipad? %>
-<div class="panel panel-default col-md-5" id="input-panel" style="display:none;">
+<div class="panel panel-default col-md-5" id="input-panel" style="position:relative;">
         <div class="panel-heading">
           <div class="panel-title">
             <i class="glyphicon glyphicon-wrench pull-right"></i>
@@ -108,6 +108,10 @@
               </button>
                <button class="btn btn-warning" id="refresh">
                     Clear
+              </button>
+
+              <button class="btn btn-danger" id="cancel">
+                Cancel
               </button>
             </div>
           </div>   
