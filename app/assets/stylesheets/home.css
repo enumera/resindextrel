@@ -40,6 +40,7 @@ color: rgb(119, 119, 119);
 color: rgb(135, 145, 145);
 }
 
+
 #control-panel .panel-body,
 #checklist-panel .panel-body,
 #task-panel .panel-body,
@@ -48,6 +49,10 @@ color: rgb(135, 145, 145);
   overflow: auto;
 }
 
+#input-panel .panel-body{
+
+  overflow: auto;
+}
 
 
 #heat-map-container{
@@ -165,7 +170,6 @@ position: relative;
 overflow: scroll;
 top: -1300px;
 left: 450px;
-
 
 }
 
