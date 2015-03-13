@@ -167,7 +167,6 @@ hr{
 
 #input-panel{
 position: relative;
-overflow: scroll;
 top: -1300px;
 left: 450px;
 
@@ -278,6 +277,11 @@ background-color: red;
 }
 #task_description{
   margin-bottom: 10px;
+
+}
+
+#task_description .form-control{
+  height: 50px;
 }
 
 #submit-button-group{
