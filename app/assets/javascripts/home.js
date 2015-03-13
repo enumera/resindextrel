@@ -31,10 +31,87 @@ var main = function(){
   var incompleteTasks;
   var difficulties;
   var importances;
+  var projects = [];
+
+  var createProjectList = function(menuOrOptions){
+        // console.log("in create project list")
+
+        // $.getJSON("users/"+ gon.user_id +"/projects", function(data){
+
+          // $('#project-button').fadeOut(500);
+
+            var menuItems = $("#project-list-container");
+            var projectOptions = $("#project-select");
+            var goalOptions = $("#goal-select");
+            var projectOption;
+            var projectItem;
+            var projectInitialOption;
+            menuItems.html('');
+            projectOptions.html('');
+            goalOptions.html('');
+            if(menuOrOptions == 0){
+              menuItems.append('<p>Projects</p><hr></hr>');
+            };
+
+            projectInitialOption = '<option value="none">Select prize</option>';
+            // menuItems.append('<div class="well well-lg" id="project-button"><h4>Projects</h4></div>');
+
+            goalInitialOption = '<option value="none">Select a project first</option>';
+
+            projectOptions.append(projectInitialOption);
+            goalOptions.append(goalInitialOption);
+
+            $.each(projects, function(i, project){
+              if(menuOrOptions == 0){
+                // console.log(project.no_of_goals)
+
+                if(project.no_of_goals === null){
+                  x = 0;
+                }else{
+                  x = project.no_of_goals;
+                };
+
+              projectItem = '<button class="btn-warning btn-xs pull-right new-goal" value='+ project.id +'>New Goal</button><div class="well well-lg projects" id=' + project.id + '>' + project.name + '<span class ="pull-right badge goals-left"> Goals :' + x + '</span></div></div>';
+              
+              projectOption = '<option value='+project.id+ '>'+ project.name +'</option>'
+              menuItems.append(projectItem);
+              projectOptions.append(projectOption);
+            }else{
+              projectOption = '<option value='+project.id+ '>'+ project.name +'</option>';
+              projectOptions.append(projectOption);
+            };
+            });
+           ;
+        // });
+      };
+
+
+
+  var getProjects = function(){
+    $.getJSON("users/"+ gon.user_id +"/projects", function(data){
+      projects = data;
+   
+    }).success(function(){
+       createProjectList(1);
+    });
+  }
+
+  // getProjects();
+  // createProjectList(1);
 
   if(gon.mobile === 0){
     // alert("Not a mobile")
-  
+
+    var moveNewTaskPanelOut = function(){
+         $('#input-panel').animate({top: "-1200px", left: "600px"}, 500); 
+    };
+
+
+    $(document.body).on("click", "#cancel", function(e){
+      moveNewTaskPanelOut();
+
+    });
+
 
    var showDifficulties = function(taskId, difficultyOptions){
     console.log("Loading difficulties");
@@ -926,6 +1003,7 @@ var validateTaskFormAfterError = function(changeItem){
         data['project_id'] = $('#project-select option:selected').val();
         data['card_name'] = $('#task_title').val();
         data['card_description'] = $('#task_description').val();
+        moveNewTaskPanelOut();
       };
  
 
@@ -1017,7 +1095,7 @@ var validateTaskFormAfterError = function(changeItem){
       var createProjectList = function(menuOrOptions){
         // console.log("in create project list")
 
-        $.getJSON("users/"+ gon.user_id +"/projects", function(data){
+        // $.getJSON("users/"+ gon.user_id +"/projects", function(data){
 
           // $('#project-button').fadeOut(500);
 
@@ -1041,7 +1119,7 @@ var validateTaskFormAfterError = function(changeItem){
             projectOptions.append(projectInitialOption);
             goalOptions.append(goalInitialOption);
 
-            $.each(data, function(i, project){
+            $.each(projects, function(i, project){
               if(menuOrOptions == 0){
                 // console.log(project.no_of_goals)
 
@@ -1062,7 +1140,7 @@ var validateTaskFormAfterError = function(changeItem){
             };
             });
            ;
-        });
+        // });
       };
   
     $(document.body).on('click', '.completed', function(e){
@@ -2360,6 +2438,8 @@ $('#comments-panel').hide();
         console.log(data);
       });
     };
+
+    getProjects();
   }else{
     //////--------------------mobile functionality------------------//////
 
@@ -2972,6 +3052,7 @@ $(document).ready(function(){
 if(gon.user_id >= 1){
 
   main();
+
 }
     // showImportances(-1, importances);
 });
