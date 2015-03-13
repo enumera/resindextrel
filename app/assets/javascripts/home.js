@@ -863,7 +863,7 @@ var resindexColour = function(taskId, resindex){
 
       // $('#comments-panel').animate({bottom: "-200px"}, 500).fadeOut();
 
-      $('#input-panel').animate({top: "-600px", left: "600px"}, 500).fadeIn();
+      $('#input-panel').animate({top: "-600px", left: "550px"}, 500).fadeIn();
 
   });
 
