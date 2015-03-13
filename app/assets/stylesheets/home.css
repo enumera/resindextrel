@@ -2,14 +2,7 @@ body{
   overflow: hidden;
 }
 
-#control-panel{
-  height: 550px;
-}
 
-#goal-list-container,
-#project-list-container{
-  overflow: scroll;
-}
 
 #resindex-wrapper2{
      border-color: 2px solid blue;
@@ -47,6 +40,7 @@ color: rgb(119, 119, 119);
 color: rgb(135, 145, 145);
 }
 
+#control-panel .panel-body,
 #checklist-panel .panel-body,
 #task-panel .panel-body,
 #comments-panel .panel-body{
@@ -170,7 +164,7 @@ hr{
 position: relative;
 overflow: scroll;
 top: -1300px;
-left: 550px;
+left: 500px;
 
 
 }
@@ -223,7 +217,7 @@ margin-bottom: 10px;
 
 }
 #project-button{
-  background-color: #dff0d8;
+  background-color: #9abc32;
 
   border-radius: 10px;
   margin-bottom: 20px;

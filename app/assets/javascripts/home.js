@@ -93,6 +93,7 @@ var main = function(){
    
     }).success(function(){
        createProjectList(1);
+       createProjectList(0);
     });
   }
 
@@ -103,7 +104,7 @@ var main = function(){
     // alert("Not a mobile")
 
     var moveNewTaskPanelOut = function(){
-         $('#input-panel').animate({top: "-1300px", left: "600px"}, 500); 
+         $('#input-panel').animate({top: "-1300px", left: "550px"}, 500); 
     };
 
 
