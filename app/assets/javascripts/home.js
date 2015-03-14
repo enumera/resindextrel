@@ -380,6 +380,8 @@ var main = function(){
                 $('#completed' + task.id).text("Reopen");
                 $('#completed' + task.id).addClass("done");
                 $('.recordButton[value='+task.id+']').fadeOut();
+                $('.tpanel[value='+ task.id+']').addClass('completed');
+                
               };
               if (task.resindex == 0 || task.resindex == 999 || task.resindex == null){
                 showImportances(task.id, importances);
@@ -2259,6 +2261,24 @@ $('#menu-new-project').click(function(e){
 // clock();
 // createProjectList(1);
 $('#comments-panel').hide();
+  
+    $(document.body).on('click', '#hide_completed', function(e){
+
+      e.preventDefault()
+      if(!$('#hide_completed').hasClass('hiding')){
+      $('.completed').hide();
+      $('#hide_completed').addClass('hiding');
+      $('#hide_completed').text("Show Completed");
+       $('#hide_completed').removeClass('btn-info');
+      $('#hide_completed').addClass('btn-danger')
+    }else{
+       $('.completed').show();
+      $('#hide_completed').removeClass('hiding');
+      $('#hide_completed').text("Hide Completed");
+       $('#hide_completed').removeClass('btn-danger');
+      $('#hide_completed').addClass('btn-info');
+    }
+  })
 
     $('#trello_search').click(function(e){
       e.preventDefault();
