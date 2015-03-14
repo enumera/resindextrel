@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
 
     Difficulty.create(name:"Easy-done it before", difficulty_ref: 1, difficulty_value: 1, user_id: self.id, name_status: "active" )
     Difficulty.create(name:"Something slightly different", difficulty_ref: 2, difficulty_value: 2, user_id: self.id, name_status: "active" )
-    Difficulty.create(name:"Tricky", difficulty_ref: 3, difficulty_value: 3, user_id: 1, name_status: "active" )
+    Difficulty.create(name:"Tricky", difficulty_ref: 3, difficulty_value: 3, user_id: self.id, name_status: "active" )
     Difficulty.create(name:"Really difficult", difficulty_ref: 4, difficulty_value: 4, user_id: self.id, name_status: "active" )
     Difficulty.create(name:"Mission Impossible!", difficulty_ref: 5, difficulty_value: 5, user_id: self.id, name_status: "active" )
 
