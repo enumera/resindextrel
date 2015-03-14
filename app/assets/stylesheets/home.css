@@ -316,6 +316,7 @@ background-color: red;
 textarea.form-control{
   height: 100px;
 }
+#hide_completed,
 #non_trello_search,
 #trello_search{
   margin-left: 10px;

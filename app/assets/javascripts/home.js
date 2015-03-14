@@ -381,7 +381,7 @@ var main = function(){
                 $('#completed' + task.id).addClass("done");
                 $('.recordButton[value='+task.id+']').fadeOut();
                 $('.tpanel[value='+ task.id+']').addClass('completed');
-                
+
               };
               if (task.resindex == 0 || task.resindex == 999 || task.resindex == null){
                 showImportances(task.id, importances);
@@ -2012,7 +2012,9 @@ var addProject = function(){
           // dataType: "json"
     }).success(function(){
        // createFirstGoal(goalName);
+
        createGoals(goalName);
+       getProjects();
 
     });
       // setTimeout(function(){createFirstGoal(goalName)},1000);
@@ -2035,6 +2037,8 @@ var addProject = function(){
       // var goal_data = {};
 
       project_id = data.id
+
+      // projects << data
 
       data_goal["project_id"] = data.id;
   
@@ -2061,6 +2065,7 @@ var addProject = function(){
           dialog.dialog("close");
           $('#project-name').val('');
           $('#first-goal-name').val('');
+          
         };
       });
     });
