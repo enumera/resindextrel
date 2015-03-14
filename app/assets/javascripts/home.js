@@ -107,6 +107,11 @@ var main = function(){
          $('#input-panel').animate({top: "-1300px", left: "450px"}, 500); 
     };
 
+    var moveNewTaskPanelIn = function(){
+     $('#input-panel').animate({top: "-600px", left: "450px"}, 500).fadeIn();
+
+    };
+
 
     $(document.body).on("click", "#cancel", function(e){
       moveNewTaskPanelOut();
@@ -866,7 +871,8 @@ var resindexColour = function(taskId, resindex){
 
       // $('#comments-panel').animate({bottom: "-200px"}, 500).fadeOut();
 
-      $('#input-panel').animate({top: "-600px", left: "450px"}, 500).fadeIn();
+      // $('#input-panel').animate({top: "-600px", left: "450px"}, 500).fadeIn();
+      moveNewTaskPanelIn();
 
   });
 
@@ -1475,8 +1481,9 @@ var validateTaskFormAfterError = function(changeItem){
 
       //show task frame
 
-      $('#comments-panel').animate({bottom: "-200px"}, 1000).fadeOut();
-      $('#input-panel').animate({top: "0px"},1000).fadeIn();
+      // $('#comments-panel').animate({bottom: "-200px"}, 1000).fadeOut();
+      // $('#input-panel').animate({top: "0px"},1000).fadeIn();
+      moveNewTaskPanelIn();
     
       taskID = $this.parent().parent().attr("id");
       // console.log(data);
