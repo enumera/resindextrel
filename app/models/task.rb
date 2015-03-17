@@ -75,4 +75,50 @@ class Task < ActiveRecord::Base
 
   end
 
+def self.update_time_records(task, user)
+
+    @timerecords = TimeRecord.where(task_id: task.id, state: "toallocate")
+
+     if @timerecords.length != 0
+
+      before_res = task.resindex
+
+      minutes = @timerecords.map {|t| t.minutes}.reduce(:+)
+      hours = @timerecords.map {|t| t.hours}.reduce(:+)
+
+      if minutes==0 
+         task.effort += hours
+      else
+
+        task.effort += hours + (minutes.to_f/60).round(2)
+
+      end
+
+      update_tr = {}
+      update_tr["time_record"] = {}
+      update_tr["time_record"]["state"] = "closed"
+      # binding.pry
+      @timerecords.each do |tr|
+        tr.update_attributes(state: "closed")
+      end
+
+      task.resindex = task.calculate_resindex(task, user)
+
+      effort_update = {}
+      effort_update["effort_update"] = {}
+      effort_update["effort_update"]["effort"] = task.effort
+      effort_update["effort_update"]["resindex"] = task.resindex
+
+      after_res = task.resindex
+      task.update_attributes(effort_update[:effort_update])
+
+      comment_text = "Resindex changed from #{before_res} to #{after_res}. <p><sub>Work done of #{hours} hours and #{minutes} minutes by #{user.first_name} on #{Time.now}.</sub></p>"
+
+      Comment.create(task_id: task.id, comment_type_id: 6, user_id: user.id, ctext: comment_text, before_res: before_res, after_res: after_res)
+       # binding.pry
+    end
+  
+end
+
+
 end

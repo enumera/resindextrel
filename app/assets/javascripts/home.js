@@ -1651,7 +1651,7 @@ var validateTaskFormAfterError = function(changeItem){
 
         goalId = $('.goalSel').val();
 
-        createTaskRecord(goalId, 0, -1)
+        // createTaskRecord(goalId, 0, -1)
 
         // addNewComment(taskId, "effort");
         $('#menu-container').removeClass('frozen');
@@ -1714,11 +1714,10 @@ var validateTaskFormAfterError = function(changeItem){
 
       item.parent().parent().parent().removeClass("active");
 
-      item.text("Start work session");
+      // item.text("Start work session");
       record(userId, taskId, recordId, -2 );
       toggleNewTaskMenuItem(1);
-
-      stopClock();
+      // stopClock();
 
     };
 
@@ -1741,7 +1740,7 @@ var validateTaskFormAfterError = function(changeItem){
 
       }).success(function(data){
 
-        record(user_id, task_id, recordId, 0)
+        // record(user_id, task_id, recordId, 0)
         // console.log("completed!!");
          // resindexCards();
 
@@ -1799,12 +1798,15 @@ var validateTaskFormAfterError = function(changeItem){
       }else if(action === -2){
         $('.recordButton').fadeIn();
         updateTask(data_x.user_id, data_x.task_id);
-      }else{
-        // console.log("closed and updated")
-        refreshTasks();
+        setTimeout(function(){refreshTasks();
         showComments(taskId);
-        searchButtonCombinations("reset_afer_update");
-        stopClock();
+        searchButtonCombinations("reset_afer_update");}, 2000)
+      // }else{
+        // console.log("closed and updated")
+        // refreshTasks();
+        // showComments(taskId);
+        // searchButtonCombinations("reset_afer_update");
+        // stopClock();
       };
     });
   };

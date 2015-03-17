@@ -121,7 +121,10 @@ class TasksController < ApplicationController
     @user = current_user
     @task = Task.find(params[:id])
     initial_task = @task
-    @timerecords = TimeRecord.where(task_id: params[:id], state: "toallocate")
+
+
+
+    # @timerecords = TimeRecord.where(task_id: params[:id], state: "toallocate")
     before_change_res = @task.resindex
     # @goal = Goal.find(@task.goal_id)
     @project = Project.find(@task.project_id)
@@ -138,49 +141,50 @@ class TasksController < ApplicationController
 
     # binding.pry
 
-    if @timerecords.length != 0
+    # if @timerecords.length != 0
 
-      before_res = @task.resindex
+    #   before_res = @task.resindex
 
-      minutes = @timerecords.map {|t| t.minutes}.reduce(:+)
-      hours = @timerecords.map {|t| t.hours}.reduce(:+)
+    #   minutes = @timerecords.map {|t| t.minutes}.reduce(:+)
+    #   hours = @timerecords.map {|t| t.hours}.reduce(:+)
 
-      if minutes==0 
-         @task.effort += hours
-      else
+    #   if minutes==0 
+    #      @task.effort += hours
+    #   else
 
-        @task.effort += hours + (minutes.to_f/60).round(2)
+    #     @task.effort += hours + (minutes.to_f/60).round(2)
 
-      end
+    #   end
 
-      update_tr = {}
-      update_tr["time_record"] = {}
-      update_tr["time_record"]["state"] = "closed"
-      # binding.pry
-      @timerecords.each do |tr|
-        tr.update_attributes(state: "closed")
-      end
+    #   update_tr = {}
+    #   update_tr["time_record"] = {}
+    #   update_tr["time_record"]["state"] = "closed"
+    #   # binding.pry
+    #   @timerecords.each do |tr|
+    #     tr.update_attributes(state: "closed")
+    #   end
 
-      @task.resindex = @task.calculate_resindex(@task, @user)
+    #   @task.resindex = @task.calculate_resindex(@task, @user)
 
-      effort_update = {}
-      effort_update["effort_update"] = {}
-      effort_update["effort_update"]["effort"] = @task.effort
-      effort_update["effort_update"]["resindex"] = @task.resindex
+    #   effort_update = {}
+    #   effort_update["effort_update"] = {}
+    #   effort_update["effort_update"]["effort"] = @task.effort
+    #   effort_update["effort_update"]["resindex"] = @task.resindex
 
-      after_res = @task.resindex
-      @task.update_attributes(effort_update[:effort_update])
+    #   after_res = @task.resindex
+    #   @task.update_attributes(effort_update[:effort_update])
 
-      comment_text = "Resindex changed from #{before_res} to #{after_res}. <p><sub>Work done of #{hours} hours and #{minutes} minutes by #{@user.first_name} on #{Time.now}.</sub></p>"
+    #   comment_text = "Resindex changed from #{before_res} to #{after_res}. <p><sub>Work done of #{hours} hours and #{minutes} minutes by #{@user.first_name} on #{Time.now}.</sub></p>"
 
-      Comment.create(task_id: @task.id, comment_type_id: 6, user_id: @user.id, ctext: comment_text, before_res: before_res, after_res: after_res)
-       # binding.pry
-    end
+    #   Comment.create(task_id: @task.id, comment_type_id: 6, user_id: @user.id, ctext: comment_text, before_res: before_res, after_res: after_res)
+    #    # binding.pry
+    # end
 
 
 
     respond_to do |format|
       if @task.update_attributes(params[:task])
+        Task.update_time_records(@task, @user)
         
           if before_res == 0.0
             before_res = @task.resindex
