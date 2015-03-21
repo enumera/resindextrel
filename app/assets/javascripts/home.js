@@ -421,7 +421,9 @@ var path = "users/"+gon.user_id+"/tasks/"+taskId.toString();
       method: "DELETE",
       dataType: "JSON"
   }).success(function(){
-      alert("task destroyed!")
+     
+       searchButtonCombinations("reset_afer_update");
+        alert("task destroyed!")
   });
 })
 
@@ -2370,6 +2372,7 @@ $('#comments-panel').hide();
         // console.log("this will clear the panel");
         $("#task-list-group").html("");
         $('#things h4').text("Jobs to do...")
+        refreshTasks();
 
       }else{
     
