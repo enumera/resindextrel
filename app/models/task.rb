@@ -3,9 +3,9 @@ class Task < ActiveRecord::Base
 
     has_and_belongs_to_many :users
     belongs_to :goal
-    has_many :comments
+    has_many :comments, dependent: :destroy
     belongs_to :project
-    has_many :checklists
+    has_many :checklists, dependent: :destroy
   
 
 

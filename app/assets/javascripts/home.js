@@ -376,7 +376,7 @@ var main = function(){
               var endDate = new Date(task.end_date).toDateString();
              
 
-              listItem = '<div class="panel panel-default tpanel" value='+ task.id + '><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class="glyphicon glyphicon-pencil" title="Add a note."></span></button><button class="viewNotesButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class ="glyphicon glyphicon-list-alt" title="Show all notes."></span></button><button class="viewChecklistButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class ="glyphicon glyphicon-tasks" title="Go to checklists."></span></button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><input type="hidden" value='+ task.id + '><span class ="pull-right resindex badge" value='+task.id +' title="Tool tip to be defined."> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button class="recordButton btn btn-xs btn-warning" value='+task.id+' ><span class="glyphicon glyphicon-time" title="Start a work session."></span></button></span></p><p> The task is set to start on '+ startDate +' and end on '+ endDate +'<span><div class="pull-left"><button class="viewDetails btn btn-xs btn-info" value='+task.id+'><span class="glyphicon glyphicon-chevron-down" title="Show details."></span></button></div><div class="pull-right" value='+ task.id +'><button class=" btn btn-xs completed btn-success" id="completed'+task.id +'" name="completed" value='+ task.id +'><span class="glyphicon glyphicon-ok" title="Mark completed."></span></button></div></span></p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + '><span class="glyphicon glyphicon-edit" title="Edit job."></span></button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div><p id="projectSource'+task.id +'"> Project : <button class="btn btn-info btn-xs link_to_project" name='+task.goal_id+' value='+task.project.id+'>'+task.project.name +' : '+task.goal.name+'</button><span><button class="btn btn-xs saveDescriptionEdit pull-right btn-warning" value='+ task.id +' style="display:none">Save edit</button></span></div></div>';
+              listItem = '<div class="panel panel-default tpanel" value='+ task.id + '><button class="destroyButton btn btn-xs btn-danger pull-right" value='+task.id+'><span class="glyphicon glyphicon-remove-circle"></span></button><button class="commentButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class="glyphicon glyphicon-pencil" title="Add a note."></span></button><button class="viewNotesButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class ="glyphicon glyphicon-list-alt" title="Show all notes."></span></button><button class="viewChecklistButton btn btn-xs btn-warning pull-right" value='+ task.id +' ><span class ="glyphicon glyphicon-tasks" title="Go to checklists."></span></button><div class="panel-heading task-panel" value='+ task.id +' >' + task.card_name +'</div><div class="list-group-item" id= '+ task.id +'><input type="hidden" value='+ task.id + '><span class ="pull-right resindex badge" value='+task.id +' title="Tool tip to be defined."> Resindex : ' + task.resindex + '</span><p>Work done to date : ' + effortHours + ' hours ' + newEffortMins + ' mins<span class="pull-right"><button class="recordButton btn btn-xs btn-warning" value='+task.id+' ><span class="glyphicon glyphicon-time" title="Start a work session."></span></button></span></p><p> The task is set to start on '+ startDate +' and end on '+ endDate +'<span><div class="pull-left"><button class="viewDetails btn btn-xs btn-info" value='+task.id+'><span class="glyphicon glyphicon-chevron-down" title="Show details."></span></button></div><div class="pull-right" value='+ task.id +'><button class=" btn btn-xs completed btn-success" id="completed'+task.id +'" name="completed" value='+ task.id +'><span class="glyphicon glyphicon-ok" title="Mark completed."></span></button></div></span></p><p><button class="editButton btn btn-warning btn-xs pull-right" value='+ task.id + '><span class="glyphicon glyphicon-edit" title="Edit job."></span></button></p></div><div class="control-group"><div class="controls"><textarea class="form-control task_description_on_task" value='+ task.id +' style="display:none" placeholder="Add details">' + task.card_description + '</textarea></div><p id="projectSource'+task.id +'"> Project : <button class="btn btn-info btn-xs link_to_project" name='+task.goal_id+' value='+task.project.id+'>'+task.project.name +' : '+task.goal.name+'</button><span><button class="btn btn-xs saveDescriptionEdit pull-right btn-warning" value='+ task.id +' style="display:none">Save edit</button></span></div></div>';
               // };
 
               listItems.append(listItem);
@@ -409,6 +409,22 @@ var main = function(){
           };   
       });
     };
+
+///-----destroy a task ----///
+
+$(document.body).on('click', '.destroyButton',function(){
+  var taskId = $(this).val();
+
+var path = "users/"+gon.user_id+"/tasks/"+taskId.toString();
+    $.ajax({ 
+      url: path, 
+      method: "DELETE",
+      dataType: "JSON"
+  }).success(function(){
+      alert("task destroyed!")
+  });
+})
+
 
  $(document.body).on('click', '.link_to_project', function(){
   var goalId = $(this).attr('name');
