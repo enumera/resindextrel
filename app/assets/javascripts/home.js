@@ -410,7 +410,26 @@ var main = function(){
       });
     };
 
+///---destroy a goal ---///
+$(document.body).on('click', '.destroyGoalButton',function(){
+  var goalId = $(this).val();
+
+
+var path = "/goals/"+goalId.toString();
+    $.ajax({ 
+      url: path, 
+      method: "DELETE",
+      dataType: "JSON"
+  }).success(function(){
+     
+       searchButtonCombinations("reset_afer_update");
+        alert("goal destroyed!")
+  });
+})
+
 ///-----destroy a task ----///
+
+
 
 $(document.body).on('click', '.destroyButton',function(){
   var taskId = $(this).val();
@@ -1248,7 +1267,7 @@ var validateTaskFormAfterError = function(changeItem){
                 }else{
                   x = goal.no_of_tasks;
                 };
-              var goalItem = '<div class="well well-lg goals project' + projectID + ' " id=' + goal.id + '> ' + goal.name + '<span class ="pull-right badge tasks-left" value='+goal.id+'"> Jobs open: ' + x + '</span></div>';
+              var goalItem = '<div class="well well-lg goals project' + projectID + ' " id=' + goal.id + '> ' + goal.name + '<span class ="pull-right badge tasks-left" value='+goal.id+'"> Jobs open: ' + x + '</span><span><button class="destroyGoalButton btn btn-xs btn-danger pull-right" value='+goal.id+'><span class="glyphicon glyphicon-remove-circle"></span></button></div>';
               menuItems.append(goalItem);
             }); 
           });
