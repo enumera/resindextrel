@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150305200250) do
+ActiveRecord::Schema.define(:version => 20150408052128) do
 
   create_table "checklist_items", :force => true do |t|
     t.string   "name"
@@ -54,6 +54,16 @@ ActiveRecord::Schema.define(:version => 20150305200250) do
     t.datetime "updated_at",       :null => false
     t.string   "name"
     t.string   "name_status"
+  end
+
+  create_table "events", :force => true do |t|
+    t.string   "title"
+    t.string   "description"
+    t.datetime "starttime"
+    t.datetime "endtime"
+    t.boolean  "all_day"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "goals", :force => true do |t|

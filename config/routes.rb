@@ -2,6 +2,9 @@ Trelloindex::Application.routes.draw do
   
 
 
+  resources :events
+
+
   resources :invitations
 
 
