@@ -3,6 +3,20 @@
       <div class="panel panel-default col-md-12" id ="task-panel">
         <div class="panel-heading" id="things"><h4>Jobs to do...</h4><span><button class= "btn btn-xs btn-info" id= "top10" title="Find the top 10 jobs sorted by resindex across all projects.">Top 10</button></span><span><button class= "btn btn-xs btn-info" id= "trello_search" title="Only display trello jobs sorted by resindex.">Trello jobs only</button></span><span><button class= "btn btn-xs btn-info" id= "non_trello_search" title="Show only non-trello jobs sorted by resindex.">Non-Trello jobs only</button></span><span><button class= "btn btn-xs btn-info" id= "hide_completed" title="Hide completed tasks.">Hide Completed</button></span></div>
         <div class="panel-body" >
+          <!-- start of form -->
+          <div class="row" id="add-task">
+            <div class ="col-xs-8">
+              <div class="input-group">
+                <input type="hidden" id="projectShown">
+                 <input type="hidden" id="goalShown">
+                  <input type="text" class="form-control mobile-task-name" placeholder="New Job">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default mobile-add" type="button">Add</button>
+                  </span>
+              </div>
+            </div>
+          </div> 
+          <!-- end of form -->
           <div class="list-group" id="task-list-group">
           </div>
         </div>
