@@ -2,7 +2,10 @@ body{
   overflow: hidden;
 }
 
+.clickableDiv{
+  cursor: pointer;
 
+}
 
 #resindex-wrapper2{
      border-color: 2px solid blue;
