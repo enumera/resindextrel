@@ -1433,7 +1433,8 @@ var validateTaskFormAfterError = function(changeItem){
           $('.projectSel').val(projectID);
 
           $('.projects:not(.selectedProject)').fadeOut(1000);
-          $('.new-goal:not(.selectedProject').fadeOut(1000);
+          $('button.new-goal:not(.selectedProject)').fadeOut(1000);
+
           // console.log();
           // console.log($('.goals').length);
 
