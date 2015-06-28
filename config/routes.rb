@@ -29,6 +29,8 @@ Trelloindex::Application.routes.draw do
 
   get "trello/access"
 
+  get "tasks/calendar" => "tasks#calendar", as: "tasks/calendar"
+
   resources :comment_types
 
 

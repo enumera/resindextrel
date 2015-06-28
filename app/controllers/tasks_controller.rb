@@ -31,6 +31,12 @@ class TasksController < ApplicationController
     end
   end
 
+  def calendar
+
+  end
+  
+
+
   # GET /tasks/1
   # GET /tasks/1.json
   def show
